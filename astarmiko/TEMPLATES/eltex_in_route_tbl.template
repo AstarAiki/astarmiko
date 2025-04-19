@@ -1,0 +1,6 @@
+Value NETWORK ((\d+\.){3}\d+)
+Value ROUTER ((\d+\.){3}\d+)
+
+
+Start
+  ^S\s+${NETWORK}.+\w+\s+${ROUTER}.+ -> Record

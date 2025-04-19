@@ -1,0 +1,8 @@
+Value INTF (\S+\s\d+)
+Value ADDR (\S+)
+Value MASK (\d+)
+Value STATUS (UP|DOWN|administratively down)
+Value PROTO (UP|DOWN)
+
+Start
+  ^${ADDR}/${MASK}\s+${INTF}\s+${STATUS}/${PROTO}.+ -> Record

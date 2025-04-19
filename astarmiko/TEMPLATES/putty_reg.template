@@ -1,0 +1,8 @@
+Value SESNAME (.+)
+Value IP (\d+\.\d+\.\d+\.\d+)
+
+
+
+Start
+  ^\[HKEY_USERS\\\S+\\PuTTY\\Sessions\\${SESNAME}\]
+  ^"HostName"="${IP}  -> Record

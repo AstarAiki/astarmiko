@@ -1,0 +1,63 @@
+commands:
+    "mac_delimeters":
+        desc: 'Diffrent devices show mac addresses with difrent dekimeters, there is all variants of delimeters on you devices with form of address^ 4 digits by 3 groups or 2 digits by 6 groups'
+        cisco_ios: 
+            - '.'
+            - 4
+        huawei_vrrp8: 
+            - '-'
+            - 4
+        huawei_ce: 
+            - '-'
+            - 4
+        eltex: 
+            - '-'
+            - 2
+    "       ":
+        desc: 'show mac addres table and filter by mac'
+        cisco_ios: 'show mac address-table | in {}'
+        huawei_vrrp8: 'display mac-address | in {}'
+        huawei_ce: 'display mac-address | in {}'
+        eltex: 'show mac address-table | in {}'
+    "mac_addr_tbl_byport":
+        desc: 'show mac addres table on defined port'
+        cisco_ios: 'show mac address-table interface {}'
+        huawei_vrrp8: 'display mac-address {}'
+        huawei_ce: 'display mac-address interface {}'
+        eltex: 'show mac address-table | in {}'
+    "neighbor":
+        desc: 'show cdp (or lldp) neighbor brief'
+        cisco_ios: 'show cdp neighbor detail'
+        huawei_vrrp8: 'display lldp neighbor'
+        huawei_ce: 'display lldp neighbor'
+        eltex: 'show lldp neighbor detail'
+    "neighbor_by_port":
+        desc: 'show cdp (or lldp) neighbor brief'
+        cisco_ios: 'show cdp neighbor detail'
+        huawei_vrrp8: 'display lldp neighbor'
+        huawei_ce: 'display lldp neighbor'
+        eltex: 'show lldp neighbor detail'
+    "arp_by":
+        desc: 'show arp table on device filtered by some string'
+        cisco_ios: 'show arp | in {}  +'
+        huawei_vrrp8: 'display  arp | in {}  +'
+        huawei_ce: 'display  arp | in {}  +'
+        eltex: 'show arp | in {}  +'
+    "ethchannel_member":
+        desc: 'Show interfaces that members of EtherChanell (Eth-Trunk, Port-Channel)'
+        cisco_ios: 'show etherchannel {} port'
+        huawei_vrrp8: 'display eth-trunk {}'
+        huawei_ce: 'display eth-trunk {}'
+        eltex: 'show interfaces Port-Channel {}'
+    "ip_route_tbl_by":
+        desc: 'Show ip route table filtered by defined ip'
+        cisco_ios: 'show ip route {}'
+        huawei_vrrp8: 'display ip routing-table {}'
+        huawei_ce: 'display ip routing-table {}'
+        eltex: 'show ip route address {}'
+    "":
+        desc: ''
+        cisco_ios: ''
+        huawei_vrrp8: ''
+        huawei_ce: ''
+        eltex: ''

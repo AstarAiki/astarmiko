@@ -1,0 +1,12 @@
+Value List INTF (\w+\d\/\d\/\d+)
+
+Start
+  ^\s+TG: -> Continue.Record
+  ^888\s+common\s+UT:${INTF}\( -> Continue
+  ^888\s+common\s+UT:\S+\s+${INTF}\( -> Continue
+  ^888\s+common\s+UT:\S+\s+\S+\s+${INTF}\( -> Continue
+  ^888\s+common\s+UT:\S+\s+\S+\s+\S+\s+${INTF}\( -> Continue
+  ^\s+${INTF}\( -> Continue
+  ^\s+\S+\s+${INTF}\( -> Continue
+  ^\s+\S+\s+\S+\s+${INTF}\( -> Continue
+  ^\s+\S+\s+\S+\s+\S+\s+${INTF}\( -> Continue

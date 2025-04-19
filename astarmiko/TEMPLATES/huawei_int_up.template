@@ -1,0 +1,5 @@
+Value INTF (Eth-Trunk\S+|GigabitEthernet\S+|XGigabitEthernet\S+|Vlanif\S+)
+
+
+Start
+  ^${INTF} -> Record

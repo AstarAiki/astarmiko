@@ -1,0 +1,582 @@
+C1811SIGNAL:
+  device_type: cisco_ios
+  ip: 10.22.240.194
+C1841POBEDA:
+  device_type: cisco_ios
+  ip: 10.22.240.137
+C1841TALANGA:
+  device_type: cisco_ios
+  ip: 10.22.240.139
+C1921FORTUNA:
+  device_type: cisco_ios
+  ip: 10.22.240.195
+C1921GERASHENKO:
+  device_type: cisco_ios
+  ip: 10.22.240.162
+C2911GEOLOG:
+  device_type: cisco_ios
+  ip: 10.22.240.141
+C2911KARAMOVKA:
+  device_type: cisco_ios
+  ip: 10.22.240.130
+C2911KIRPICH:
+  device_type: cisco_ios
+  ip: 10.22.240.140
+C2911KRAI:
+  device_type: cisco_ios
+  ip: 10.22.240.133
+C2911MRES:
+  device_type: cisco_ios
+  ip: 10.22.240.134
+C2911NOVOPURPE:
+  device_type: cisco_ios
+  ip: 10.22.240.135
+C2911PRES:
+  device_type: cisco_ios
+  ip: 10.22.240.136
+C2911SUTORMA:
+  device_type: cisco_ios
+  ip: 10.22.240.131
+C3825:
+  device_type: cisco_ios
+  ip: 10.22.240.3
+CiscoNNG:
+  device_type: cisco_ios
+  ip: 10.22.240.5
+LEVEL:
+  C1811SIGNAL: R
+  C1841POBEDA: R
+  C1841TALANGA: R
+  C1921FORTUNA: R
+  C1921GERASHENKO: R
+  C2911GEOLOG: R
+  C2911KARAMOVKA: R
+  C2911KIRPICH: R
+  C2911KRAI: R
+  C2911MRES: R
+  C2911NOVOPURPE: R
+  C2911PRES: R
+  C2911SUTORMA: R
+  C3825: R
+  CiscoNNG: R
+  MRESoverNNG: R
+  VRES-s5731-1: L3
+  VRES-s5731-2: L3
+  C2911KNS9: R
+  C2911NPS: R
+  c2620PRES: R
+  c2801GRADIENT: R
+  abk-s5731: L3
+  c2911Gorod: R
+  knb-s5731: L3
+  c2911Komplekt: R
+  c2911Letnyaya: R
+  c2911Vladimir: R
+  nes-AR6280-1: R
+  nes-AR6280-2: R
+  nes-s5731-1: L3
+  nes-s5731-2: L3
+  NES-CE6820-1: L3
+  NES-CE6820-2: L3
+  NoES-H8000-PE-1: R
+  NoES-H8000-PE-2: R
+  ps-Novogodnaya-s5731-1: L3
+  ps-Novogodnaya-s5731-2: L3
+  ps-gubkinskaya-s5731-1: L3
+  ps-gubkinskaya-s5731-2: L3
+  ps-gubkin-swt1: L2
+  ps-gubkin-swt2: L2
+  ps-gubkin-zru6-swt1: L2
+  ps-gubkin-zru6-swt2: L2
+  ps-kedr-s5731-1: L3
+  ps-kedr-s5731-2: L3
+  ps-kedr-swt1: L2
+  ps-kedr-swt2: L2
+  ps-kedr-krun2-swt1: L2
+  ps-kedr-krun2-swt2: L2
+  ps-mayak-s5731-1: L3
+  ps-mayak-s5731-2: L3
+  ps-vyngayaha-s5731-1: L3
+  ps-vyngayaha-s5731-2: L3
+  ps-yantarnaya-s5731-1: L3
+  ps-yantarnaya-s5731-2: L3
+  ZN-s5731-1: L3
+  ZN-s5731-2: L3
+  Trud-s5731-1: L3
+  Trud-s5731-2: L3
+  MRES-s5731-1: L3
+  MRES-s5731-2: L3
+  rpb-s5731: L2
+  rpb-LAZ-s5731: L2
+  rpb-TM-s5731: L2
+  rtGDN2520-1: L3
+  rtGDN2324-2: L3
+  rtSever2520-1: L3
+  rtSever2520-2: L3
+  sw2950-ASCUE-PTK: L2
+  sw2950HIMLAB: L2
+  sw2950KNB: L2
+  sw2950LRE: L2
+  sw2960Fortuna: L2
+  sw2960MRES-1: L2
+  sw2960MRES-2: L2
+  sw2960MRES-G: L2
+  sw2960OMTS: L2
+  sw2960PRES-1: L2
+  sw2960PRES-2: L2
+  sw2960PRES-G: L2
+  sw2960PRESVOLS: L2
+  sw2960RSC: L2
+  sw2960SERV: L2
+  sw2960SIZPI: L2
+  sw2960SMIT: L2
+  sw2960SVL: L2
+  sw2960REAL: L2
+  sw2960SVYAZ: L2
+  swGDN2960-1: L2
+  swGDN2960-2: L2
+  swGEOLOG: L2
+  swGERASHENKO: L2
+  swGradient: L2
+  swKARAMOVKA: L2
+  swKIRPICH: L2
+  swKIRPICH-2: L2
+  swKNS9: L2
+  swKRAINYAYA: L2
+  swNOVOPURPE: L2
+  swNPS: L2
+  swPOBEDA: L2
+  swSUTORMA: L2
+  swSever2960-1: L2
+  swSever2960-2: L2
+  swTALANGA: L2
+  swVOLSABK: L2
+  swVOLSGOROD: L2
+  swVOLSKNB: L2
+  swVOLSKOMPLEKT: L2
+  swVOLSLTN: L2
+  swVOLSRPB: L2
+  swVOLSVLADIMIR: L2
+  swVOLSYAYA: L2
+  sw2428HANUPA: L2
+  sw2428STRELA: L2
+MRESoverNNG:
+  device_type: cisco_ios
+  ip: 10.22.240.161
+VRES-s5731-1:
+  device_type: huawei
+  ip: 10.22.240.49
+VRES-s5731-2:
+  device_type: huawei
+  ip: 10.22.240.50
+C2911KNS9:
+  device_type: cisco_ios
+  ip: 10.22.240.132
+C2911NPS:
+  device_type: cisco_ios
+  ip: 10.22.240.129
+c2620PRES:
+  device_type: cisco_ios
+  ip: 10.22.240.193
+c2801GRADIENT:
+  device_type: cisco_ios
+  ip: 10.22.240.138
+abk-s5731:
+  device_type: huawei
+  ip: 10.22.240.20
+c2911Gorod:
+  device_type: cisco_ios
+  ip: 10.22.240.22
+knb-s5731:
+  device_type: huawei
+  ip: 10.22.240.18
+c2911Komplekt:
+  device_type: cisco_ios
+  ip: 10.22.240.19
+c2911Letnyaya:
+  device_type: cisco_ios
+  ip: 10.22.240.17
+c2911Vladimir:
+  device_type: cisco_ios
+  ip: 10.22.240.21
+nes-AR6280-1:
+  device_type: huawei
+  ip: 10.22.240.8
+nes-AR6280-2:
+  device_type: huawei
+  ip: 10.22.240.9
+nes-s5731-1:
+  device_type: huawei
+  ip: 10.22.240.6
+nes-s5731-2:
+  device_type: huawei
+  ip: 10.22.240.7
+rpb-s5731:
+  device_type: huawei
+  ip: 10.22.8.250
+NES-CE6820-1:
+  device_type: huawei
+  ip: 10.22.240.1
+NES-CE6820-2:
+  device_type: huawei
+  ip: 10.22.240.2
+NoES-H8000-PE-1:
+  device_type: huawei
+  ip: 10.22.240.10
+NoES-H8000-PE-2:
+  device_type: huawei
+  ip: 10.22.240.11  
+rpb-LAZ-s5731:
+  device_type: huawei
+  ip: 10.22.8.248
+rpb-TM-s5731:
+  device_type: huawei
+  ip: 10.22.8.249
+ps-Novogodnaya-s5731-1:
+  device_type: huawei
+  ip: 10.22.240.43
+ps-Novogodnaya-s5731-2:
+  device_type: huawei
+  ip: 10.22.240.44
+ps-gubkinskaya-s5731-1:
+  device_type: huawei
+  ip: 10.22.240.39
+ps-gubkinskaya-s5731-2:
+  device_type: huawei
+  ip: 10.22.240.40
+ps-gubkin-swt1:
+  device_type: eltex
+  ip: 10.22.81.222
+ps-gubkin-swt2:
+  device_type: eltex
+  ip: 10.22.81.221
+ps-gubkin-zru6-swt1:
+  device_type: eltex
+  ip: 10.22.81.220
+ps-gubkin-zru6-swt2:
+  device_type: eltex
+  ip: 10.22.81.219
+ps-kedr-s5731-1:
+  device_type: huawei
+  ip: 10.22.240.37
+ps-kedr-s5731-2:
+  device_type: huawei
+  ip: 10.22.240.38
+ps-kedr-swt1:
+  device_type: eltex
+  ip: 10.22.83.222
+ps-kedr-swt2:
+  device_type: eltex
+  ip: 10.22.83.221
+ps-kedr-krun2-swt1:
+  device_type: eltex
+  ip: 10.22.83.220
+ps-kedr-krun2-swt2:
+  device_type: eltex
+  ip: 10.22.83.219
+ps-mayak-s5731-1:
+  device_type: huawei
+  ip: 10.22.240.45
+ps-mayak-s5731-2:
+  device_type: huawei
+  ip: 10.22.240.46
+ps-vyngayaha-s5731-1:
+  device_type: huawei
+  ip: 10.22.240.41
+ps-vyngayaha-s5731-2:
+  device_type: huawei
+  ip: 10.22.240.42
+ps-yantarnaya-s5731-1:
+  device_type: huawei
+  ip: 10.22.240.47
+ps-yantarnaya-s5731-2:
+  device_type: huawei
+  ip: 10.22.240.48
+ZN-s5731-1:
+  device_type: huawei
+  ip: 10.22.240.167
+ZN-s5731-2:
+  device_type: huawei
+  ip: 10.22.240.168
+Trud-s5731-1:
+  device_type: huawei
+  ip: 10.22.240.165
+Trud-s5731-2:
+  device_type: huawei
+  ip: 10.22.240.166
+MRES-s5731-1:
+  device_type: huawei
+  ip: 10.22.240.163
+MRES-s5731-2:
+  device_type: huawei
+  ip: 10.22.240.164
+rtGDN2520-1:
+  device_type: cisco_ios
+  ip: 10.22.240.196
+rtGDN2324-2:
+  device_type: eltex
+  ip: 10.22.240.197
+rtSever2520-1:
+  device_type: cisco_ios
+  ip: 10.22.240.198
+rtSever2520-2:
+  device_type: cisco_ios
+  ip: 10.22.240.199
+sw2950-ASCUE-PTK:
+  device_type: cisco_ios
+  ip: 10.22.8.146
+sw2950HIMLAB:
+  device_type: cisco_ios
+  ip: 10.22.13.4
+sw2950KNB:
+  device_type: cisco_ios
+  ip: 10.22.13.3
+sw2950LRE:
+  device_type: cisco_ios
+  ip: 10.22.13.9
+sw2960Fortuna:
+  device_type: cisco_ios
+  ip: 10.22.31.2
+sw2960MRES-1:
+  device_type: cisco_ios
+  ip: 10.22.16.221
+sw2960MRES-2:
+  device_type: cisco_ios
+  ip: 10.22.16.220
+sw2960MRES-G:
+  device_type: cisco_ios
+  ip: 10.22.16.222
+sw2960OMTS:
+  device_type: cisco_ios
+  ip: 10.22.13.5
+sw2960PRES-1:
+  device_type: cisco_ios
+  ip: 10.22.124.2
+sw2960PRES-2:
+  device_type: cisco_ios
+  ip: 10.22.124.5
+sw2960PRES-G:
+  device_type: cisco_ios
+  ip: 10.22.124.6
+sw2960PRESVOLS:
+  device_type: cisco_ios
+  ip: 10.22.124.130
+sw2960RSC:
+  device_type: cisco_ios
+  ip: 10.22.8.138
+sw2960SERV:
+  device_type: cisco_ios
+  ip: 10.22.8.139
+sw2960SMIT:
+  device_type: cisco_ios
+  ip: 10.22.8.137
+sw2960REAL:
+  device_type: cisco_ios
+  ip: 10.22.8.131
+sw2960SVL:
+  device_type: cisco_ios
+  ip: 10.22.13.6
+sw2960SIZPI:
+  device_type: cisco_ios
+  ip: 10.22.13.2
+sw2960SVYAZ:
+  device_type: cisco_ios
+  ip: 10.22.8.145
+swGDN2960-1:
+  device_type: cisco_ios
+  ip: 10.22.58.220
+swGDN2960-2:
+  device_type: cisco_ios
+  ip: 10.22.58.221
+swGEOLOG:
+  device_type: cisco_ios
+  ip: 10.22.42.222
+swGERASHENKO:
+  device_type: cisco_ios
+  ip: 10.22.60.222
+swGradient:
+  device_type: cisco_ios
+  ip: 10.22.43.2
+swKARAMOVKA:
+  device_type: cisco_ios
+  ip: 10.22.106.2
+swKIRPICH:
+  device_type: cisco_ios
+  ip: 10.22.45.222
+swKIRPICH-2:
+  device_type: cisco_ios
+  ip: 10.22.45.221
+swKNS9:
+  device_type: cisco_ios
+  ip: 10.22.62.2
+swKRAINYAYA:
+  device_type: cisco_ios
+  ip: 10.22.63.2
+swNOVOPURPE:
+  device_type: cisco_ios
+  ip: 10.22.40.2
+swNPS:
+  device_type: cisco_ios
+  ip: 10.22.110.2
+swPOBEDA:
+  device_type: cisco_ios
+  ip: 10.22.49.2
+swSUTORMA:
+  device_type: cisco_ios
+  ip: 10.22.69.2
+swSever2960-1:
+  device_type: cisco_ios
+  ip: 10.22.35.220
+swSever2960-2:
+  device_type: cisco_ios
+  ip: 10.22.35.221
+swTALANGA:
+  device_type: cisco_ios
+  ip: 10.22.52.2
+swVOLSABK:
+  device_type: cisco_ios
+  ip: 10.22.254.25
+swVOLSGOROD:
+  device_type: cisco_ios
+  ip: 10.22.254.28
+swVOLSKNB:
+  device_type: cisco_ios
+  ip: 10.22.254.23
+swVOLSKOMPLEKT:
+  device_type: huawei
+  ip: 10.22.254.24
+swVOLSLTN:
+  device_type: cisco_ios
+  ip: 10.22.254.22
+swVOLSRPB:
+  device_type: cisco_ios
+  ip: 10.22.254.21
+swVOLSVLADIMIR:
+  device_type: eltex
+  ip: 10.22.254.26
+swVOLSYAYA:
+  device_type: cisco_ios
+  ip: 10.22.254.27
+sw2428HANUPA:
+  device_type: eltex
+  ip: 10.22.72.6
+sw2428STRELA:
+  device_type: eltex
+  ip: 10.22.67.6
+SEGMENT:
+  C1811SIGNAL: PRES
+  C1841POBEDA: NES-KIRPICH
+  C1841TALANGA: NES-KIRPICH
+  C1921FORTUNA: PRES
+  C1921GERASHENKO: MRES
+  C2911GEOLOG: NES-KIRPICH
+  C2911KARAMOVKA: NES-KIRPICH
+  C2911KIRPICH: NES-KIRPICH
+  C2911KRAI: NES-KIRPICH
+  C2911MRES: MRES
+  ZN-s5731-1: MRES
+  ZN-s5731-2: MRES
+  Trud-s5731-1: MRES
+  Trud-s5731-2: MRES
+  MRES-s5731-1: MRES
+  MRES-s5731-2: MRES  
+  C2911NOVOPURPE: NES-KIRPICH
+  C2911PRES: PRES
+  C2911SUTORMA: NES-KIRPICH
+  C3825: RPB
+  CiscoNNG: RPB
+  MRESoverNNG: MRES
+  VRES-s5731-1: VRES
+  VRES-s5731-2: VRES
+  c2620KNS9: NES-KIRPICH
+  C2911NPS: NES-KIRPICH
+  c2620PRES: PRES
+  c2801GRADIENT: NES-KIRPICH
+  abk-s5731: ABK
+  c2911Gorod: NOJ2RING
+  knb-s5731: KNB
+  c2911Komplekt: NOJ2RING
+  c2911Letnyaya: NOJ2RING
+  c2911Vladimir: NOJ2RING
+  nes-AR6280-1: RPB
+  nes-AR6280-2: RPB
+  nes-s5731-1: RPB
+  nes-s5731-2: RPB
+  NES-CE6820-1: RPB
+  NES-CE6820-2: RPB
+  NoES-H8000-PE-1: RPB
+  NoES-H8000-PE-2: RPB
+  rpb-s5731: RPB
+  rpb-LAZ-s5731: RPB
+  rpb-TM-s5731: RPB
+  ps-Novogodnaya-s5731-1: VRES
+  ps-Novogodnaya-s5731-2: VRES
+  ps-gubkinskaya-s5731-1: VRES
+  ps-gubkinskaya-s5731-2: VRES
+  ps-gubkin-swt1: VRES
+  ps-gubkin-swt2: VRES
+  ps-gubkin-zru6-swt1: VRES
+  ps-gubkin-zru6-swt2: VRES
+  ps-kedr-s5731-1: VRES
+  ps-kedr-s5731-2: VRES
+  ps-kedr-swt1: VRES
+  ps-kedr-swt2: VRES
+  ps-kedr-krun2-swt1: VRES
+  ps-kedr-krun2-swt2: VRES
+  ps-mayak-s5731-1: VRES
+  ps-mayak-s5731-2: VRES
+  ps-vyngayaha-s5731-1: VRES
+  ps-vyngayaha-s5731-2: VRES
+  ps-yantarnaya-s5731-1: VRES
+  ps-yantarnaya-s5731-2: VRES
+  rtGDN2520-1: GDN-SEVER
+  rtGDN2324-2: GDN-SEVER
+  rtSever2520-1: GDN-SEVER
+  rtSever2520-2: GDN-SEVER
+  sw2950-ASCUE-PTK: RPB
+  sw2950HIMLAB: KNB
+  sw2950KNB: KNB
+  sw2950LRE: KNB
+  sw2960Fortuna: PRES
+  swGERASHENKO: MRES
+  sw2960MRES-1: MRES
+  sw2960MRES-2: MRES
+  sw2960MRES-G: MRES
+  sw2428HANUPA: MRES
+  sw2428STRELA: MRES
+  sw2960OMTS: KNB
+  sw2960PRES-1: PRES
+  sw2960PRES-2: PRES
+  sw2960PRES-G: PRES
+  sw2960PRESVOLS: PRES
+  sw2960RSC: RPB
+  sw2960SERV: RPB
+  sw2960SMIT: RPB
+  sw2960REAL: RPB
+  sw2960SVL: KNB
+  sw2960SIZPI: KNB
+  sw2960SVYAZ: RPB
+  swGDN2960-1: GDN-SEVER
+  swGDN2960-2: GDN-SEVER
+  swGEOLOG: NES-KIRPICH
+  swGradient: NES-KIRPICH
+  swKARAMOVKA: NES-KIRPICH
+  swKIRPICH: NES-KIRPICH
+  swKIRPICH-2: NES-KIRPICH
+  swKNS9: NES-KIRPICH
+  swKRAINYAYA: NES-KIRPICH
+  swNOVOPURPE: NES-KIRPICH
+  swNPS: NES-KIRPICH
+  swPOBEDA: NES-KIRPICH
+  swSUTORMA: NES-KIRPICH
+  swSever2960-1: GDN-SEVER
+  swSever2960-2: GDN-SEVER
+  swTALANGA: NES-KIRPICH
+  swVOLSABK: NOJ2RING
+  swVOLSGOROD: NOJ2RING
+  swVOLSKNB: NOJ2RING
+  swVOLSKOMPLEKT: NOJ2RING
+  swVOLSLTN: NOJ2RING
+  swVOLSRPB: NOJ2RING
+  swVOLSVLADIMIR: NOJ2RING
+  swVOLSYAYA: NOJ2RING

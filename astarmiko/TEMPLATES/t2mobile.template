@@ -1,0 +1,6 @@
+Value ABON (\d+)
+Value RUB (.+)
+
+Start
+  ^Абонент\s${ABON}
+  ^Итого начисления\s${RUB}\sруб  -> Record
