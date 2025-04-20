@@ -644,15 +644,6 @@ class Activka:
 
         '''
 
-        if not othercmd:
-            commands ={
-                'neighbor_br': {'cisco_ios':f'show cdp neighbor detail','huawei':f'display lldp neighbor', 'eltex':f'show lldp neighbor detail'},
-                'arp': {'cisco_ios':f'show arp | in {args[0]}  +','huawei':f'display  arp | in {args[0]}  +','checkpoint_gaia': 'arp -an', 'eltex':f'show arp | in {args[0]}  +'},
-                'neighbor_by_port': {'port': args[0]},
-                'ethchannel_member': {'cisco_ios':f'show etherchannel {args[0]} port','huawei':f'display eth-trunk {args[0]}', 'eltex':f'show interfaces Port-Channel {args[0]}'},
-                'mac_address_table': {'cisco_ios':f'show mac address-table | in {args[0]}','huawei':f'display mac-address | in {args[0]}', 'eltex':f'show mac address-table | in {args[0]}'},
-                'in_route_tbl': {'cisco_ios':f'show ip route {args[0]}','huawei':f'display ip routing-table {args[0]}', 'eltex':f'show ip route address {args[0]}'}
-                }
         if func == 'neighbor_by_port':
             return self._get_neighbor_by_port(self, device, func, args[0])
             
