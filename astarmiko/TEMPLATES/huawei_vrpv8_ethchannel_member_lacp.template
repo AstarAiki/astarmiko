@@ -1,0 +1,5 @@
+Value List INTF (\S+)
+
+
+Start
+  ^${INTF}\s+\d+\s+\S+\s+\d+\s+\d+\s+\d+\s+\d+ -> Record

@@ -498,7 +498,7 @@ class Activka:
     def __repr__(self):
         return(f'{self.__class__.__name__}({self.__class__.__doc__})')
     
-    def choose(self, *args, withoutname = False):
+    def choose(self, device, withoutname = False):
         '''Function prepare dictionary in netmiko format for use with ConnectHandler(**device)
         
         Args:
@@ -512,11 +512,11 @@ class Activka:
         '''
         out = {}
         if withoutname:
-            for d in args:
-                out.update(self.wholedict[d])
+            print(f'wholedict[device] = {self.wholedict[device]}')
+            out.update(self.wholedict[device])
         else:
-            for d in args:
-                out[d] = self.wholedict[d]
+            print(f'wholedict[device] = {self.wholedict[device]}')
+            out[device] = self.wholedict[device]
         return out
 
     def filter(self, device_type = None, levels = None, segment = None):
@@ -587,7 +587,7 @@ class Activka:
         if m:
             port = self.getinfo(device, 'ethchannel_member', m.group(2))[0][0][0]
             port = port_name_normalize(port)
-        nblist = self.getinfo(device,'neighbor_br', 'pusto')
+        nblist = self.getinfo(device,'neighbor', 'pusto')
         subintf = re.compile(r'\.\d+')
         p = subintf.search(port)
         if p:
@@ -611,7 +611,7 @@ class Activka:
         outlist[0][2] = port_name_normalize(outlist[0][2])
         command = ac.commands['mac_addr_tbl_byport'][dev['device_type']].format(outlist[0][2])
         todo = send_show_command(dev, command)
-        outwhole = templatizator(todo, 'mac_address_table', dev['device_type'])
+        outwhole = templatizator(todo, 'mac_addr_tbl_byport', dev['device_type'])
         if len(outwhole) > 2:
             if len(outwhole) == 3: #если компютер включен через IP телефон то светится 2 MAC в 2-х VLAN
                 for mac in ac.phone_mac:#у нас все телефоны имеют MAC начинающийся на 805e но ведь могут появиться и другие
@@ -645,14 +645,17 @@ class Activka:
         '''
 
         if func == 'neighbor_by_port':
-            return self._get_neighbor_by_port(self, device, func, args[0])
+            return self._get_neighbor_by_port(device, func, args[0])
             
         else:
             status = True
             dev = self.choose(device, withoutname = True)
             if not othercmd:
-
-                command = ac.commands[func][dev['device_type']]
+                if args[0]:
+                    command = ac.commands[func][dev['device_type']].format(args[0])
+                else:
+                    command = ac.commands[func][dev['device_type']]
+                print(f'DEBUG: getinfo func = {func} args[0] = {args[0]}  command = {command}')
             else:
                 command = func
                 #print(f'DEBUG: getinfo по идее должны оказаться здесь command = {command}')

@@ -215,16 +215,16 @@ rpb-s5731:
   device_type: huawei
   ip: 10.22.8.250
 NES-CE6820-1:
-  device_type: huawei
+  device_type: huawei_vrpv8
   ip: 10.22.240.1
 NES-CE6820-2:
-  device_type: huawei
+  device_type: huawei_vrpv8
   ip: 10.22.240.2
 NoES-H8000-PE-1:
-  device_type: huawei
+  device_type: huawei_vrpv8
   ip: 10.22.240.10
 NoES-H8000-PE-2:
-  device_type: huawei
+  device_type: huawei_vrpv8
   ip: 10.22.240.11  
 rpb-LAZ-s5731:
   device_type: huawei

@@ -1,0 +1,7 @@
+Value Port (X?GE0/0/\d+)
+Value PHY (up|down|\*down)
+Value Prot (up|down)
+Value Descript (.+)
+
+Start
+ ^${Port} +${PHY} +${Prot} +${Descript} -> Record

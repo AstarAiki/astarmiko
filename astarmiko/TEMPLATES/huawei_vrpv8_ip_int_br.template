@@ -1,0 +1,8 @@
+Value INTF ([Gi|XGi|Lo|Vl]\S+)
+Value ADDR (\S+)
+Value MASK (\d+)
+Value STATUS (up|down|\*down)
+Value PROTO (up|up(s)|down)
+
+Start
+  ^${INTF}\s+${ADDR}/${MASK}\s+${STATUS}\s+${PROTO} -> Record
