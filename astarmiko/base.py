@@ -3,23 +3,23 @@ from pysnmp.hlapi.v3arch.asyncio import *
 import asyncio
 #logging.basicConfig(filename='d:/network/net_func.log',format='%(asctime)s : %(level)s - %(message)s', datefmt='%Y-%B-%d %H:%M:%S', level=logging.WARNING)
 
-myini = '' #Path to yaml, json, file for some startup parametrs
+ac = '' #Global object represent configuration attributes
  
 def setini(path_to_conf):
-    ''' Initialize conf object myini with attributes from path_to_conf
+    ''' Initialize conf object ac with attributes from path_to_conf
     
     Args:
         path_to_conf (str): full path to config file ( yaml, json, format)
         
     '''
     from astarconf import  Astarconf
-    global myini
-    myini = Astarconf(path_to_conf)
+    global ac
+    ac = Astarconf(path_to_conf)
     try:
-        dict_of_cmd = myini.dict_of_cmd
+        dict_of_cmd = ac.dict_of_cmd
         with open(dict_of_cmd) as f:
             commands = yaml.safe_load(f)
-        myini.commands = commands['commands']
+        ac.commands = commands['commands']
     except AttributeError:
         pass
 
@@ -37,8 +37,7 @@ async def snmp_get_oid(host: str, community: str, oid: str, port: int = 161, ver
         prnerr (bool): selector to print or not errors in stdout
     
     Returns:
-        
-    
+        result (str): value of oid
     '''
 
     if version == 1:
@@ -191,7 +190,7 @@ def send_show_command(device, commands, log=False):
     if log:
         logging.getLogger("paramiko").setLevel(logging.WARNING)
         logging.basicConfig(
-        filename = myini.localpath + 'net_func.log',
+        filename = ac.localpath + 'net_func.log',
         format = '%(threadName)s %(name)s %(levelname)s: %(message)s',
         level=logging.INFO)
         connect_string = '===> {} Подключаюсь к {}'
@@ -241,22 +240,22 @@ def templatizator(*args, special = False):
         args[2] (str):  if special = False (by default) device type in form of netmiko
                         or 'nt' or 'posix' if args[0] output from console of
                         Windows or Posix systems
-                        device_type (args[1] is abbreviated command from myini.commands
+                        device_type (args[1] is abbreviated command from ac.commands
                         if special = True, args[1] is not abbreviated command that one is name of file
-                        with textFSM template, must be located in directory defined by myini.templpath 
+                        with textFSM template, must be located in directory defined by ac.templpath 
     
     Returns:
         list of lists obtained using the corresponding textfsm template
     '''
     if not special:
         if args[2] == 'nt':
-            tf = myini.templpath + 'nt_' + args[1] + '.template'
+            tf = ac.templpath + 'nt_' + args[1] + '.template'
         elif args[2] == 'posix':
-            tf = myini.templpath + 'posix_' + args[1] + '.template'
+            tf = ac.templpath + 'posix_' + args[1] + '.template'
         else:
-            tf = myini.templpath + args[2] + '_' + args[1] + '.template'
+            tf = ac.templpath + args[2] + '_' + args[1] + '.template'
     else:
-        tf = myini.templpath + args[1]
+        tf = ac.templpath + args[1]
     with open(tf) as tmpl:
         fsm = textfsm.TextFSM(tmpl)
         result = fsm.ParseText(args[0])
@@ -311,16 +310,16 @@ def get_port_by_mac(device, mac):
     '''
     status = True
 
-    command = myini.commands['mac_addr_tbl_bymac'][device['device_type']].format(mac)
+    command = ac.commands['mac_addr_tbl_bymac'][device['device_type']].format(mac)
     todo = send_show_command(device, command)
     out = templatizator(todo, 'mac_address_table', device['device_type'])[0]
     out[2] = port_name_normalize(out[2])
-    command = myini.commands['mac_addr_tbl_byport'][device['device_type']].format(out[2])
+    command = ac.commands['mac_addr_tbl_byport'][device['device_type']].format(out[2])
     todo = send_show_command(device, command)
     outwhole = templatizator(todo, 'mac_address_table', device['device_type'])
     if len(outwhole) > 2:
         if len(outwhole) == 3: #если компютер включен через IP телефон то светится 2 MAC в 2-х VLAN
-            for mac in myini.phone_mac:#у нас все телефоны имеют MAC начинающийся на 805e но ведь могут появиться и другие
+            for mac in ac.phone_mac:#у нас все телефоны имеют MAC начинающийся на 805e но ведь могут появиться и другие
                 if mac in outwhole[2][0]:
                     return [out[2], status]
         else:
@@ -340,7 +339,7 @@ def convert_mac(mac,device_type):
     
     '''
     mac = mac.lower()
-    trudelim, digit_by_group =  myini.commands["mac_delimeters"][device_type]
+    trudelim, digit_by_group =  ac.commands["mac_delimeters"][device_type]
     p4=re.compile(r'(?P<oct1>[0-9a-fA-F]{4})[-|.|:](?P<oct2>[0-9a-fA-F]{4})[-|.|:](?P<oct3>[0-9a-fA-F]{4})', re.ASCII)
     p6=re.compile(r'(?P<oct1>[0-9a-fA-F]{2})[-|.|:](?P<oct2>[0-9a-fA-F]{2})[-|.|:](?P<oct3>[0-9a-fA-F]{2})[-|.|:](?P<oct4>[0-9a-fA-F]{2})[-|.|:](?P<oct5>[0-9a-fA-F]{2})[-|.|:](?P<oct6>[0-9a-fA-F]{2})', re.ASCII)
     m = p4.search(mac)
@@ -471,12 +470,12 @@ class Activka:
             byname (str): file activka_byname.yaml - list of all network devices by name
            *args (str):  optional parameter, file activka_byip.yaml - list of all ip adresses of all devices
         '''
-        username = myini.user
-        password = myini.password
-        with open(myini.localpath + byname) as fyaml:
+        username = ac.user
+        password = ac.password
+        with open(ac.localpath + byname) as fyaml:
             wholedict = yaml.safe_load(fyaml)
         if args:
-            with open(myini.localpath + args[0]) as fyaml:
+            with open(ac.localpath + args[0]) as fyaml:
                 allip = yaml.safe_load(fyaml)
             self.routerbyip = allip
         r_and_s ={}
@@ -610,12 +609,12 @@ class Activka:
         
         '''
         outlist[0][2] = port_name_normalize(outlist[0][2])
-        command = myini.commands['mac_addr_tbl_byport'][dev['device_type']].format(outlist[0][2])
+        command = ac.commands['mac_addr_tbl_byport'][dev['device_type']].format(outlist[0][2])
         todo = send_show_command(dev, command)
         outwhole = templatizator(todo, 'mac_address_table', dev['device_type'])
         if len(outwhole) > 2:
             if len(outwhole) == 3: #если компютер включен через IP телефон то светится 2 MAC в 2-х VLAN
-                for mac in myini.phone_mac:#у нас все телефоны имеют MAC начинающийся на 805e но ведь могут появиться и другие
+                for mac in ac.phone_mac:#у нас все телефоны имеют MAC начинающийся на 805e но ведь могут появиться и другие
                     if mac in outwhole[2][0]:
                         return [outlist[0][2], status]
             else:
@@ -662,7 +661,7 @@ class Activka:
             dev = self.choose(device, withoutname = True)
             if not othercmd:
 
-                command = myini.commands[func][dev['device_type']]
+                command = ac.commands[func][dev['device_type']]
             else:
                 command = func
                 #print(f'DEBUG: getinfo по идее должны оказаться здесь command = {command}')
@@ -679,7 +678,7 @@ class Activka:
                     outlist = todo
             else:
                 outlist = templatizator(todo, txtFSMtmpl, special = True)
-            if func == 'mac_addr_tbl_byport':
+            if func == 'mac_addr_tbl_by':
                 return self._mac_addr_tbl_byport(dev, outlist, status)
             if not outlist:
                 #print(f'DEBUG getinfo return  false becouse not outlist ')
@@ -700,17 +699,22 @@ class Activka:
         return lines
             
     def get_curr_config(self, device, list_ = True):
+        '''Function returns the current configuration of device
+        
+        Args:
+            device (str): name of device
+            list_ (bool, optional): flag to define type of return
+        Returns:
+            config (list): current config as list of lists; if list_=True (default)
+            content (str): current config as string; if list_= False
         '''
-        the function returns the current configuration
-        '''
-        commands = {'cisco_ios': 'show running', 'huawei': 'display current', 'eltex': 'show running'}
         device_type = self.choose(device, withoutname = True)['device_type']
-        command = commands[device_type]
+        command = ac.commands['current_config'][device_type]
         _config = self.getinfo(device, command, othercmd = True)
         config = [line for line in _config.split('\n')]
         if device_type == 'cisco_ios':
-            config = self._unnecessary_truncate(config)
-            config = del_exeption(config)
+            config = self._unnecessary_truncate(config) # first string is not config on cisco
+            config = del_exeption(config) #delete variable string saved to config
         if list_:
             return config
         else:
@@ -720,9 +724,13 @@ class Activka:
             return content
 
     def list_of_all_ip_intf(self, device):
-        '''
-        Function gets myactivka dictionary and return list of lists like:
-        [interface, ip_address, mask, status(up|down), protocol(up|down)]
+        '''Function get all ip interface on device
+        
+        Args:
+            device (str): name of device
+        
+        Returns:
+            todo (list): list of [interface, ip_address, mask, status(up|down), protocol(up|down)]
         '''
         mask = {
             '255.255.255.255': '32',
@@ -736,11 +744,11 @@ class Activka:
             '255.255.254.0': '23',
             }
         exclude_intf = ['NVI0']
-        regexp = r'ip address \S+\s+(\S+)'
-        command = {'cisco_ios':'sh ip int br | ex unassigned','huawei':'dis ip int br | ex unassigned', 'eltex':'sh ip int'}
-        template = {'cisco_ios':'cisco_ip_int_br.template','huawei':'huawei_ip_int_br.template', 'eltex':'eltex_ip_int_br.template'}
         dev = self.choose(device,  withoutname = True)
-        todo = self.getinfo(device, command[dev['device_type']], othercmd = True, txtFSMtmpl = template[dev['device_type']])
+        regexp = r'ip address \S+\s+(\S+)'
+        command = ac.commands['ip_int_br'][dev['device_type']]
+        template = f'{dev['device_type']}_ip_int_br.template' 
+        todo = self.getinfo(device, command, othercmd = True, txtFSMtmpl = template)
         if todo:
             if dev['device_type'] == 'cisco_ios':
                 for line in todo:
@@ -760,22 +768,22 @@ class ActivkaBackup(Activka):
     '''
     
     data = []
-    def __init__(self, byname, byip):
-        super().__init__(byname, byip)
+    def __init__(self, byname):
+        super().__init__(byname)
         import socket
         self.main_backup_server = {}
         self.second_backup_server = {}
-        self.main_backup_server['name'] = myini.main_backup_server['name']
+        self.main_backup_server['name'] = ac.main_backup_server['name']
         self.main_backup_server['protocol'] = 'local'
-        self.main_backup_server['ftp_root'] = myini.main_backup_server['ftp_root']
-        self.main_backup_server['ftp_user'] = myini.main_backup_server['user']
-        self.main_backup_server['ftp_password'] = myini.main_backup_server['password']
-        self.main_backup_server['local_root'] = myini.main_backup_server['local_root']
-        self.second_backup_server['name'] = myini.second_backup_server['name']
+        self.main_backup_server['ftp_root'] = ac.main_backup_server['ftp_root']
+        self.main_backup_server['ftp_user'] = ac.main_backup_server['user']
+        self.main_backup_server['ftp_password'] = ac.main_backup_server['password']
+        self.main_backup_server['local_root'] = ac.main_backup_server['local_root']
+        self.second_backup_server['name'] = ac.second_backup_server['name']
         self.second_backup_server['protocol'] = 'ftp'
-        self.second_backup_server['ftp_root'] = myini.second_backup_server['ftp_root']
-        self.second_backup_server['ftp_user'] = myini.second_backup_server['user']
-        self.second_backup_server['ftp_password'] = myini.second_backup_server['password']
+        self.second_backup_server['ftp_root'] = ac.second_backup_server['ftp_root']
+        self.second_backup_server['ftp_user'] = ac.second_backup_server['user']
+        self.second_backup_server['ftp_password'] = ac.second_backup_server['password']
         self.get_backup_list = self._get_backup_list_local
         self.get_backup_config = self._get_backup_config_local
         self.write_backup = self._write_backup_local
@@ -788,6 +796,16 @@ class ActivkaBackup(Activka):
             self.write_backup = self._write_backup_ftp
     
     def _set_ftp_var(self, second):
+        '''Function set parameters for ftp connection
+        
+        Args:
+            second (bool): flag to define main backup server (second is False)
+                            or second backup server (second is True)
+        
+        Returns:
+            ftp_root (str): path to ftp root
+            ftp_params (dict): dictionary for ftp connection
+        '''
         if second:
             ftp_params = {
                 'host': self.second_backup_server['name'],           
@@ -809,10 +827,16 @@ class ActivkaBackup(Activka):
 
         
     
-    def _get_backup_list_local(self, segment, device= False):
-        '''
-        The function returns a list of all backup files in the segment folder if device= False
-        and only related to a specific device if the name device is specified
+    def _get_backup_list_local(self, segment, device= None):
+        '''The function returns a list of backup files in the segment folder
+        
+        Args:
+            segment (str): segment (folder) under ftp_root  (ftp_root/segment/)
+            device (str, optional): name of device
+        
+        Returns:
+            out (list): list of all backup files in the segment folder if device= None
+                        or list of  backup files only for this device
         '''
         from os import  path
         where = path.join(self.main_backup_server['local_root'], segment)
@@ -821,10 +845,18 @@ class ActivkaBackup(Activka):
         return out
     
 
-    def _get_backup_list_ftp(self, segment, device= False, second = False):
-        '''
-        The function returns a list of all backup files in the ftp_root/segment folder if device= False
-        and only related to a specific device if the name device is specified
+    def _get_backup_list_ftp(self, segment, device= None, second = False):
+        '''The function returns a list of backup files in the segment folder
+        
+        Args:
+            segment (str): segment (folder) under ftp_root  (ftp_root/segment/)
+            device (str, optional): name of device
+            second (bool, optional): flag defined using main (default) backup server
+                                    or second (second = True) backup server
+        
+        Returns:
+            out (list): list of all backup files in the segment folder if device= None
+                        or list of  backup files only for this device
         '''
         from ftplib import FTP
         ftp_root, ftp_params = self._set_ftp_var(second)
@@ -836,9 +868,20 @@ class ActivkaBackup(Activka):
         return out
     
     def _get_files_of_dir(self, *args):
-        '''
-        args[0] = files
-        args[1] = device
+        '''the function searches the list of files from a certain catalogue 
+            for files related to a certain device
+            All files name have format f'{device}-YYYYMMDD' 
+            where YYYYMMDD - date of creating backup
+        
+        Args:
+            args[0] = files (list): list off files in certain catalogue
+            args[1] = device (str): name of device to search them backups in args[0]
+        Returns:
+            out (list): = [file_list, date_list] where - 
+                        file_list - list of backup files for certain device
+                        date_list - list of all "date part" of file's names
+                        = ['STOP LOSHADKA', 19000101] if the device has never been backed up
+            out (list) = file_list if args[1] = None
         '''
         file_list = []
         date_list = []
@@ -860,11 +903,21 @@ class ActivkaBackup(Activka):
     
     
     def _get_backup_config_local(self, *args, list_ = True, date_ = -1):
-        '''
-        The function returns by default the last config backup for the device 'device' 
-        in the form of list of string (if variable list_ = True) or as string if list_ = False
-        args[0] = segmet
-        args[1] = device
+        '''Function get last config backup from last (by date) file for defined device
+            when script is running on main backup server
+        
+        Args:
+            args[0] = segment (str): segment (folder) under ftp_root or local_root  (./segment/)
+            args[1] = device (str, optional): name of device
+            list_ (bool, optional): flag defined type of output - 
+                                    list of list (config lines)- if True (default)
+                                    string - if False
+            date_ (int, optional): default -1 to get last (by date) file or next-to-last or next-next-ro-last
+                                    but I haven't figured out what it would be for.
+        
+        Returns:
+            out (list): list of lines of config file if list_ = True
+            out (str): config files as string if list_ = False
         '''
         from os import path
         f = self._get_backup_list_local(args[0], args[1])
@@ -883,12 +936,22 @@ class ActivkaBackup(Activka):
     
 
     def _get_backup_config_ftp(self, segment, device= False, list_ = True, date_ = -1, second = False):
-        '''
-        Function return last config backup for device (by default) or if date_ != -1 then 
-        the date_ in order from entire list of files (backup of configs) 
-        in the form of a list of strings or as a single string if list_ = False
-        args[0] = segment
-        args[1] = device
+       '''Function get last config backup from last (by date) file for defined device
+            when script is not running on main backup server
+            and get files from server over ftp
+        
+        Args:
+            args[0] = segment (str): segment (folder) under ftp_root or local_root  (./segment/)
+            args[1] = device (str, optional): name of device
+            list_ (bool, optional): flag defined type of output - 
+                                    list of list (config lines)- if True (default)
+                                    string - if False
+            date_ (int, optional): default -1 to get last (by date) file or next-to-last or next-next-ro-last
+                                    but I haven't figured out what it would be for.
+        
+        Returns:
+            out (list): list of lines of config file if list_ = True
+            out (str): config files as string if list_ = False
         '''
         from ftplib import FTP
 
@@ -923,9 +986,19 @@ class ActivkaBackup(Activka):
 
 
     def save_config_backup(self, *args, rewrite = False):
-        '''
-        args[0] = segmet
-        args[1] = device
+        '''Function save current device configuration to backup file
+            if it differs from the last saved configuration
+        
+        Args:
+            args[0] = segment (str): segment (folder) under ftp_root or local_root  (./segment/)
+            args[1] = device (str): name of device
+            rewrite (bool): flag to rewrite (if True) or not (if False - default) 
+                            backup file if it is exists
+        Returns:
+            exit_code (int): 0 - configuration is the same as last backup, no write
+                             1 - confifurattions are different, write backup
+                             2 - confifurattions are different and flag rewrite was set, rewrite backup
+                             10 - new device, it was first backup. Writed 
         '''
         import datetime
         td = datetime.date.today()
@@ -933,21 +1006,37 @@ class ActivkaBackup(Activka):
         curr_config = self.get_curr_config(args[1])
         last_backup = self.get_backup_config(*args)
         filename = args[1] + '-' + today
+        exit_code = int()
         if not last_backup:
             self.write_backup(args[0], filename, curr_config)
-            sys.exit()
+            exit_code = 10
+            sys.exit(exit_code)
         if check_identity(curr_config, last_backup):
-            sys.exit()
+            exit_code = 0
+            sys.exit(exit_code)
         filename_last = self.get_backup_list(*args)[0][-1]
         if filename == filename_last:
             if rewrite:
                 self.write_backup(args[0], filename, curr_config)
+                exit_code = 2
         else:
             self.write_backup(args[0], filename, curr_config)
+            exit_code = 1
+        return exit_code 
     
     
 
     def _write_backup_local(self, *args):
+        '''Function create backup file on disk when running on main backup server
+        
+        Args:
+            args[0] = segment (str): segment (folder) under ftp_root or local_root  (./segment/)
+            args[1] = filename (str): name of file
+            args[2] = curr_config (list): current configuration in type of list
+        
+        Returns:
+            none
+        '''
         from os import  path
         segment = args[0]
         filename = args[1]
@@ -960,10 +1049,15 @@ class ActivkaBackup(Activka):
     
 
     def _write_backup_ftp(self, segment, filename, curr_config, second = False  ):
-        '''
-        args[0] = segment
-        args[1] = filename
-        args[2] = curr_config
+        '''Function create backup file on disk when not running on main backup server
+        
+        Args:
+            args[0] = segment (str): segment (folder) under ftp_root or local_root  (./segment/)
+            args[1] = filename (str): name of file
+            args[2] = curr_config (list): current configuration in type of list
+        
+        Returns:
+            none
         '''
         from ftplib import FTP
         from tempfile import gettempdir

@@ -13,7 +13,7 @@ commands:
         eltex: 
             - '-'
             - 2
-    "       ":
+    "mac_addr_tbl_by":
         desc: 'show mac addres table and filter by mac'
         cisco_ios: 'show mac address-table | in {}'
         huawei_vrrp8: 'display mac-address | in {}'
@@ -55,6 +55,42 @@ commands:
         huawei_vrrp8: 'display ip routing-table {}'
         huawei_ce: 'display ip routing-table {}'
         eltex: 'show ip route address {}'
+    "current_config":
+        desc: 'Show current configuration'
+        cisco_ios: 'show running'
+        huawei_vrrp8: 'dis curr'
+        huawei_ce: 'dis curr'
+        eltex: 'show running'
+    "ip_int_br":
+        desc: 'show ip int brief exclude unassigned'
+        cisco_ios: 'sh ip int br | ex unassigned'
+        huawei_vrrp8: 'dis ip int br | ex unassigned'
+        huawei_ce: 'dis ip int br | ex unassigned'
+        eltex: 'sh ip int'
+    "":
+        desc: ''
+        cisco_ios: ''
+        huawei_vrrp8: ''
+        huawei_ce: ''
+        eltex: ''
+    "":
+        desc: ''
+        cisco_ios: ''
+        huawei_vrrp8: ''
+        huawei_ce: ''
+        eltex: ''
+    "":
+        desc: ''
+        cisco_ios: ''
+        huawei_vrrp8: ''
+        huawei_ce: ''
+        eltex: ''
+    "":
+        desc: ''
+        cisco_ios: ''
+        huawei_vrrp8: ''
+        huawei_ce: ''
+        eltex: ''
     "":
         desc: ''
         cisco_ios: ''
