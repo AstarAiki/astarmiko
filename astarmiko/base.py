@@ -747,7 +747,7 @@ class Activka:
         dev = self.choose(device,  withoutname = True)
         regexp = r'ip address \S+\s+(\S+)'
         command = ac.commands['ip_int_br'][dev['device_type']]
-        template = f'{dev['device_type']}_ip_int_br.template' 
+        template = f"{dev['device_type']}_ip_int_br.template" 
         todo = self.getinfo(device, command, othercmd = True, txtFSMtmpl = template)
         if todo:
             if dev['device_type'] == 'cisco_ios':
@@ -936,7 +936,7 @@ class ActivkaBackup(Activka):
     
 
     def _get_backup_config_ftp(self, segment, device= False, list_ = True, date_ = -1, second = False):
-       '''Function get last config backup from last (by date) file for defined device
+        '''Function get last config backup from last (by date) file for defined device
             when script is not running on main backup server
             and get files from server over ftp
         
