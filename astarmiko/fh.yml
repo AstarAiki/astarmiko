@@ -1,0 +1,20 @@
+language: ru
+localpath: C:/Users/starkov/My Documents/LiClipse Workspace/astarmiko/astarmiko/YAML/
+main_backup_server:
+  ftp_root: /var/ftp/CISCO/
+  local_root: /var/ftp/CISCO/
+  name: loganalyzer
+  password: gAAAAABn7NmePUXNP7Yxni9dKi2H_ZqeQmAgv3AmbrNADgY23XrBVKB_rgmohFK321I9fbB_2bCAz5ShTJN3QSMGlwz5jVUNnA==
+  user: gAAAAABn7Nme9PyPeK5Tm406au9B5NaN8FtnP33MAYo3DYkOTRnJKw0lBOROaw2iuKhSgDudHWePvWQ74WJi7iELvFglcvcE4g==
+password: gAAAAABn7Nme6Kb4cI-sqsyApPFm2JsqLtp-2Hds7Jov8MY50XBx3s1VKOIXgA3FKjIa_FjpqkbdDsG6bWwzobwhw9SOrSwHOA==
+phone_mac:
+- 805e
+- 001a
+second_backup_server:
+  ftp_root: /
+  name: NOES-RPBSRV
+  password: gAAAAABn7NmeOj75h2NeM8zzuySko3lVgEzEzTHkETALzcMv6s32XusxdRe9xseDFtJh0GPJpuuFEyeMmNq9h5vECRNgJicnsQ==
+  user: gAAAAABn7NmeWRGa7UCv29ApgekzhYZdwXoN_PS_VJPjekvA72zzeQrJDv8GjsXKGHVT2_tfqJZHg0TgdoDaPhIvRSp7sJD-9w==
+templpath: c:/Users/starkov/My Documents/LiClipse Workspace/astarmiko/astarmiko/TEMPLATES/
+user: gAAAAABn7NmekcfGhIjrwJRXL6v0QRm3SAz4dz-GSm16gu7dpBIyw5omo-A1d3-LjaNwPwTN6Vg-1jzW5_0aPeFbwe0p6TZtsQ==
+dict_of_cmd: C:/Users/starkov/My Documents/LiClipse Workspace/astarmiko/astarmiko/YAML/commands.yml
