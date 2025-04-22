@@ -1,11 +1,71 @@
-import os, yaml, textfsm, logging, re, time, sys
+import os
+import yaml
+import textfsm
+import logging
+import re
+import time
+import sys
+from typing import Optional
 from pysnmp.hlapi.v3arch.asyncio import *
 import asyncio
+from future.backports.test.pystone import TRUE
+from netmiko import (
+    ConnectHandler,
+    NetmikoTimeoutException,
+    NetmikoAuthenticationException,
+)
+from datetime import datetime
 #logging.basicConfig(filename='d:/network/net_func.log',format='%(asctime)s : %(level)s - %(message)s', datefmt='%Y-%B-%d %H:%M:%S', level=logging.WARNING)
 
 ac = '' #Global object represent configuration attributes
  
-def setini(path_to_conf):
+
+
+logger = logging.getLogger(__name__)
+_DEFAULT_LOG_LEVEL = logging.WARNING
+_DEFAULT_LOG_FORMAT = '%(asctime)s - %(name)s - %(levelname)s - [%(module)s.%(funcName)s] - %(message)s'
+
+def setup_logging(
+    level: int = _DEFAULT_LOG_LEVEL,
+    log_file: Optional[str] = None,
+    format_str: str = _DEFAULT_LOG_FORMAT,
+    enable_console: bool = True
+) -> None:
+    """
+    Настройка логирования для модуля.
+    
+    Args:
+        level: Уровень логирования (logging.DEBUG, logging.INFO и т.д.)
+        log_file: Путь к файлу для записи логов (если None - не записывать в файл)
+        format_str: Формат строки лога
+        enable_console: Включить вывод в консоль
+    """
+    # Удаляем все существующие обработчики
+    logger.handlers.clear()
+    
+    # Устанавливаем уровень логирования
+    logger.setLevel(level)
+    
+
+        
+    
+    # Создаем форматтер
+    formatter = logging.Formatter(format_str)
+    
+    # Настраиваем вывод в консоль
+    if enable_console:
+        console_handler = logging.StreamHandler(sys.stdout)
+        console_handler.setFormatter(formatter)
+        logger.addHandler(console_handler)
+    
+    # Настраиваем запись в файл если указан
+    if log_file is not None:
+        file_handler = logging.FileHandler(log_file)
+        file_handler.setFormatter(formatter)
+        logger.addHandler(file_handler)
+
+
+def setup_config(path_to_conf):
     ''' Initialize conf object ac with attributes from path_to_conf
     
     Args:
@@ -22,6 +82,24 @@ def setini(path_to_conf):
         ac.commands = commands['commands']
     except AttributeError:
         pass
+    log_file = None
+    format_str = _DEFAULT_LOG_FORMAT
+    level = _DEFAULT_LOG_LEVEL
+    if isinstance(ac.looging, bool):
+        if ac.logging:
+            enable_console = True
+        elif isinstance(ac.logfile, str):
+            if ac.logging and ac.logfile:
+                log_file = ac.logfile
+    if isinstance(ac.log_format_str, str):
+        if ac.log_format_str:
+            format_str = ac.log_format_str
+    if isinstance(ac.loglevel, str):
+        level = f'logging.{ac.loglevel}'
+    setup_logging(level = level, log_file = log_file, format_str = format_str, enable_console = enable_console)
+
+
+
 
 
 
@@ -68,12 +146,12 @@ async def snmp_get_oid(host: str, community: str, oid: str, port: int = 161, ver
                 )
             )
     else:
-        ##print(f'DEBUG_0 in snmp_get_oid  we are here')
+        #print(f'DEBUG_0 in snmp_get_oid  we are here')
         if errorIndication:
             result.append(errorIndication)
-            ##print(f'DEBUG_1 in snmp_get_oid  result = {result}')
+            #print(f'DEBUG_1 in snmp_get_oid  result = {result}')
         elif errorStatus:
-            ##print(f'DEBUG_02 in snmp_get_oid  we are here')
+            #print(f'DEBUG_02 in snmp_get_oid  we are here')
             result.append(
                 "{} at {}".format(
                     errorStatus.prettyPrint(),
@@ -81,134 +159,15 @@ async def snmp_get_oid(host: str, community: str, oid: str, port: int = 161, ver
                 )
             )
             result.append(False)
-            ##print(f'DEBUG_2 in snmp_get_oid  result = {result}')
+            #print(f'DEBUG_2 in snmp_get_oid  result = {result}')
         else:
-            ##print(f'DEBUG_03 in snmp_get_oid  we are here {str(varBinds[0].prettyPrint())}')
+            #print(f'DEBUG_03 in snmp_get_oid  we are here {str(varBinds[0].prettyPrint())}')
             result.append(str(varBinds[0].prettyPrint()))
-            ##print(f'DEBUG_3 in snmp_get_oid  result = {result}')
+            #print(f'DEBUG_3 in snmp_get_oid  result = {result}')
     #snmpEngine.close_dispatcher()
-    ##print(f'DEBUG in snmp_get_oid  result = {result}')
+    #print(f'DEBUG in snmp_get_oid  result = {result}')
     return result
 
-
-
-    
-
-
-def send_config_by_one(device, commands, log=False):
-    '''The function connects via SSH (using netmiko) to ONE device and performs
-     ONE command in configuration mode based on the arguments passed.
-    
-    Args:
-        device (dict): dictionary in netmiko format for use with ConnectHandler(**device)
-        commands (list or str): command in list ['some command'] to send to device (if string - it converted to list
-        log (bool): selector to logging on or off, default is off
-        
-    Returns:
-        result (str): answer device on command in console
-    '''
-    from netmiko import (
-    ConnectHandler,
-    NetmikoTimeoutException,
-    NetmikoAuthenticationException,
-    )
-
-    if type(commands) == str:
-        commands = [commands]
-    good = {}
-    failed = {}
-    errors_str = re.compile(r'Invalid input detected|Incomplete command|Ambiguous command|Unrecognized command')
-    try:
-        if log:
-            print('Подключаюсь к {}...'.format(device['host']))
-        with ConnectHandler(**device) as ssh:
-            ssh.enable()
-            for command in commands:
-                result = ssh.send_config_set(command)
-                if not errors_str.search(result):
-                    good[command] = result
-                else:
-                    logging.warning(f"Комманда {command} выполнилась с ошибкой: {errors_str.search(result).group()} на устройстве {device['host']}")
-                    failed[command] = result
-            out = (good,failed)
-            return out
-    except (NetmikoTimeoutException, NetmikoAuthenticationException) as error:
-        logging.warning(error)
-
-def send_config_commands(device, commands, log=True):
-    '''The function connects via SSH (using netmiko) to ONE device and performs 
-    a list of commands in configuration mode based on the arguments passed.
-    
-    Args:
-        device (dict): dictionary in netmiko format for use with ConnectHandler(**device)
-        commands (list or str): command in list ['some command'] to send to device (if string - it converted to list
-        log (bool): selector to logging on or off, default is off
-        
-    Returns:
-        result (str): answer device on command in console
-    '''
-    from netmiko import (
-    ConnectHandler,
-    NetmikoTimeoutException,
-    NetmikoAuthenticationException,
-    )
-
-    if type(commands) == str:
-        commands = [commands]
-    try:
-        if log:
-            print(f"Подключаюсь к {device['ip']}...")
-        with ConnectHandler(**device) as ssh:
-            ssh.enable()
-            result = ssh.send_config_set(commands, delay_factor = 20)
-            time.sleep(10)
-            result += ssh.send_command_timing('write')
-            return result
-    except (NetmikoTimeoutException, NetmikoAuthenticationException) as error:
-        logging.warning(error)
-
-
-
-def send_show_command(device, commands, log=False):
-    '''The function connects via SSH (using netmiko) to ONE device
-    and executes the specified  show (display)command.
-    
-    Args:
-        device (dict): dictionary in netmiko format for use with ConnectHandler(**device)
-        commands (str): command  to send to device 
-        log (bool): selector to logging on or off, default is off
-        
-    Returns:
-        result (str): answer device on command in console
-    '''
-    from netmiko import (
-    ConnectHandler,
-    NetmikoTimeoutException,
-    NetmikoAuthenticationException,
-    )
-    from datetime import datetime
-    if log:
-        logging.getLogger("paramiko").setLevel(logging.WARNING)
-        logging.basicConfig(
-        filename = ac.localpath + 'net_func.log',
-        format = '%(threadName)s %(name)s %(levelname)s: %(message)s',
-        level=logging.INFO)
-        connect_string = '===> {} Подключаюсь к {}'
-        not_connect_string = '===> {}  Не могу подключиться к {}'
-        logging.info(connect_string.format(datetime.now().time(), device['ip']))
-    try:
-        if ping_one_ip(device['ip']) == 0:
-            with ConnectHandler(**device) as ssh:
-                ssh.enable()
-                result = ssh.send_command(commands)
-                return result
-        else:
-            if log:
-                logging.info(not_connect_string.format(datetime.now().time(),device['ip']))
-            return False
-    except (NetmikoTimeoutException, NetmikoAuthenticationException) as error:
-        if log:
-            logging.warning(error)
 
 def ping_one_ip(ip_address):
     '''Function get one ip address and return 0 if all is o'key or else error code
@@ -227,6 +186,120 @@ def ping_one_ip(ip_address):
         reply = sp.run(['ping','-c','3','-n',ip_address], stdout = sp.DEVNULL)
     
     return reply.returncode
+
+
+    
+def _try_connect(device, func, *args, **kwargs):
+    """Internal function to handle connection attempts with fallback credentials"""
+    def connect_with_credentials(device_params):
+        try:
+            if ping_one_ip(device_params['ip']) == 0:
+                start_msg = 'Connect to {}...'
+                logging.info(start_msg.format(device_params['host']))
+                with ConnectHandler(**device_params) as ssh:
+                    ssh.enable()
+                    return func(ssh, *args, **kwargs)
+            return False
+        except NetmikoTimeoutException as error:
+            logging.warning(f"Connection timeout to {device_params['ip']}: {error}")
+            return False
+        except NetmikoAuthenticationException as error:
+            logging.warning(f"Authentication failed for {device_params['username']}@{device_params['ip']}")
+            raise  # Re-raise to handle in outer function
+
+    # First try with original credentials
+    try:
+        return connect_with_credentials(device)
+    except NetmikoAuthenticationException:
+        pass
+    
+    # Try additional accounts if available
+    if hasattr(ac, 'add_account'):
+        for account in ac.add_account:
+            try:
+                new_device = device.copy()
+                new_device['username'] = account['user']
+                new_device['password'] = account['password']
+                return connect_with_credentials(new_device)
+            except NetmikoAuthenticationException:
+                continue
+    
+    logging.error(f"All authentication attempts failed for {device['ip']}")
+    return False
+
+def send_config_by_one(device, commands):
+    '''The function connects via SSH (using netmiko) to ONE device and performs
+     ONE command in configuration mode based on the arguments passed.
+    
+    Args:
+        device (dict): dictionary in netmiko format for use with ConnectHandler(**device)
+        commands (list or str): command in list ['some command'] to send to device (if string - it converted to list
+        
+    Returns:
+        tuple: (good_commands, failed_commands) where each is a dict with command:result pairs
+    '''
+    if isinstance(commands, str):
+        commands = commands.strip().split('\n')
+    
+    good = {}
+    failed = {}
+    errors_str = re.compile(r'Invalid input detected|Incomplete command|Ambiguous command|Unrecognized command')
+
+    def execute_commands(ssh):
+        for command in commands:
+            result = ssh.send_config_set(command)
+            if not errors_str.search(result):
+                good[command] = result
+            else:
+                error_match = errors_str.search(result)
+                error_msg = error_match.group() if error_match else "Unknown error"
+                logging.warning(f"РљРѕРјР°РЅРґР° {command} РІС‹РїРѕР»РЅРёР»Р°СЃСЊ СЃ РѕС€РёР±РєРѕР№: {error_msg} РЅР° СѓСЃС‚СЂРѕР№СЃС‚РІРµ {device['host']}")
+                failed[command] = result
+        return (good, failed)
+    
+    return _try_connect(device, execute_commands)
+
+def send_config_commands(device, commands):
+    '''The function connects via SSH (using netmiko) to ONE device and performs 
+    a list of commands in configuration mode based on the arguments passed.
+    
+    Args:
+        device (dict): dictionary in netmiko format for use with ConnectHandler(**device)
+        commands (list or str): command in list ['some command'] to send to device (if string - it converted to list
+        
+    Returns:
+        str: device output or False if connection failed
+    '''
+    if isinstance(commands, str):
+        commands = commands.strip().split('\n')
+
+    def execute_commands(ssh):
+        result = ssh.send_config_set(commands, delay_factor=20)
+        time.sleep(10)
+        result += ssh.send_command_timing('write')
+        return result
+    
+    return _try_connect(device, execute_commands)
+
+def send_show_command(device, commands):
+    '''The function connects via SSH (using netmiko) to ONE device
+    and executes the specified show (display) command.
+    
+    Args:
+        device (dict): dictionary in netmiko format for use with ConnectHandler(**device)
+        commands (str): command to send to device 
+        
+    Returns:
+        str: command output or False if connection failed
+    '''
+    def execute_command(ssh):
+        return ssh.send_command(commands)
+    
+    return _try_connect(device, execute_command)
+
+
+
+
 
 def templatizator(*args, special = False):
     '''Function convert console output to dict using textfsm template
@@ -308,7 +381,7 @@ def get_port_by_mac(device, mac):
         and False if there is another switch behind this port
         Port - out[2] (str): name of port 
     '''
-    status = True
+    isEdgedPort = True
 
     command = ac.commands['mac_addr_tbl_bymac'][device['device_type']].format(mac)
     todo = send_show_command(device, command)
@@ -321,10 +394,10 @@ def get_port_by_mac(device, mac):
         if len(outwhole) == 3: #если компютер включен через IP телефон то светится 2 MAC в 2-х VLAN
             for mac in ac.phone_mac:#у нас все телефоны имеют MAC начинающийся на 805e но ведь могут появиться и другие
                 if mac in outwhole[2][0]:
-                    return [out[2], status]
+                    return [out[2], isEdgedPort]
         else:
-            status = False
-    return [out[2], status]
+            isEdgedPort = False
+    return [out[2], isEdgedPort]
 
 def convert_mac(mac,device_type):
     '''Function converts mac address string from any known formats to format device with device_type
@@ -478,7 +551,7 @@ class Activka:
             with open(ac.localpath + args[0]) as fyaml:
                 allip = yaml.safe_load(fyaml)
             self.routerbyip = allip
-        r_and_s ={}
+        dev_type = {}
         devices = list(wholedict.keys())
         devices.remove('LEVEL')
         devices.remove('SEGMENT')
@@ -490,9 +563,9 @@ class Activka:
         for d in devices:
             wholedict[d]['username'] = username
             wholedict[d]['password'] = password
-            r_and_s[d] = wholedict[d]
+            dev_type[d] = wholedict[d]['device_type']
         self.wholedict = wholedict
-        self.r_and_s = r_and_s
+        self.dev_type = dev_type
         
     
     def __repr__(self):
@@ -503,19 +576,19 @@ class Activka:
         
         Args:
             device (str): device name as defined in activka_byname.yaml
-            withoutname (bool): selector for return type - 
-                                {dictionary for conect} if False (default)
-                                {device_name:{dictionary for conect}} if True
+            withoutname (bool, optional): selector for return type - 
+                                        {dictionary for conect} if False (default)
+                                        {device_name:{dictionary for conect}} if True
         
         Returns:
             out (dict): {dictionary for conect} or {device_name:{dictionary for conect}}
         '''
         out = {}
         if withoutname:
-            print(f'wholedict[device] = {self.wholedict[device]}')
+            #print(f'DEBUG: wholedict[device] = {self.wholedict[device]}')
             out.update(self.wholedict[device])
         else:
-            print(f'wholedict[device] = {self.wholedict[device]}')
+            #print(f'DEBUG: wholedict[device] = {self.wholedict[device]}')
             out[device] = self.wholedict[device]
         return out
 
@@ -567,7 +640,7 @@ class Activka:
             result (str): output from device console
         '''
         dev = self.choose(device, withoutname = True)
-        result = send_config_commands(dev, commands, log)
+        result = send_config_commands(dev, commands)
         return result
     
     def _get_neighbor_by_port(self, device, func, *args):
@@ -604,10 +677,18 @@ class Activka:
                 return neighbor[0]
         return False        
 
-    def _mac_addr_tbl_byport(self, dev, outlist, status):
-        '''
+    def _mac_addr_tbl_byport(self, dev, outlist, isEdgedPort):
+        '''Sub-Function for self.getinfo()  Get mac address table for defined port
         
+        Args:
+            dev (dict): dictionary in netmiko format for ConnectHandler(**dev)
+            outlist (list): otput of self.getinfo(device, 'mac_addr_tbl_by'
+            isEdgedPort (bool): status of this port is edge port (True) or 
+                                there is other switch behind tis port
+        Returns:
+            list [outlist[0][2], isEdgedPort]
         '''
+        #print(f'DEBUG _mac_addr_tbl_byport receive  outlist = {outlist} isEdgedPort = {isEdgedPort}')
         outlist[0][2] = port_name_normalize(outlist[0][2])
         command = ac.commands['mac_addr_tbl_byport'][dev['device_type']].format(outlist[0][2])
         todo = send_show_command(dev, command)
@@ -616,11 +697,11 @@ class Activka:
             if len(outwhole) == 3: #если компютер включен через IP телефон то светится 2 MAC в 2-х VLAN
                 for mac in ac.phone_mac:#у нас все телефоны имеют MAC начинающийся на 805e но ведь могут появиться и другие
                     if mac in outwhole[2][0]:
-                        return [outlist[0][2], status]
+                        return [outlist[0][2], isEdgedPort]
             else:
-                status = False
-        #print(f'DEBUG getinfo return  mac_add_table outlist[0][2] = {outlist[0][2]} status = {status}')
-        return [outlist[0][2], status]
+                isEdgedPort = False
+        #print(f'DEBUG getinfo return  mac_add_table outlist[0][2] = {outlist[0][2]} isEdgedPort = {isEdgedPort}')
+        return [outlist[0][2], isEdgedPort]
     
     
     def getinfo(self, device, func, *args, othercmd = False, txtFSMtmpl = False):
@@ -643,7 +724,7 @@ class Activka:
             outlist (str):  the direct output of the entered command if textfsm template not defined 
 
         '''
-
+        #print(f'DEBUG: starting getinfo device= {device}  func = {func} *args = {args}')
         if func == 'neighbor_by_port':
             return self._get_neighbor_by_port(device, func, args[0])
             
@@ -655,12 +736,13 @@ class Activka:
                     command = ac.commands[func][dev['device_type']].format(args[0])
                 else:
                     command = ac.commands[func][dev['device_type']]
-                print(f'DEBUG: getinfo func = {func} args[0] = {args[0]}  command = {command}')
+                #print(f'DEBUG: getinfo func = {func} args[0] = {args[0]}  command = {command}')
             else:
                 command = func
                 #print(f'DEBUG: getinfo по идее должны оказаться здесь command = {command}')
             todo = send_show_command(dev, command)
             if not todo:
+                #print(f'DEBUG: getinfo return no TODO, exit')
                 return False
             if not txtFSMtmpl:
                 if not othercmd:
@@ -673,12 +755,13 @@ class Activka:
             else:
                 outlist = templatizator(todo, txtFSMtmpl, special = True)
             if func == 'mac_addr_tbl_by':
+                #print(f'DEBUG: getinfo prepare to return from _mac_addr_tbl_byport - outlist = {outlist} status = {status}')
                 return self._mac_addr_tbl_byport(dev, outlist, status)
             if not outlist:
                 #print(f'DEBUG getinfo return  false becouse not outlist ')
                 return False
             else:
-                #print(f'DEBUG getinfo return  outlist = {outlist} status = {status}')
+                #print(f'DEBUG getinfo LAST return  outlist = {outlist} status = {status}')
                 return outlist
 
     def _unnecessary_truncate(self, lines):

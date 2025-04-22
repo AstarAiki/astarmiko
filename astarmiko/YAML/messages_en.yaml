@@ -25,3 +25,5 @@
 - 'connected to the switch: {} port: {}'
 - 'This is ip address {} with mask {} of interface: {} device: {}'
 - 'not found'
+- 'The host with the address {} is located behind the firewall, we continue to search on it'
+- 'The firewall is not responding to SNMP requests, check its configuration'
