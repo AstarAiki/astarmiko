@@ -1,4 +1,4 @@
-Value NBNAME (\S+)
+Value NBNAME ([^\.]+)
 Value LOCALINTF (\S+)
 Value NBINTF (\S+)
 

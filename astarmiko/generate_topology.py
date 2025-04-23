@@ -47,6 +47,8 @@ def build_topology(config_file="astarmiko.yml", byname_file="activka_byname.yaml
 
     # PNG Visualization
     pos = nx.spring_layout(G, k=0.3, iterations=50)
+    nodes_to_remove = [n for n in G.nodes() if n not in node_colors_map]
+    G.remove_nodes_from(nodes_to_remove)
     node_colors = [node_colors_map[n] for n in G.nodes()]
 
     plt.figure(figsize=(20, 15))
@@ -82,8 +84,10 @@ def build_topology(config_file="astarmiko.yml", byname_file="activka_byname.yaml
 
     fig = go.Figure(data=[edge_trace, node_trace],
              layout=go.Layout(
-                title='Network Topology (Interactive)',
-                titlefont_size=20,
+                title={
+                     'text': 'Network Topology (Interactive)',
+                     'font': {'size': 20}  # Размер шрифта заголовка
+                 },
                 showlegend=False,
                 hovermode='closest',
                 margin=dict(b=20,l=5,r=5,t=40),
@@ -95,4 +99,5 @@ def build_topology(config_file="astarmiko.yml", byname_file="activka_byname.yaml
     print(f"[+] Интерактивная топология сохранена как {save_as_html}")
 
 if __name__ == "__main__":
-    build_topology()
+    config_file="/home/mypython/astarmiko/astarmiko.yml"
+    build_topology(config_file = config_file)

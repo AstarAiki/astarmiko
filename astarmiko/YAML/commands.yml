@@ -30,13 +30,13 @@ commands:
         cisco_ios: 'show cdp neighbor detail'
         huawei: 'display lldp neighbor'
         huawei_vrpv8: 'display lldp neighbor'
-        eltex: 'show lldp neighbor detail'
+        eltex: 'show lldp neighbors detail'
     "neighbor_by_port":
         desc: 'show cdp (or lldp) neighbor brief'
-        cisco_ios: 'show cdp neighbor detail'
+        cisco_ios: 'show lldp neighbor'
         huawei: 'display lldp neighbor'
         huawei_vrpv8: 'display lldp neighbor'
-        eltex: 'show lldp neighbor detail'
+        eltex: 'show lldp neighbors detail'
     "arp_by":
         desc: 'show arp table on device filtered by some string'
         cisco_ios: 'show arp | in {}  +'

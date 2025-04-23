@@ -20,7 +20,7 @@ user: gAAAAABn7NmekcfGhIjrwJRXL6v0QRm3SAz4dz-GSm16gu7dpBIyw5omo-A1d3-LjaNwPwTN6V
 dict_of_cmd: C:/Users/starkov/My Documents/LiClipse Workspace/astarmiko/astarmiko/YAML/commands.yml
 logging: True
 logfile: c:/temp/astarmiko.log
-loglevel: DEBUG
+loglevel: INFO
 log_format_str:
 add_account:
 - password: gAAAAABoB1JEZiWkUNiaXAs-ItSPTUrPyBCP4jyZBLWF0P9SGahWSD5ZWNK9QFxCbkPCnPFdqmigVQx8vmrMAbkz09mJRNH7HA==

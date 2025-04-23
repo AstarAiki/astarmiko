@@ -19,6 +19,25 @@ from datetime import datetime
 
 ac = '' #Global object represent configuration attributes
  
+def debug_logger(func):
+    """
+    Декоратор, который отслеживает все точки выхода из функции.
+    """
+    import functools
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        print(f"DEBUG: Вызов функции {func.__name__}")
+        print(f"DEBUG: Входные аргументы - args: {args}, kwargs: {kwargs}")
+        
+        try:
+            result = func(*args, **kwargs)
+            print(f"DEBUG: Функция {func.__name__} вернула (нормальный выход): {result}")
+            return result
+        except Exception as e:
+            print(f"DEBUG: Функция {func.__name__} вышла с исключением: {e}")
+            raise
+    return wrapper
+
 
 
 logger = logging.getLogger(__name__)
@@ -267,11 +286,12 @@ def send_config_by_one(device, commands):
             else:
                 error_match = errors_str.search(result)
                 error_msg = error_match.group() if error_match else "Unknown error"
-                logging.warning(f"РљРѕРјР°РЅРґР° {command} РІС‹РїРѕР»РЅРёР»Р°СЃСЊ СЃ РѕС€РёР±РєРѕР№: {error_msg} РЅР° СѓСЃС‚СЂРѕР№СЃС‚РІРµ {device['host']}")
+                logging.warning(f"Command {command} raise error: {errors_str.search(result).group()} on device {device['ip']}")
                 failed[command] = result
         return (good, failed)
     
     return _try_connect(device, execute_commands)
+
 
 def send_config_commands(device, commands):
     '''The function connects via SSH (using netmiko) to ONE device and performs 
@@ -288,7 +308,7 @@ def send_config_commands(device, commands):
         commands = commands.strip().split('\n')
 
     def execute_commands(ssh):
-        result = ssh.send_config_set(commands, delay_factor=20)
+        result = ssh.send_config_set(commands, delay_factor=20, cmd_verify = False)
         time.sleep(10)
         result += ssh.send_command_timing('write')
         return result
@@ -642,7 +662,7 @@ class Activka:
             cycle2 = cycle1
         return cycle2
     
-    def setconfig(self, device, commands, log = False):
+    def setconfig(self, device, commands):
         '''Functions change configuration by commands
         
         Args:
@@ -717,7 +737,7 @@ class Activka:
         #print(f'DEBUG getinfo return  mac_add_table outlist[0][2] = {outlist[0][2]} isEdgedPort = {isEdgedPort}')
         return [outlist[0][2], isEdgedPort]
     
-    
+    @debug_logger
     def getinfo(self, device, func, *args, othercmd = False, txtFSMtmpl = False):
         '''The function receives the output of a command (func) from network equipment 'device' 
             command maybe "standard" (see dictionary 'commands') with arguments if they needed, or
@@ -894,6 +914,57 @@ class Activka:
                 for cmd in commands:
                     result = self.getinfo(device_name, cmd, othercmd=True)
                     output.append(result)
+                    
+                results['success'][device_name] = '\n'.join(output) if len(output) > 1 else output[0]
+            except Exception as e:
+                results['failed'][device_name] = str(e)
+                
+        return results
+
+
+
+    def setconfig_on_devices(self, devices: Union[str, List[str]], commands: Union[str, List[str]], 
+                          timeout: int = 30, delay_factor: float = 1.0) -> Dict[str, Any]:
+        """
+        Change config on multiple devices
+        
+        Args:
+            devices: Single device name or list of device names
+            commands: Command or list of commands to execute
+            timeout: Timeout per device in seconds
+            delay_factor: Factor to adjust delays for slow devices
+            
+        Returns:
+            Dictionary with results:
+            {
+                'success': {device: output},
+                'failed': {device: error},
+                'unreachable': [devices]
+            }
+        """
+        if isinstance(devices, str):
+            devices = [devices]
+            
+        if isinstance(commands, str):
+            commands = [commands]
+            
+        results = {
+            'success': {},
+            'failed': {},
+            'unreachable': []
+        }
+        
+        for device_name in devices:
+            device = self.choose(device_name, withoutname=True)
+            
+            if not self._is_device_available(device):
+                results['unreachable'].append(device_name)
+                continue
+                
+            try:
+                output = []
+                result = send_config_commands(device, commands)
+                output.append(result)
                     
                 results['success'][device_name] = '\n'.join(output) if len(output) > 1 else output[0]
             except Exception as e:
