@@ -1,0 +1,18 @@
+localpath: /home/mypython/astarmiko/
+password: gAAAAABn7Nme6Kb4cI-sqsyApPFm2JsqLtp-2Hds7Jov8MY50XBx3s1VKOIXgA3FKjIa_FjpqkbdDsG6bWwzobwhw9SOrSwHOA==
+phone_mac:
+- 805e
+- 001a
+templpath: /home/mypython/astarmiko/TEMPLATES/
+user: gAAAAABn7NmekcfGhIjrwJRXL6v0QRm3SAz4dz-GSm16gu7dpBIyw5omo-A1d3-LjaNwPwTN6Vg-1jzW5_0aPeFbwe0p6TZtsQ==
+dict_of_cmd: C:/Users/starkov/My Documents/LiClipse Workspace/astarmiko/astarmiko/YAML/commands.yml
+logging: True
+logfile: /home/mypython/
+loglevel: DEBUG
+log_format_str:
+add_account:
+- password: gAAAAABoB1JEZiWkUNiaXAs-ItSPTUrPyBCP4jyZBLWF0P9SGahWSD5ZWNK9QFxCbkPCnPFdqmigVQx8vmrMAbkz09mJRNH7HA==
+  user: gAAAAABoB1JEHSOPYy3-0SAUhGgzlRnXTf56-1frsFs9d2CRYuwqRtfAQRgZYF0ohraFCN74IaR1P3Zdr1BONnNZVAa8d9Yyvw==
+- password: gAAAAABoB1JEUFWn9R_rx-MaZ7QFyPiVK5mh4VgHZmpiAcTLV8EZ3QM99gK8ZVkjAqSXnOjGGOGSL3SU0e85Pcc9f33BQ-Q4og==
+  user: gAAAAABoB1JE-WO-0EEjVG7-mmK1fSMGEzRaCdVxW1WW81ZBSFzxkYmMT1PvWevC7RI9Ey6b-xiv4hGLXq0wFrWifTYwDNRxgg==
+      
