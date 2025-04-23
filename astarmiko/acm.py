@@ -1,7 +1,26 @@
 # manage.py
 import argparse
-from astarmiko import base
-from astarmiko.base import Activka, setup_config
+import base
+from base import Activka, setup_config
+
+def debug_logger(func):
+    """
+    Декоратор, который отслеживает все точки выхода из функции.
+    """
+    import functools
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        print(f"DEBUG: Вызов функции {func.__name__}")
+        print(f"DEBUG: Входные аргументы - args: {args}, kwargs: {kwargs}")
+
+        try:
+            result = func(*args, **kwargs)
+            print(f"DEBUG: Функция {func.__name__} вернула (нормальный выход): {result}")
+            return result
+        except Exception as e:
+            print(f"DEBUG: Функция {func.__name__} вышла с исключением: {e}")
+            raise
+    return wrapper
 
 def main():
     parser = argparse.ArgumentParser(description="AstarMiko CLI Utility")
@@ -39,7 +58,8 @@ def main():
 
     setup_config(args.conf)
     a = Activka("activka_byname.yaml")
-
+    if not args.device[0].isalpha():
+        args.device = a.by_ip[args.device]
     if args.command == "backup":
         config = a.get_curr_config(args.device)
         print('\n'.join(config))

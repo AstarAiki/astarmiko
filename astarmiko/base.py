@@ -586,6 +586,7 @@ class Activka:
                 allip = yaml.safe_load(fyaml)
             self.routerbyip = allip
         dev_type = {}
+        by_ip = {}
         devices = list(wholedict.keys())
         devices.remove('LEVEL')
         devices.remove('SEGMENT')
@@ -598,8 +599,10 @@ class Activka:
             wholedict[d]['username'] = username
             wholedict[d]['password'] = password
             dev_type[d] = wholedict[d]['device_type']
+            by_ip[wholedict[d]['ip']] = d
         self.wholedict = wholedict
         self.dev_type = dev_type
+        self.by_ip = by_ip
         
     
     def __repr__(self):
@@ -737,7 +740,6 @@ class Activka:
         #print(f'DEBUG getinfo return  mac_add_table outlist[0][2] = {outlist[0][2]} isEdgedPort = {isEdgedPort}')
         return [outlist[0][2], isEdgedPort]
     
-    @debug_logger
     def getinfo(self, device, func, *args, othercmd = False, txtFSMtmpl = False):
         '''The function receives the output of a command (func) from network equipment 'device' 
             command maybe "standard" (see dictionary 'commands') with arguments if they needed, or
