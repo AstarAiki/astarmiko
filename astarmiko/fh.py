@@ -7,7 +7,8 @@ from astarmiko.base import (
     convert_mac,
     is_ip_correct,
     nslookup,
-    setini,
+    setup_config,
+    setup_logging,
     snmp_get_oid,
     )
 
@@ -364,8 +365,8 @@ def mac_routine(myactivka,ip):
 
 
 if __name__ == "__main__":
-    setini("C:/Users/starkov/My Documents/LiClipse Workspace/astarmiko/fh.yml")
-    from astarmiko.base import ac
+    setup_config("C:/Users/starkov/My Documents/LiClipse Workspace/astarmiko/fh.yml")
+    from astarmiko.baseAI import ac
     file = ac.localpath + 'messages_' + ac.language + '.yaml'
     with open(file, encoding='utf8') as f:
         message = yaml.safe_load(f)
@@ -415,3 +416,16 @@ if __name__ == "__main__":
                     break
             is_mac = convert_mac(ip,'cisco_ios')                                       
 
+'''
+    #читаем настройки лога из конфигурационного файла
+if isinstance(ac.looging, bool):
+    if ac.logging:
+        enable_console = True
+    elif isinstance(ac.logfile, str):
+        if ac.logging and ac.logfile:
+            log_file = ac.logfile
+if isinstance(ac.log_format_str, str):
+    if ac.log_format_str:
+        format_str = ac.log_format_str
+'''
+            

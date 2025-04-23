@@ -127,12 +127,10 @@ LEVEL:
   sw2960PRES-G: L2
   sw2960PRESVOLS: L2
   sw2960RSC: L2
-  sw2960SERV: L2
   sw2960SIZPI: L2
   sw2960SMIT: L2
   sw2960SVL: L2
   sw2960REAL: L2
-  sw2960SVYAZ: L2
   swGDN2960-1: L2
   swGDN2960-2: L2
   swGEOLOG: L2
@@ -364,9 +362,6 @@ sw2960PRESVOLS:
 sw2960RSC:
   device_type: cisco_ios
   ip: 10.22.8.138
-sw2960SERV:
-  device_type: cisco_ios
-  ip: 10.22.8.139
 sw2960SMIT:
   device_type: cisco_ios
   ip: 10.22.8.137
@@ -379,9 +374,6 @@ sw2960SVL:
 sw2960SIZPI:
   device_type: cisco_ios
   ip: 10.22.13.2
-sw2960SVYAZ:
-  device_type: cisco_ios
-  ip: 10.22.8.145
 swGDN2960-1:
   device_type: cisco_ios
   ip: 10.22.58.220
@@ -550,12 +542,10 @@ SEGMENT:
   sw2960PRES-G: PRES
   sw2960PRESVOLS: PRES
   sw2960RSC: RPB
-  sw2960SERV: RPB
   sw2960SMIT: RPB
   sw2960REAL: RPB
   sw2960SVL: KNB
   sw2960SIZPI: KNB
-  sw2960SVYAZ: RPB
   swGDN2960-1: GDN-SEVER
   swGDN2960-2: GDN-SEVER
   swGEOLOG: NES-KIRPICH
