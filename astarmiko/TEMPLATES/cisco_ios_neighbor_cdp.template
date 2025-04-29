@@ -1,0 +1,8 @@
+Value NBNAME (\S+)
+Value LOCALINTF (\S+)
+Value NBINTF (\S+)
+
+
+Start
+  ^Device ID: ${NBNAME}
+  ^Interface:\s+${LOCALINTF},\s+Port ID \(outgoing port\): ${NBINTF} -> Record

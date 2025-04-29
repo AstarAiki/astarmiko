@@ -1,0 +1,9 @@
+Value NBNAME (\S+)
+Value LOCALINTF (\S+)
+Value NBINTF (\S+)
+
+
+Start
+  ^${LOCALINTF}\s+has\s+\d+\s+neighbor
+  ^Port ID\s+:${NBINTF}
+  ^System name\s+:${NBNAME} -> Record

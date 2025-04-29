@@ -1,0 +1,4476 @@
+'0':
+  '0':
+    '0':
+      '0':
+        host: ps-kedr-swt2
+        intf: vlan 1
+        mask: '32'
+        status: UP
+'10':
+  '0':
+    '100':
+      '125':
+        host: NoES-H8000-PE-1
+        intf: LoopBack0
+        mask: '32'
+      '126':
+        host: NoES-H8000-PE-2
+        intf: LoopBack0
+        mask: '32'
+    '138':
+      '64':
+        desc: ''
+        gw: 65
+        mask: '27'
+        network: 1
+      '91':
+        desc: ''
+        host: NoES-H8000-PE-1
+        intf: GigabitEthernet0/2/0.146
+        mask: '27'
+        status: up
+  '1':
+    '1':
+      '192':
+        desc: ''
+        mask: '30'
+        network: p2p
+      '193':
+        desc: ''
+        host: NoES-H8000-PE-1
+        intf: GigabitEthernet0/4/1(10G)
+        mask: '30'
+        status: up
+      '194':
+        desc: ''
+        host: NoES-H8000-PE-2
+        intf: GigabitEthernet0/4/1(10G)
+        mask: '30'
+        status: up
+      '40':
+        desc: ''
+        mask: '30'
+        network: p2p
+      '42':
+        desc: ''
+        host: NoES-H8000-PE-2
+        intf: GigabitEthernet0/2/0
+        mask: '30'
+        status: up
+      '64':
+        desc: ''
+        mask: '30'
+        network: p2p
+      '66':
+        desc: ''
+        host: NoES-H8000-PE-1
+        intf: GigabitEthernet0/2/0.311
+        mask: '30'
+        status: up
+  '17':
+    '48':
+      '40':
+        desc: ''
+        mask: '29'
+        network: p2p
+      '44':
+        desc: ''
+        host: MRESoverNNG
+        intf: FastEthernet0/1
+        mask: '29'
+        status: up
+  '22':
+    '0':
+      '0':
+        desc: RPB printers
+        gw: 1
+        mask: '25'
+        network: 1
+        place: Ноябрьск
+      '128':
+        desc: RPB Adminy
+        gw: 129
+        mask: '25'
+        network: 1
+        place: Ноябрьск
+      '130':
+        desc: ''
+        host: NES-CE6820-1
+        intf: Vlanif22
+        mask: '25'
+        status: up
+      '131':
+        desc: ''
+        host: NES-CE6820-2
+        intf: Vlanif22
+        mask: '25'
+        status: up
+      '132':
+        desc: ''
+        host: nes-s5731-1
+        intf: Vlanif22
+        mask: '25'
+        status: up
+      '133':
+        desc: ''
+        host: nes-s5731-2
+        intf: Vlanif22
+        mask: '25'
+        status: up
+      '2':
+        desc: ''
+        host: NES-CE6820-1
+        intf: Vlanif21
+        mask: '25'
+        status: up
+      '3':
+        desc: ''
+        host: NES-CE6820-2
+        intf: Vlanif21
+        mask: '25'
+        status: up
+      '4':
+        desc: ''
+        host: nes-s5731-1
+        intf: Vlanif21
+        mask: '25'
+        status: up
+      '5':
+        desc: ''
+        host: nes-s5731-2
+        intf: Vlanif21
+        mask: '25'
+        status: up
+    '1':
+      '0':
+        desc: RPB Users
+        gw: 1
+        mask: '24'
+        network: 1
+        place: Ноябрьск
+      '2':
+        desc: ''
+        host: nes-s5731-1
+        intf: Vlanif4
+        mask: '24'
+        status: up
+      '3':
+        desc: ''
+        host: nes-s5731-2
+        intf: Vlanif4
+        mask: '24'
+        status: up
+      '4':
+        desc: ''
+        host: NES-CE6820-1
+        intf: Vlanif4
+        mask: '24'
+        status: up
+      '5':
+        desc: ''
+        host: NES-CE6820-2
+        intf: Vlanif4
+        mask: '24'
+        status: up
+    '10':
+      '0':
+        desc: VLAN TM
+        gw: 1
+        mask: '24'
+        network: 1
+        place: Ноябрьск
+      '251':
+        desc: ''
+        host: nes-s5731-1
+        intf: Vlanif9
+        mask: '24'
+        status: up
+      '252':
+        desc: ''
+        host: nes-s5731-2
+        intf: Vlanif9
+        mask: '24'
+        status: up
+    '100':
+      '0':
+        desc: ПС Владимирская 110/10/10
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ХРЭС
+      '128':
+        desc: ПС 110 Владимирская Vlan 106 FWKtoRtr
+        mask: '29'
+        network: p2p
+      '131':
+        desc: ''
+        host: c2911Vladimir
+        intf: GigabitEthernet0/0.106
+        mask: '29'
+        status: up
+      '192':
+        desc: ''
+        gw: 193
+        mask: '27'
+        network: 1
+      '193':
+        desc: ''
+        host: c2911Vladimir
+        intf: GigabitEthernet0/0.6
+        mask: '27'
+        status: up
+      '224':
+        desc: ''
+        gw: 225
+        mask: '27'
+        network: 1
+      '225':
+        desc: ''
+        host: c2911Vladimir
+        intf: GigabitEthernet0/0.107
+        mask: '27'
+        status: up
+    '101':
+      '0':
+        desc: ПС Вышка 110/35/6
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ХРЭС
+    '102':
+      '0':
+        desc: ПС ГКС 110/10
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ХРЭС
+    '103':
+      '0':
+        desc: ПС Городская 110/10/10
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ХРЭС
+      '128':
+        desc: ПС 110 Городская Vlan 106 FWKtoRtr
+        mask: '29'
+        network: p2p
+      '131':
+        desc: ''
+        host: c2911Gorod
+        intf: GigabitEthernet0/0.106
+        mask: '29'
+        status: up
+      '192':
+        desc: ''
+        gw: 193
+        mask: '27'
+        network: 1
+      '193':
+        desc: ''
+        host: c2911Gorod
+        intf: GigabitEthernet0/0.6
+        mask: '27'
+        status: up
+      '224':
+        desc: ''
+        gw: 225
+        mask: '27'
+        network: 1
+      '225':
+        desc: ''
+        host: c2911Gorod
+        intf: GigabitEthernet0/0.107
+        mask: '27'
+        status: up
+    '104':
+      '0':
+        desc: ПС З.-Ноябрьскaя 110/35/6
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ХРЭС
+      '128':
+        desc: ПС 110 Западно0Ноябрьская Vlan 106 FWKtoRtr
+        mask: '29'
+        network: p2p
+      '129':
+        desc: ''
+        host: ZN-s5731-1
+        intf: Vlanif106
+        mask: '29'
+        status: up
+      '130':
+        desc: ''
+        host: ZN-s5731-2
+        intf: Vlanif106
+        mask: '29'
+        status: up
+      '192':
+        desc: ''
+        gw: 193
+        mask: '27'
+        network: 1
+      '194':
+        desc: ''
+        host: ZN-s5731-1
+        intf: Vlanif6
+        mask: '27'
+        status: up
+      '195':
+        desc: ''
+        host: ZN-s5731-2
+        intf: Vlanif6
+        mask: '27'
+        status: up
+      '2':
+        desc: ''
+        host: ZN-s5731-1
+        intf: Vlanif3
+        mask: '25'
+        status: up
+      '252':
+        desc: 'nes-s5731-2 Gi0/0/1 <--> '
+        mask: '30'
+        network: p2p
+      '253':
+        desc: ''
+        host: nes-s5731-2
+        intf: GigabitEthernet0/0/1
+        mask: '30'
+        status: up
+      '254':
+        desc: Chanell to Z-Noyab over Natex rtr
+        host: OL3440-3
+        intf: sl7/p1
+        mask: '30'
+        status: up
+      '3':
+        desc: ''
+        host: ZN-s5731-2
+        intf: Vlanif3
+        mask: '25'
+        status: up
+    '105':
+      '0':
+        desc: ПС Итурская 110/35/6
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ХРЭС
+    '106':
+      '0':
+        desc: ПС Карамовская 110/35/6
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ХРЭС
+      '1':
+        desc: ''
+        host: C2911KARAMOVKA
+        intf: GigabitEthernet0/0.3
+        mask: '25'
+        status: up
+      '160':
+        desc: ''
+        gw: 161
+        mask: '27'
+        network: 1
+      '161':
+        desc: ''
+        host: C2911KARAMOVKA
+        intf: GigabitEthernet0/0.105
+        mask: '27'
+        status: up
+      '2':
+        desc: ''
+        host: swKARAMOVKA
+        intf: Vlan3
+        mask: '25'
+        status: up
+    '107':
+      '0':
+        desc: ПС КНС-1 110/35/6
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ХРЭС
+      '1':
+        desc: ''
+        host: nes-AR6280-1
+        intf: GigabitEthernet0/0/6.107
+        mask: '25'
+        status: up
+    '108':
+      '0':
+        desc: ПС Комплект 110/10/10
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ХРЭС
+      '128':
+        desc: ПС 110 Комплект Vlan 106 FWKtoRtr
+        mask: '29'
+        network: p2p
+      '131':
+        desc: ''
+        host: c2911Komplekt
+        intf: GigabitEthernet0/0.106
+        mask: '29'
+        status: up
+      '192':
+        desc: ''
+        gw: 193
+        mask: '27'
+        network: 1
+      '193':
+        desc: ''
+        host: c2911Komplekt
+        intf: GigabitEthernet0/0.6
+        mask: '27'
+        status: up
+      '224':
+        desc: ''
+        gw: 225
+        mask: '27'
+        network: 1
+      '225':
+        desc: ''
+        host: c2911Komplekt
+        intf: GigabitEthernet0/0.107
+        mask: '27'
+        status: up
+    '109':
+      '0':
+        desc: ПС Лктняя 110/10/10
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ХРЭС
+      '128':
+        desc: ПС 110 Летняя Vlan 106 FWKtoRtr
+        mask: '29'
+        network: p2p
+      '131':
+        desc: ''
+        host: c2911Letnyaya
+        intf: GigabitEthernet0/0.106
+        mask: '29'
+        status: up
+      '160':
+        desc: ''
+        gw: 161
+        mask: '27'
+        network: 1
+      '161':
+        desc: ''
+        host: c2911Letnyaya
+        intf: GigabitEthernet0/0.105
+        mask: '27'
+        status: up
+      '192':
+        desc: ''
+        gw: 193
+        mask: '27'
+        network: 1
+      '193':
+        desc: ''
+        host: c2911Letnyaya
+        intf: GigabitEthernet0/0.6
+        mask: '27'
+        status: up
+      '222':
+        desc: ''
+        host: swVOLSLTN
+        intf: Vlan6
+        mask: '27'
+        status: up
+      '224':
+        desc: ''
+        gw: 225
+        mask: '27'
+        network: 1
+      '225':
+        desc: ''
+        host: c2911Letnyaya
+        intf: GigabitEthernet0/0.107
+        mask: '27'
+        status: up
+    '11':
+      '0':
+        desc: SK-11
+        gw: 1
+        mask: '28'
+        network: 1
+        place: Ноябрьск
+      '13':
+        desc: ''
+        host: nes-s5731-1
+        intf: Vlanif8
+        mask: '28'
+        status: up
+      '14':
+        desc: ''
+        host: nes-s5731-2
+        intf: Vlanif8
+        mask: '28'
+        status: up
+    '110':
+      '0':
+        desc: ПС НПС Холмогоры
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ХРЭС
+      '1':
+        desc: ''
+        host: C2911NPS
+        intf: GigabitEthernet0/0.3
+        mask: '25'
+        status: up
+      '2':
+        desc: ''
+        host: swNPS
+        intf: Vlan3
+        mask: '25'
+        status: up
+    '111':
+      '0':
+        desc: ПС Разряд 110/35/6
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ХРЭС
+      '1':
+        desc: ''
+        host: nes-AR6280-1
+        intf: GigabitEthernet0/0/6.111
+        mask: '25'
+        status: up
+      '252':
+        desc: nes-s5731-1 Gi0/0/1 <--> OL3440-3 Rtr Rezrv ch to Vympel 10.22.213.8
+          over Razryad
+        mask: '30'
+        network: p2p
+      '253':
+        desc: ''
+        host: nes-s5731-1
+        intf: GigabitEthernet0/0/1
+        mask: '30'
+        status: up
+    '112':
+      '0':
+        desc: ПС Хрустальная 110/35/6
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ХРЭС
+    '12':
+      '0':
+        desc: ABK Mgmt 1
+        gw: 1
+        mask: '25'
+        network: 1
+        place: Ноябрьск
+      '1':
+        desc: ''
+        host: abk-s5731
+        intf: GigabitEthernet0/0/48.6
+        mask: '25'
+        status: up
+      '128':
+        desc: ABK Mgmt 2
+        gw: 129
+        mask: '25'
+        network: 1
+        place: Ноябрьск
+      '129':
+        desc: ''
+        host: abk-s5731
+        intf: Vlanif3
+        mask: '25'
+        status: up
+      '2':
+        desc: ''
+        host: swVOLSABK
+        intf: Vlan3
+        mask: '24'
+        status: up
+    '120':
+      '0':
+        desc: VoIP - RPB
+        gw: 1
+        mask: '23'
+        network: 1
+        place: Ноябрьск
+      '8':
+        desc: ''
+        host: nes-s5731-1
+        intf: Vlanif20
+        mask: '23'
+        status: up
+      '9':
+        desc: ''
+        host: nes-s5731-2
+        intf: Vlanif20
+        mask: '23'
+        status: up
+    '122':
+      '0':
+        desc: VoIP - ABK
+        gw: 1
+        mask: '24'
+        network: 1
+        place: Ноябрьск
+      '1':
+        desc: ''
+        host: abk-s5731
+        intf: Vlanif20
+        mask: '24'
+        status: up
+    '123':
+      '0':
+        desc: VoIP - KNB
+        gw: 1
+        mask: '24'
+        network: 1
+        place: Ноябрьск
+      '1':
+        desc: ''
+        host: knb-s5731
+        intf: Vlanif20
+        mask: '24'
+        status: up
+    '124':
+      '0':
+        desc: ABK ПРЭС Mgmt1
+        gw: 1
+        mask: '25'
+        network: 1
+        place: ПРЭС
+      '1':
+        desc: ''
+        host: C2911PRES
+        intf: GigabitEthernet0/0.3
+        mask: '25'
+        status: up
+      '128':
+        desc: ABK ПРЭС Mgmt2
+        gw: 129
+        mask: '25'
+        network: 1
+        place: ПРЭС
+      '129':
+        desc: ''
+        host: C2911PRES
+        intf: GigabitEthernet0/1.6
+        mask: '25'
+        status: up
+      '130':
+        desc: ''
+        host: sw2960PRESVOLS
+        intf: Vlan6
+        mask: '25'
+        status: up
+      '2':
+        desc: ''
+        host: sw2960PRES-1
+        intf: Vlan3
+        mask: '25'
+        status: up
+      '5':
+        desc: ''
+        host: sw2960PRES-2
+        intf: Vlan3
+        mask: '25'
+        status: up
+      '6':
+        desc: ''
+        host: sw2960PRES-G
+        intf: Vlan3
+        mask: '25'
+        status: up
+    '125':
+      '0':
+        desc: VoIP - ПРЭС
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ПРЭС
+      '1':
+        desc: ''
+        host: C2911PRES
+        intf: GigabitEthernet0/0.20
+        mask: '24'
+        status: up
+    '127':
+      '0':
+        desc: VoIP - МРЭС
+        gw: 1
+        mask: '24'
+        network: 1
+        place: МРЭС
+      '1':
+        desc: ''
+        host: C2911MRES
+        intf: GigabitEthernet0/0.20
+        mask: '24'
+        status: up
+    '13':
+      '0':
+        desc: Management VLAN KNB
+        gw: 1
+        mask: '24'
+        network: 1
+        place: Ноябрьск
+      '1':
+        desc: ''
+        host: knb-s5731
+        intf: Vlanif3
+        mask: '24'
+        status: up
+      '2':
+        desc: ''
+        host: sw2960SIZPI
+        intf: Vlan3
+        mask: '24'
+        status: up
+      '3':
+        desc: ''
+        host: sw2950KNB
+        intf: Vlan3
+        mask: '24'
+        status: up
+      '4':
+        desc: ''
+        host: sw2950HIMLAB
+        intf: Vlan3
+        mask: '24'
+        status: up
+      '5':
+        desc: ''
+        host: sw2960OMTS
+        intf: Vlan3
+        mask: '24'
+        status: up
+      '6':
+        desc: ''
+        host: sw2960SVL
+        intf: Vlan3
+        mask: '24'
+        status: up
+    '135':
+      '0':
+        desc: Телемеханика PP Severnyy
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ПРЭС
+    '14':
+      '0':
+        desc: Видеонаблюдение RPB
+        gw: 1
+        mask: '24'
+        network: 1
+        place: Ноябрьск
+      '251':
+        desc: ''
+        host: nes-s5731-1
+        intf: Vlanif14
+        mask: '24'
+        status: up
+      '252':
+        desc: ''
+        host: nes-s5731-2
+        intf: Vlanif14
+        mask: '24'
+        status: up
+    '15':
+      '0':
+        desc: Видеонаблюдение ABK
+        gw: 1
+        mask: '24'
+        network: 1
+        place: Ноябрьск
+      '1':
+        desc: ''
+        host: abk-s5731
+        intf: Vlanif15
+        mask: '25'
+        status: up
+    '16':
+      '0':
+        desc: ABK МРЭС Mgmt
+        gw: 1
+        mask: '24'
+        network: 1
+        place: МРЭС
+      '1':
+        desc: ''
+        host: C2911MRES
+        intf: GigabitEthernet0/0.3
+        mask: '24'
+        status: up
+      '220':
+        desc: ''
+        host: sw2960MRES-2
+        intf: Vlan3
+        mask: '24'
+        status: up
+      '221':
+        desc: ''
+        host: sw2960MRES-1
+        intf: Vlan3
+        mask: '24'
+        status: up
+      '222':
+        desc: ''
+        host: sw2960MRES-G
+        intf: Vlan3
+        mask: '24'
+        status: up
+      '5':
+        desc: ''
+        host: MRESoverNNG
+        intf: FastEthernet0/0
+        mask: '24'
+        status: up
+    '17':
+      '0':
+        desc: ABK МРЭС TM
+        gw: 1
+        mask: '24'
+        network: 1
+        place: МРЭС
+      '1':
+        desc: ''
+        host: C2911MRES
+        intf: GigabitEthernet0/0.9
+        mask: '24'
+        status: up
+    '180':
+      '0':
+        desc: RPB ADDS
+        gw: 1
+        mask: '24'
+        network: 1
+        place: Ноябрьск
+    '181':
+      '0':
+        desc: ПС Губкинская 110/6 TM
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ВРЭС
+      '2':
+        desc: ''
+        host: ps-gubkinskaya-s5731-1
+        intf: Vlanif2
+        mask: '24'
+        status: '*down'
+      '3':
+        desc: ''
+        host: ps-gubkinskaya-s5731-2
+        intf: Vlanif2
+        mask: '24'
+        status: '*down'
+      '4':
+        desc: ''
+        host: ps-gubkin-swt1
+        intf: vlan 2
+        mask: '24'
+        status: UP
+      '5':
+        desc: ''
+        host: ps-gubkin-swt2
+        intf: vlan 2
+        mask: '24'
+        status: UP
+      '6':
+        desc: ''
+        host: ps-gubkin-zru6-swt1
+        intf: vlan 2
+        mask: '24'
+        status: UP
+      '7':
+        desc: ''
+        host: ps-gubkin-zru6-swt2
+        intf: vlan 2
+        mask: '24'
+        status: UP
+    '183':
+      '0':
+        desc: ПС Кедр 110/6 TM
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ВРЭС
+      '2':
+        desc: ''
+        host: ps-kedr-s5731-1
+        intf: Vlanif2
+        mask: '24'
+        status: '*down'
+      '3':
+        desc: ''
+        host: ps-kedr-s5731-2
+        intf: Vlanif2
+        mask: '24'
+        status: '*down'
+      '4':
+        desc: ''
+        host: ps-kedr-swt1
+        intf: vlan 2
+        mask: '24'
+        status: UP
+      '5':
+        desc: ''
+        host: ps-kedr-swt2
+        intf: vlan 2
+        mask: '24'
+        status: UP
+      '6':
+        desc: ''
+        host: ps-kedr-krun2-swt1
+        intf: vlan 2
+        mask: '24'
+        status: UP
+      '7':
+        desc: ''
+        host: ps-kedr-krun2-swt2
+        intf: vlan 2
+        mask: '24'
+        status: UP
+    '19':
+      '0':
+        desc: RPB NES TM REZ
+        gw: 1
+        mask: '24'
+        network: 1
+        place: Ноябрьск
+      '251':
+        desc: ''
+        host: nes-s5731-1
+        intf: Vlanif19
+        mask: '24'
+        status: up
+      '252':
+        desc: ''
+        host: nes-s5731-2
+        intf: Vlanif19
+        mask: '24'
+        status: up
+    '2':
+      '0':
+        desc: ABK Users
+        gw: 1
+        mask: '24'
+        network: 1
+        place: Ноябрьск
+      '1':
+        desc: ''
+        host: abk-s5731
+        intf: Vlanif4
+        mask: '24'
+        status: up
+    '213':
+      '0':
+        desc: PS Vympel over Z-Noyab
+        gw: 1
+        mask: '30'
+        network: 1
+        place: ХРЭС
+    '214':
+      '0':
+        desc: ПС Парогазовая
+        gw: 1
+        mask: '29'
+        network: 1
+        place: ХРЭС
+      '1':
+        desc: ''
+        host: c2911Letnyaya
+        intf: GigabitEthernet0/0.214
+        mask: '29'
+        status: up
+    '215':
+      '0':
+        desc: ПС 220 Пуль-Яха
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ХРЭС
+    '216':
+      '0':
+        desc: ПС 500 Холмы
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ХРЭС
+    '217':
+      '0':
+        desc: ПС 220 Янгя-Яха
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ХРЭС
+    '22':
+      '0':
+        desc: RPB SERVERS
+        gw: 1
+        mask: '24'
+        network: 1
+        place: Ноябрьск
+    '23':
+      '0':
+        desc: ABK МРЭС Users
+        gw: 1
+        mask: '24'
+        network: 1
+        place: МРЭС
+      '1':
+        desc: ''
+        host: C2911MRES
+        intf: GigabitEthernet0/0.4
+        mask: '24'
+        status: up
+    '24':
+      '0':
+        desc: ABK ПРЭС Users
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ПРЭС
+      '1':
+        desc: ''
+        host: C2911PRES
+        intf: GigabitEthernet0/0.4
+        mask: '24'
+        status: up
+    '240':
+      '0':
+        desc: Loopback IP
+        gw: 1
+        mask: '24'
+        network: 1
+        place: p2p
+      '1':
+        host: NES-CE6820-1
+        intf: LoopBack0
+        mask: '32'
+      '10':
+        host: NoES-H8000-PE-1
+        intf: LoopBack1
+        mask: '32'
+      '11':
+        host: NoES-H8000-PE-2
+        intf: LoopBack1
+        mask: '32'
+      '129':
+        host: C2911NPS
+        intf: Loopback0
+        mask: '32'
+      '130':
+        host: C2911KARAMOVKA
+        intf: Loopback0
+        mask: '32'
+      '131':
+        host: C2911SUTORMA
+        intf: Loopback0
+        mask: '32'
+      '132':
+        host: C2911KNS9
+        intf: Loopback0
+        mask: '32'
+      '133':
+        host: C2911KRAI
+        intf: Loopback0
+        mask: '32'
+      '134':
+        host: C2911MRES
+        intf: Loopback0
+        mask: '32'
+      '135':
+        host: C2911NOVOPURPE
+        intf: Loopback0
+        mask: '32'
+      '136':
+        host: C2911PRES
+        intf: Loopback0
+        mask: '32'
+      '137':
+        host: C1841POBEDA
+        intf: Loopback0
+        mask: '32'
+      '138':
+        host: c2801GRADIENT
+        intf: Loopback0
+        mask: '32'
+      '139':
+        host: C1841TALANGA
+        intf: Loopback0
+        mask: '32'
+      '140':
+        host: C2911KIRPICH
+        intf: Loopback0
+        mask: '32'
+      '141':
+        host: C2911GEOLOG
+        intf: Loopback0
+        mask: '32'
+      '161':
+        host: MRESoverNNG
+        intf: Loopback0
+        mask: '32'
+      '162':
+        host: C1921GERASHENKO
+        intf: Loopback0
+        mask: '32'
+      '165':
+        host: Trud-s5731-1
+        intf: LoopBack0
+        mask: '32'
+      '166':
+        host: Trud-s5731-2
+        intf: LoopBack0
+        mask: '32'
+      '167':
+        host: ZN-s5731-1
+        intf: LoopBack0
+        mask: '32'
+      '168':
+        host: ZN-s5731-2
+        intf: LoopBack0
+        mask: '32'
+      '17':
+        host: c2911Letnyaya
+        intf: Loopback0
+        mask: '32'
+      '18':
+        host: knb-s5731
+        intf: LoopBack0
+        mask: '32'
+      '19':
+        host: c2911Komplekt
+        intf: Loopback0
+        mask: '32'
+      '193':
+        host: c2620PRES
+        intf: Loopback0
+        mask: '32'
+      '194':
+        host: C1811SIGNAL
+        intf: Loopback0
+        mask: '32'
+      '195':
+        host: C1921FORTUNA
+        intf: Loopback0
+        mask: '32'
+      '196':
+        host: rtGDN2520-1
+        intf: Loopback0
+        mask: '32'
+      '197':
+        host: rtGDN2324-2
+        intf: loopback 1
+        mask: '32'
+      '198':
+        host: rtSever2520-1
+        intf: Loopback0
+        mask: '32'
+      '199':
+        host: rtSever2520-2
+        intf: Loopback0
+        mask: '32'
+      '2':
+        host: NES-CE6820-2
+        intf: LoopBack0
+        mask: '32'
+      '20':
+        host: abk-s5731
+        intf: LoopBack0
+        mask: '32'
+      '21':
+        host: c2911Vladimir
+        intf: Loopback0
+        mask: '32'
+      '22':
+        host: c2911Gorod
+        intf: Loopback0
+        mask: '32'
+      '24':
+        host: rpb-s5731
+        intf: LoopBack0
+        mask: '32'
+      '252':
+        desc: ''
+        mask: '30'
+        network: p2p
+      '254':
+        desc: ''
+        host: rpb-s5731
+        intf: GigabitEthernet3/0/47
+        mask: '30'
+        status: up
+      '3':
+        host: C3825
+        intf: Loopback0
+        mask: '32'
+      '37':
+        host: ps-kedr-s5731-1
+        intf: LoopBack0
+        mask: '32'
+      '38':
+        host: ps-kedr-s5731-2
+        intf: LoopBack0
+        mask: '32'
+      '39':
+        host: ps-gubkinskaya-s5731-1
+        intf: LoopBack0
+        mask: '32'
+      '40':
+        host: ps-gubkinskaya-s5731-2
+        intf: LoopBack0
+        mask: '32'
+      '41':
+        host: ps-vyngayaha-s5731-1
+        intf: LoopBack0
+        mask: '32'
+      '42':
+        host: ps-vyngayaha-s5731-2
+        intf: LoopBack0
+        mask: '32'
+      '43':
+        host: ps-Novogodnaya-s5731-1
+        intf: LoopBack0
+        mask: '32'
+      '44':
+        host: ps-Novogodnaya-s5731-2
+        intf: LoopBack0
+        mask: '32'
+      '45':
+        host: ps-mayak-s5731-1
+        intf: LoopBack0
+        mask: '32'
+      '46':
+        host: ps-mayak-s5731-2
+        intf: LoopBack0
+        mask: '32'
+      '47':
+        host: ps-yantarnaya-s5731-1
+        intf: LoopBack0
+        mask: '32'
+      '48':
+        host: ps-yantarnaya-s5731-2
+        intf: LoopBack0
+        mask: '32'
+      '49':
+        host: VRES-s5731-1
+        intf: LoopBack0
+        mask: '32'
+      '5':
+        host: CiscoNNG
+        intf: Loopback0
+        mask: '32'
+      '50':
+        host: VRES-s5731-2
+        intf: LoopBack0
+        mask: '32'
+      '6':
+        host: nes-s5731-1
+        intf: LoopBack0
+        mask: '32'
+      '7':
+        host: nes-s5731-2
+        intf: LoopBack0
+        mask: '32'
+      '8':
+        host: nes-AR6280-1
+        intf: LoopBack0
+        mask: '32'
+      '9':
+        host: nes-AR6280-2
+        intf: LoopBack0
+        mask: '32'
+    '241':
+      '0':
+        desc: ''
+        gw: 1
+        mask: '25'
+        network: 1
+      '2':
+        desc: ''
+        host: nes-s5731-1
+        intf: Vlanif241
+        mask: '25'
+        status: up
+      '3':
+        desc: ''
+        host: nes-s5731-2
+        intf: Vlanif241
+        mask: '25'
+        status: up
+    '248':
+      '0':
+        desc: VRES Netring600 IP 10.22.91.222 DSS network
+        gw: 1
+        mask: '30'
+        network: 1
+        place: p2p
+    '249':
+      '0':
+        desc: Mgmt network NETRING городское кольцо
+        gw: 1
+        mask: '24'
+        network: 1
+        place: p2p
+    '250':
+      '0':
+        desc: MGM Ports ВОЛС ПРЭС <--> ПП Северный
+        gw: 1
+        mask: '24'
+        network: 1
+        place: p2p
+    '251':
+      '0':
+        desc: P2p net Ноябрьск <--> Кирпичная
+        gw: 1
+        mask: '24'
+        network: 1
+        place: p2p
+      '1':
+        desc: ''
+        host: nes-AR6280-2
+        intf: GigabitEthernet0/0/6
+        mask: '30'
+        status: up
+      '101':
+        desc: ''
+        host: ZN-s5731-1
+        intf: GigabitEthernet0/0/23
+        mask: '29'
+        status: up
+      '102':
+        desc: ''
+        host: ZN-s5731-2
+        intf: GigabitEthernet0/0/23
+        mask: '29'
+        status: up
+      '104':
+        desc: ZN-s5731-1 Gi0/0/22 <--> Trud-s5731-1 Gi0/0/23
+        mask: '30'
+        network: p2p
+      '105':
+        desc: ''
+        host: ZN-s5731-1
+        intf: GigabitEthernet0/0/22
+        mask: '30'
+        status: up
+      '106':
+        desc: ''
+        host: Trud-s5731-1
+        intf: GigabitEthernet0/0/23
+        mask: '30'
+        status: up
+      '108':
+        desc: ZN-s5731-2 Gi0/0/22 <--> Trud-s5731-2 Gi0/0/23
+        mask: '30'
+        network: p2p
+      '109':
+        desc: ''
+        host: ZN-s5731-2
+        intf: GigabitEthernet0/0/22
+        mask: '30'
+        status: up
+      '11':
+        desc: ''
+        host: C2911MRES
+        intf: FastEthernet0/0/1
+        mask: '29'
+        status: up
+      '110':
+        desc: ''
+        host: Trud-s5731-2
+        intf: GigabitEthernet0/0/23
+        mask: '30'
+        status: up
+      '112':
+        desc: 'Trud-s5731-1 Gi0/0/22 <--> '
+        mask: '30'
+        network: p2p
+      '113':
+        desc: ''
+        host: Trud-s5731-1
+        intf: GigabitEthernet0/0/22
+        mask: '30'
+        status: up
+      '116':
+        desc: 'Trud-s5731-2 Gi0/0/22 <--> '
+        mask: '30'
+        network: p2p
+      '117':
+        desc: ''
+        host: Trud-s5731-2
+        intf: GigabitEthernet0/0/22
+        mask: '30'
+        status: up
+      '12':
+        desc: ''
+        host: C2911NOVOPURPE
+        intf: FastEthernet0/0/0
+        mask: '29'
+        status: up
+      '120':
+        desc: ZN-s5731-1 Vlif12 <--> ZN-s5731-2 Vlif12
+        mask: '30'
+        network: p2p
+      '121':
+        desc: ''
+        host: ZN-s5731-1
+        intf: Vlanif12
+        mask: '30'
+        status: up
+      '122':
+        desc: ''
+        host: ZN-s5731-2
+        intf: Vlanif12
+        mask: '30'
+        status: up
+      '124':
+        desc: Trud-s5731-1 Vlif12 <--> Trud-s5731-2 Vlif12
+        mask: '30'
+        network: p2p
+      '125':
+        desc: ''
+        host: Trud-s5731-1
+        intf: Vlanif12
+        mask: '30'
+        status: up
+      '126':
+        desc: ''
+        host: Trud-s5731-2
+        intf: Vlanif12
+        mask: '30'
+        status: up
+      '16':
+        desc: прэс-новопурпейская
+        mask: '29'
+        network: p2p
+      '160':
+        desc: PP Severniy Vlan 2 p2p rtSever2520-1 <--> rtSever2520-2
+        mask: '29'
+        network: p2p
+      '161':
+        desc: ''
+        host: rtSever2520-1
+        intf: Vlan2
+        mask: '29'
+        status: up
+      '162':
+        desc: ''
+        host: rtSever2520-2
+        intf: Vlan2
+        mask: '29'
+        status: up
+      '168':
+        desc: C2911KIRPICH Gi0/0.251 <--> Kristall over SSTM100
+        mask: '29'
+        network: p2p
+      '169':
+        desc: ''
+        host: C2911KIRPICH
+        intf: GigabitEthernet0/0.251
+        mask: '29'
+        status: up
+      '176':
+        desc: ВЧ связь ГДН <--> ПП Северный
+        mask: '29'
+        network: p2p
+      '177':
+        desc: ''
+        host: rtSever2520-1
+        intf: FastEthernet0/12
+        mask: '29'
+        status: up
+      '178':
+        desc: ''
+        host: rtSever2520-2
+        intf: Vlan19
+        mask: '29'
+        status: administratively down
+      '181':
+        desc: ''
+        host: rtGDN2520-1
+        intf: FastEthernet0/11
+        mask: '29'
+        status: up
+      '184':
+        desc: 'ВЧ связь ПП Северный <--> ПРЭС '
+        mask: '29'
+        network: p2p
+      '185':
+        desc: ''
+        host: C2911PRES
+        intf: GigabitEthernet0/1.18
+        mask: '29'
+        status: up
+      '187':
+        desc: ''
+        host: rtSever2520-1
+        intf: FastEthernet0/11
+        mask: '29'
+        status: up
+      '188':
+        desc: ''
+        host: rtSever2520-2
+        intf: Vlan18
+        mask: '29'
+        status: administratively down
+      '19':
+        desc: ''
+        host: C2911NOVOPURPE
+        intf: FastEthernet0/0/1
+        mask: '29'
+        status: up
+      '192':
+        desc: rtSever2520-1 Vl12 <--> rtSever2520-2 Vl12
+        mask: '30'
+        network: p2p
+      '193':
+        desc: ''
+        host: rtSever2520-1
+        intf: Vlan12
+        mask: '30'
+        status: up
+      '194':
+        desc: ''
+        host: rtSever2520-2
+        intf: Vlan12
+        mask: '30'
+        status: up
+      '196':
+        desc: rtGDN2520-1 Vl12 <--> rtGDN2324-2 Vl12
+        mask: '30'
+        network: p2p
+      '197':
+        desc: ''
+        host: rtGDN2520-1
+        intf: Vlan12
+        mask: '30'
+        status: up
+      '198':
+        desc: ''
+        host: rtGDN2324-2
+        intf: vlan 12
+        mask: '30'
+        status: UP
+      '2':
+        desc: ''
+        host: C2911MRES
+        intf: FastEthernet0/0/0
+        mask: '30'
+        status: down
+      '20':
+        desc: ''
+        host: C2911PRES
+        intf: GigabitEthernet0/1.25
+        mask: '29'
+        status: up
+      '216':
+        desc: 217-222 прэс - ГДН
+        mask: '29'
+        network: p2p
+      '217':
+        desc: ''
+        host: C2911PRES
+        intf: GigabitEthernet0/1.58
+        mask: '29'
+        status: up
+      '221':
+        desc: ''
+        host: rtGDN2520-1
+        intf: FastEthernet0/24
+        mask: '29'
+        status: up
+      '224':
+        desc: 225-230 прэс-пп северный
+        mask: '29'
+        network: p2p
+      '225':
+        desc: ''
+        host: C2911PRES
+        intf: GigabitEthernet0/1.35
+        mask: '29'
+        status: up
+      '226':
+        desc: ''
+        host: rtSever2520-1
+        intf: FastEthernet0/24
+        mask: '29'
+        status: up
+      '227':
+        desc: ''
+        host: rtSever2520-2
+        intf: FastEthernet0/24
+        mask: '29'
+        status: up
+      '24':
+        desc: мрэс-стрела
+        mask: '29'
+        network: p2p
+      '244':
+        desc: C2911PRES Gi0/1.31 <--> C1921FORTUNA Gi0/0
+        mask: '30'
+        network: p2p
+      '245':
+        desc: ''
+        host: C2911PRES
+        intf: GigabitEthernet0/1.31
+        mask: '30'
+        status: up
+      '246':
+        desc: ''
+        host: C1921FORTUNA
+        intf: GigabitEthernet0/0
+        mask: '30'
+        status: up
+      '248':
+        desc: C2911PRES Gi0/1.32 <--> C1811SIGNAL Fa0
+        mask: '30'
+        network: p2p
+      '249':
+        desc: ''
+        host: C2911PRES
+        intf: GigabitEthernet0/1.32
+        mask: '30'
+        status: up
+      '250':
+        desc: ''
+        host: C1811SIGNAL
+        intf: FastEthernet0
+        mask: '30'
+        status: up
+      '27':
+        desc: ''
+        host: C2911MRES
+        intf: GigabitEthernet0/2.67
+        mask: '29'
+        status: up
+      '32':
+        desc: мрэс-ханупа
+        mask: '29'
+        network: p2p
+      '35':
+        desc: ''
+        host: C2911MRES
+        intf: GigabitEthernet0/2.72
+        mask: '29'
+        status: up
+      '40':
+        desc: мрэс-геращенко
+        mask: '29'
+        network: p2p
+      '43':
+        desc: ''
+        host: C2911MRES
+        intf: GigabitEthernet0/2.60
+        mask: '29'
+        status: up
+      '44':
+        desc: ''
+        host: C1921GERASHENKO
+        intf: GigabitEthernet0/0
+        mask: '29'
+        status: up
+      '48':
+        desc: C2911PRES Fa0/0/0 <--> C2620PRES Fa0/0 Rezerv chanel to NES
+        mask: '29'
+        network: p2p
+      '51':
+        desc: ''
+        host: C2911PRES
+        intf: FastEthernet0/0/0
+        mask: '29'
+        status: up
+      '53':
+        desc: ''
+        host: c2620PRES
+        intf: FastEthernet0/0
+        mask: '29'
+        status: up
+      '54':
+        desc: ''
+        host: c2620PRES
+        intf: FastEthernet0/1
+        mask: '29'
+        status: administratively down
+      '60':
+        desc: C3825 Serial2/0:1 <--> c2620PRES Serial1/0:1 Rezerv ch over E1
+        mask: '30'
+        network: p2p
+      '61':
+        desc: Rezerv ch to PRES over E1
+        host: C3825
+        intf: Serial2/0:1
+        mask: '30'
+        status: up
+      '62':
+        desc: Rezerv ch to NES over E1
+        host: c2620PRES
+        intf: Serial1/0:1
+        mask: '30'
+        status: up
+      '64':
+        desc: ''
+        gw: 65
+        mask: '27'
+        network: 1
+      '65':
+        desc: ''
+        host: nes-AR6280-1
+        intf: GigabitEthernet0/0/1.210
+        mask: '27'
+        status: up
+      '67':
+        desc: ''
+        host: C2911NPS
+        intf: GigabitEthernet0/1.210
+        mask: '27'
+        status: up
+      '68':
+        desc: ''
+        host: C2911KARAMOVKA
+        intf: GigabitEthernet0/1.210
+        mask: '27'
+        status: up
+      '69':
+        desc: ''
+        host: C2911SUTORMA
+        intf: GigabitEthernet0/1.210
+        mask: '27'
+        status: up
+      '70':
+        desc: ''
+        host: C2911KRAI
+        intf: GigabitEthernet0/1.210
+        mask: '27'
+        status: up
+      '71':
+        desc: ''
+        host: C2911KNS9
+        intf: GigabitEthernet0/1.210
+        mask: '27'
+        status: up
+      '72':
+        desc: ''
+        host: C2911MRES
+        intf: GigabitEthernet0/1.210
+        mask: '27'
+        status: up
+      '73':
+        desc: ''
+        host: C2911NOVOPURPE
+        intf: GigabitEthernet0/1.210
+        mask: '27'
+        status: up
+      '74':
+        desc: ''
+        host: C2911PRES
+        intf: GigabitEthernet0/2.210
+        mask: '27'
+        status: up
+      '75':
+        desc: ''
+        host: C1841POBEDA
+        intf: FastEthernet0/1.210
+        mask: '27'
+        status: up
+      '76':
+        desc: ''
+        host: c2801GRADIENT
+        intf: FastEthernet0/1.210
+        mask: '27'
+        status: up
+      '77':
+        desc: ''
+        host: C1841TALANGA
+        intf: FastEthernet0/1.210
+        mask: '27'
+        status: up
+      '78':
+        desc: ''
+        host: C2911KIRPICH
+        intf: GigabitEthernet0/1.210
+        mask: '27'
+        status: up
+      '79':
+        desc: ''
+        host: C2911GEOLOG
+        intf: GigabitEthernet0/1.210
+        mask: '27'
+        status: up
+      '8':
+        desc: новопурпейская-мрэс
+        mask: '29'
+        network: p2p
+      '94':
+        desc: ''
+        host: swNPS
+        intf: Vlan210
+        mask: '27'
+        status: up
+      '96':
+        desc: РРЛ НЭС <--> Западно-Ноябрьская
+        mask: '29'
+        network: p2p
+      '99':
+        desc: ''
+        host: nes-AR6280-1
+        intf: GigabitEthernet0/0/6.104
+        mask: '29'
+        status: up
+    '252':
+      '0':
+        desc: P2p seti Ноябрьск <--> Вынгапур
+        gw: 1
+        mask: '24'
+        network: 1
+        place: p2p
+      '1':
+        desc: ''
+        host: nes-AR6280-1
+        intf: GigabitEthernet0/0/0
+        mask: '30'
+        status: up
+      '10':
+        desc: ''
+        host: nes-AR6280-2
+        intf: GigabitEthernet0/0/2
+        mask: '30'
+        status: up
+      '108':
+        desc: nes-s5731-1 Vlif12 <--> nes-s5731-2 Vlif12
+        mask: '30'
+        network: p2p
+      '109':
+        desc: ''
+        host: nes-s5731-1
+        intf: Vlanif12
+        mask: '30'
+        status: up
+      '110':
+        desc: ''
+        host: nes-s5731-2
+        intf: Vlanif12
+        mask: '30'
+        status: up
+      '112':
+        desc: NES-CE6820-1 Vlif13 <--> NES-CE6820-2 Vlif13
+        mask: '30'
+        network: p2p
+      '113':
+        desc: ''
+        host: NES-CE6820-1
+        intf: Vlanif13
+        mask: '30'
+        status: up
+      '114':
+        desc: ''
+        host: NES-CE6820-2
+        intf: Vlanif13
+        mask: '30'
+        status: up
+      '12':
+        desc: nes-AR6280-1 Gi0/0/4 <--> nes-s5731-1 Gi0/0/23
+        mask: '30'
+        network: p2p
+      '13':
+        desc: ''
+        host: nes-AR6280-1
+        intf: GigabitEthernet0/0/4
+        mask: '30'
+        status: up
+      '14':
+        desc: ''
+        host: nes-s5731-1
+        intf: GigabitEthernet0/0/23
+        mask: '30'
+        status: up
+      '16':
+        desc: nes-AR6280-2 Gi0/0/4 <--> nes-s5731-2 Gi0/0/23
+        mask: '30'
+        network: p2p
+      '17':
+        desc: ''
+        host: nes-AR6280-2
+        intf: GigabitEthernet0/0/4
+        mask: '30'
+        status: up
+      '18':
+        desc: ''
+        host: nes-s5731-2
+        intf: GigabitEthernet0/0/23
+        mask: '30'
+        status: up
+      '2':
+        desc: ''
+        host: ps-gubkinskaya-s5731-1
+        intf: GigabitEthernet0/0/23
+        mask: '30'
+        status: up
+      '20':
+        desc: nes-AR6280-2 Gi0/0/3 <--> nes-s5731-1 Gi0/0/22
+        mask: '30'
+        network: p2p
+      '21':
+        desc: ''
+        host: nes-AR6280-2
+        intf: GigabitEthernet0/0/3
+        mask: '30'
+        status: up
+      '22':
+        desc: ''
+        host: nes-s5731-1
+        intf: GigabitEthernet0/0/22
+        mask: '30'
+        status: up
+      '24':
+        desc: nes-AR6280-1 Gi0/0/3 <--> nes-s5731-2 Gi0/0/22
+        mask: '30'
+        network: p2p
+      '25':
+        desc: ''
+        host: nes-AR6280-1
+        intf: GigabitEthernet0/0/3
+        mask: '30'
+        status: up
+      '26':
+        desc: ''
+        host: nes-s5731-2
+        intf: GigabitEthernet0/0/22
+        mask: '30'
+        status: up
+      '28':
+        desc: ps-gubkinskaya-s5731-1 Vlif12 <--> ps-gubkinskaya-s5731-2 Vlif12
+        mask: '30'
+        network: p2p
+      '29':
+        desc: ''
+        host: ps-gubkinskaya-s5731-1
+        intf: Vlanif12
+        mask: '30'
+        status: up
+      '30':
+        desc: ''
+        host: ps-gubkinskaya-s5731-2
+        intf: Vlanif12
+        mask: '30'
+        status: up
+      '32':
+        desc: VRES-s5731-1 Gi0/0/22 <--> ps-gubkinskaya-s5731-1 Gi0/0/22
+        mask: '30'
+        network: p2p
+      '33':
+        desc: ''
+        host: VRES-s5731-1
+        intf: GigabitEthernet0/0/22
+        mask: '30'
+        status: up
+      '34':
+        desc: ''
+        host: ps-gubkinskaya-s5731-1
+        intf: GigabitEthernet0/0/22
+        mask: '30'
+        status: up
+      '36':
+        desc: ps-vyngayaha-s5731-1 Gi0/0/23 <--> ps-gubkinskaya-s5731-2 Gi0/0/23
+        mask: '30'
+        network: p2p
+      '37':
+        desc: ''
+        host: ps-vyngayaha-s5731-1
+        intf: GigabitEthernet0/0/23
+        mask: '30'
+        status: up
+      '38':
+        desc: ''
+        host: ps-gubkinskaya-s5731-2
+        intf: GigabitEthernet0/0/23
+        mask: '30'
+        status: up
+      '4':
+        desc: nes-AR6280-2 Gi0/0/1 <--> ps-gubkinskaya-s5731-2 Gi0/0/22
+        mask: '30'
+        network: p2p
+      '40':
+        desc: ps-vyngayaha-s5731-1 Vlif12 <--> ps-vyngayaha-s5731-2 Vlif12
+        mask: '30'
+        network: p2p
+      '41':
+        desc: ''
+        host: ps-vyngayaha-s5731-1
+        intf: Vlanif12
+        mask: '30'
+        status: up
+      '42':
+        desc: ''
+        host: ps-vyngayaha-s5731-2
+        intf: Vlanif12
+        mask: '30'
+        status: up
+      '44':
+        desc: ps-mayak-s5731-1 Gi0/0/23 <--> ps-vyngayaha-s5731-2 Gi0/0/23
+        mask: '30'
+        network: p2p
+      '45':
+        desc: ''
+        host: ps-mayak-s5731-1
+        intf: GigabitEthernet0/0/23
+        mask: '30'
+        status: up
+      '46':
+        desc: ''
+        host: ps-vyngayaha-s5731-2
+        intf: GigabitEthernet0/0/23
+        mask: '30'
+        status: up
+      '48':
+        desc: ps-mayak-s5731-1 Vlif12 <--> ps-mayak-s5731-2 Vlif12
+        mask: '30'
+        network: p2p
+      '49':
+        desc: ''
+        host: ps-mayak-s5731-1
+        intf: Vlanif12
+        mask: '30'
+        status: up
+      '5':
+        desc: ''
+        host: nes-AR6280-2
+        intf: GigabitEthernet0/0/1
+        mask: '30'
+        status: up
+      '50':
+        desc: ''
+        host: ps-mayak-s5731-2
+        intf: Vlanif12
+        mask: '30'
+        status: up
+      '52':
+        desc: ps-yantarnaya-s5731-1 Gi0/0/23 <--> ps-mayak-s5731-2 Gi0/0/23
+        mask: '30'
+        network: p2p
+      '53':
+        desc: ''
+        host: ps-yantarnaya-s5731-1
+        intf: GigabitEthernet0/0/23
+        mask: '30'
+        status: up
+      '54':
+        desc: ''
+        host: ps-mayak-s5731-2
+        intf: GigabitEthernet0/0/23
+        mask: '30'
+        status: up
+      '56':
+        desc: ps-yantarnaya-s5731-1 Vlif12 <--> ps-yantarnaya-s5731-2 Vlif12
+        mask: '30'
+        network: p2p
+      '57':
+        desc: ''
+        host: ps-yantarnaya-s5731-1
+        intf: Vlanif12
+        mask: '30'
+        status: up
+      '58':
+        desc: ''
+        host: ps-yantarnaya-s5731-2
+        intf: Vlanif12
+        mask: '30'
+        status: up
+      '6':
+        desc: ''
+        host: ps-gubkinskaya-s5731-2
+        intf: GigabitEthernet0/0/22
+        mask: '30'
+        status: up
+      '60':
+        desc: VRES-s5731-1 Gi0/0/23 <--> ps-yantarnaya-s5731-2 Gi0/0/23
+        mask: '30'
+        network: p2p
+      '61':
+        desc: ''
+        host: VRES-s5731-1
+        intf: GigabitEthernet0/0/23
+        mask: '30'
+        status: up
+      '62':
+        desc: ''
+        host: ps-yantarnaya-s5731-2
+        intf: GigabitEthernet0/0/23
+        mask: '30'
+        status: up
+      '64':
+        desc: VRES-s5731-1 Vlif12 <--> VRES-s5731-2 Vlif12
+        mask: '30'
+        network: p2p
+      '65':
+        desc: ''
+        host: VRES-s5731-1
+        intf: Vlanif12
+        mask: '30'
+        status: up
+      '66':
+        desc: ''
+        host: VRES-s5731-2
+        intf: Vlanif12
+        mask: '30'
+        status: up
+      '68':
+        desc: ps-Novogodnaya-s5731-2 Gi0/0/23 <--> VRES-s5731-2 Gi0/0/23
+        mask: '30'
+        network: p2p
+      '69':
+        desc: ''
+        host: ps-Novogodnaya-s5731-2
+        intf: GigabitEthernet0/0/23
+        mask: '30'
+        status: up
+      '70':
+        desc: ''
+        host: VRES-s5731-2
+        intf: GigabitEthernet0/0/23
+        mask: '30'
+        status: up
+      '72':
+        desc: ps-Novogodnaya-s5731-1 Vlif12 <--> ps-Novogodnaya-s5731-2 Vlif12
+        mask: '30'
+        network: p2p
+      '73':
+        desc: ''
+        host: ps-Novogodnaya-s5731-1
+        intf: Vlanif12
+        mask: '30'
+        status: up
+      '74':
+        desc: ''
+        host: ps-Novogodnaya-s5731-2
+        intf: Vlanif12
+        mask: '30'
+        status: up
+      '76':
+        desc: ps-kedr-s5731-2 Gi0/0/23 <--> ps-Novogodnaya-s5731-1 Gi0/0/23
+        mask: '30'
+        network: p2p
+      '77':
+        desc: ''
+        host: ps-kedr-s5731-2
+        intf: GigabitEthernet0/0/23
+        mask: '30'
+        status: up
+      '78':
+        desc: ''
+        host: ps-Novogodnaya-s5731-1
+        intf: GigabitEthernet0/0/23
+        mask: '30'
+        status: up
+      '8':
+        desc: nes-AR6280-1 Gi0/0/2 <--> nes-AR6280-2 Gi0/0/2
+        mask: '30'
+        network: p2p
+      '80':
+        desc: ps-kedr-s5731-1 Vlif12 <--> ps-kedr-s5731-2 Vlif12
+        mask: '30'
+        network: p2p
+      '81':
+        desc: ''
+        host: ps-kedr-s5731-1
+        intf: Vlanif12
+        mask: '30'
+        status: up
+      '82':
+        desc: ''
+        host: ps-kedr-s5731-2
+        intf: Vlanif12
+        mask: '30'
+        status: up
+      '84':
+        desc: nes-AR6280-2 Gi0/0/0 <--> ps-kedr-s5731-1 Gi0/0/23
+        mask: '30'
+        network: p2p
+      '85':
+        desc: ''
+        host: nes-AR6280-2
+        intf: GigabitEthernet0/0/0
+        mask: '30'
+        status: up
+      '86':
+        desc: ''
+        host: ps-kedr-s5731-1
+        intf: GigabitEthernet0/0/23
+        mask: '30'
+        status: up
+      '88':
+        desc: nes-AR6280-1 Gi0/0/7 <--> ps-kedr-s5731-2 Gi0/0/22
+        mask: '30'
+        network: p2p
+      '89':
+        desc: ''
+        host: nes-AR6280-1
+        intf: GigabitEthernet0/0/7
+        mask: '30'
+        status: up
+      '9':
+        desc: ''
+        host: nes-AR6280-1
+        intf: GigabitEthernet0/0/2
+        mask: '30'
+        status: up
+      '90':
+        desc: ''
+        host: ps-kedr-s5731-2
+        intf: GigabitEthernet0/0/22
+        mask: '30'
+        status: up
+    '253':
+      '0':
+        desc: ''
+        gw: 1
+        mask: '24'
+        network: 1
+        place: p2p
+      '1':
+        desc: ''
+        host: nes-s5731-1
+        intf: GigabitEthernet0/0/16
+        mask: '30'
+        status: up
+      '2':
+        desc: ''
+        host: C3825
+        intf: GigabitEthernet0/0
+        mask: '30'
+        status: up
+      '4':
+        desc: nes-s5731-2 Gi0/0/7 <--> C3825 Gi0/1
+        mask: '30'
+        network: p2p
+      '5':
+        desc: ''
+        host: nes-s5731-2
+        intf: GigabitEthernet0/0/7
+        mask: '30'
+        status: up
+      '6':
+        desc: ''
+        host: C3825
+        intf: GigabitEthernet0/1
+        mask: '30'
+        status: up
+    '254':
+      '0':
+        desc: P2p networks Ноябрьскa
+        gw: 1
+        mask: '24'
+        network: 1
+        place: p2p
+      '100':
+        desc: nes-AR6280-1 Gi0/0/9 <--> c2911Letnyaya Gi0/2
+        mask: '30'
+        network: p2p
+      '101':
+        desc: ''
+        host: nes-AR6280-1
+        intf: GigabitEthernet0/0/9
+        mask: '30'
+        status: up
+      '102':
+        desc: ''
+        host: c2911Letnyaya
+        intf: GigabitEthernet0/2
+        mask: '30'
+        status: up
+      '104':
+        desc: nes-AR6280-2 Gi0/0/7 <--> abk-s5731 Gi3/0/45
+        mask: '30'
+        network: p2p
+      '105':
+        desc: ''
+        host: nes-AR6280-2
+        intf: GigabitEthernet0/0/7
+        mask: '30'
+        status: up
+      '106':
+        desc: ''
+        host: abk-s5731
+        intf: GigabitEthernet3/0/45
+        mask: '30'
+        status: up
+      '108':
+        desc: nes-AR6280-2 Gi0/0/9 <--> c2911Gorod Gi0/1
+        mask: '30'
+        network: p2p
+      '109':
+        desc: ''
+        host: nes-AR6280-2
+        intf: GigabitEthernet0/0/9
+        mask: '30'
+        status: up
+      '11':
+        desc: ''
+        host: nes-AR6280-1
+        intf: GigabitEthernet0/0/5.200
+        mask: '26'
+        status: up
+      '110':
+        desc: ''
+        host: c2911Gorod
+        intf: GigabitEthernet0/1
+        mask: '30'
+        status: up
+      '112':
+        desc: c2911Gorod Gi0/2 <--> c2911Vladimir Gi0/1
+        mask: '30'
+        network: p2p
+      '113':
+        desc: ''
+        host: c2911Gorod
+        intf: GigabitEthernet0/2
+        mask: '30'
+        status: up
+      '114':
+        desc: ''
+        host: c2911Vladimir
+        intf: GigabitEthernet0/1
+        mask: '30'
+        status: up
+      '116':
+        desc: c2911Vladimir Gi0/2 <--> c2911Letnyaya Gi0/1
+        mask: '30'
+        network: p2p
+      '117':
+        desc: ''
+        host: c2911Vladimir
+        intf: GigabitEthernet0/2
+        mask: '30'
+        status: up
+      '118':
+        desc: ''
+        host: c2911Letnyaya
+        intf: GigabitEthernet0/1
+        mask: '30'
+        status: up
+      '12':
+        desc: ''
+        host: c2911Letnyaya
+        intf: GigabitEthernet0/0.200
+        mask: '26'
+        status: up
+      '128':
+        desc: knb-s5731 Gi1/0/43 <--> c2911Komplekt Gi0/1
+        mask: '30'
+        network: p2p
+      '129':
+        desc: ''
+        host: knb-s5731
+        intf: GigabitEthernet1/0/43
+        mask: '30'
+        status: up
+      '13':
+        desc: ''
+        host: knb-s5731
+        intf: GigabitEthernet0/0/48.200
+        mask: '26'
+        status: up
+      '130':
+        desc: ''
+        host: c2911Komplekt
+        intf: GigabitEthernet0/1
+        mask: '30'
+        status: up
+      '132':
+        desc: abk-s5731 Gi3/0/46 <--> c2911Komplekt Gi0/2
+        mask: '30'
+        network: p2p
+      '133':
+        desc: ''
+        host: abk-s5731
+        intf: GigabitEthernet3/0/46
+        mask: '30'
+        status: up
+      '134':
+        desc: ''
+        host: c2911Komplekt
+        intf: GigabitEthernet0/2
+        mask: '30'
+        status: up
+      '14':
+        desc: ''
+        host: c2911Komplekt
+        intf: GigabitEthernet0/0.200
+        mask: '26'
+        status: up
+      '140':
+        desc: 'nes-AR6280-2 Gi0/0/5.217 <--> '
+        mask: '30'
+        network: p2p
+      '141':
+        desc: ''
+        host: nes-AR6280-2
+        intf: GigabitEthernet0/0/5.217
+        mask: '30'
+        status: up
+      '15':
+        desc: ''
+        host: abk-s5731
+        intf: GigabitEthernet0/0/48.200
+        mask: '26'
+        status: up
+      '16':
+        desc: ''
+        host: c2911Vladimir
+        intf: GigabitEthernet0/0.200
+        mask: '26'
+        status: up
+      '18':
+        desc: ''
+        host: c2911Gorod
+        intf: GigabitEthernet0/0.200
+        mask: '26'
+        status: up
+      '21':
+        desc: ''
+        host: swVOLSRPB
+        intf: Vlan200
+        mask: '26'
+        status: up
+      '22':
+        desc: ''
+        host: swVOLSLTN
+        intf: Vlan200
+        mask: '26'
+        status: up
+      '224':
+        desc: AR-6280-2 Gi0/0/5.201<-->ABK-s5731gi 1/0/48  Vlan 201 over Natex
+        mask: '30'
+        network: p2p
+      '226':
+        desc: ''
+        host: abk-s5731
+        intf: GigabitEthernet1/0/48
+        mask: '30'
+        status: '*down'
+      '228':
+        desc: AR-6280-2 Gi0/0/5.202<-->KNB-s5731gi 1/0/48  Vlan 202 over Natex
+        mask: '30'
+        network: p2p
+      '23':
+        desc: ''
+        host: swVOLSKNB
+        intf: Vlan200
+        mask: '26'
+        status: up
+      '230':
+        desc: ''
+        host: knb-s5731
+        intf: GigabitEthernet1/0/48
+        mask: '30'
+        status: '*down'
+      '232':
+        desc: AR-6280-2 Gi0/0/8<-->VRES-s5731 Gi0/0/1 PtP
+        mask: '29'
+        network: p2p
+      '237':
+        desc: ''
+        host: nes-AR6280-2
+        intf: GigabitEthernet0/0/8
+        mask: '29'
+        status: up
+      '238':
+        desc: ''
+        host: VRES-s5731-1
+        intf: GigabitEthernet0/0/1
+        mask: '29'
+        status: up
+      '24':
+        desc: ''
+        host: swVOLSKOMPLEKT
+        intf: Vlanif200
+        mask: '26'
+        status: up
+      '244':
+        desc: nes-s5731-2 XGi0/0/3 <--> knb-s5731 XGi0/0/1
+        mask: '30'
+        network: p2p
+      '245':
+        desc: ''
+        host: nes-s5731-2
+        intf: XGigabitEthernet0/0/3
+        mask: '30'
+        status: up
+      '246':
+        desc: ''
+        host: knb-s5731
+        intf: XGigabitEthernet0/0/1
+        mask: '30'
+        status: up
+      '248':
+        desc: nes-s5731-1 XGi0/0/3 <--> abk-s5731 XGi0/0/1
+        mask: '30'
+        network: p2p
+      '249':
+        desc: ''
+        host: nes-s5731-1
+        intf: XGigabitEthernet0/0/3
+        mask: '30'
+        status: up
+      '25':
+        desc: ''
+        host: swVOLSABK
+        intf: Vlan200
+        mask: '26'
+        status: up
+      '250':
+        desc: ''
+        host: abk-s5731
+        intf: XGigabitEthernet0/0/1
+        mask: '30'
+        status: up
+      '27':
+        desc: ''
+        host: swVOLSYAYA
+        intf: Vlan200
+        mask: '26'
+        status: up
+      '28':
+        desc: ''
+        host: swVOLSGOROD
+        intf: Vlan200
+        mask: '26'
+        status: up
+      '88':
+        desc: VLAN 6 Kontinent NOES-FWK550
+        mask: '29'
+        network: p2p
+      '89':
+        desc: ''
+        host: NES-CE6820-1
+        intf: Vlanif6
+        mask: '29'
+        status: up
+      '90':
+        desc: ''
+        host: NES-CE6820-2
+        intf: Vlanif6
+        mask: '29'
+        status: up
+      '96':
+        desc: nes-AR6280-1 Gi0/0/8 <--> knb-s5731 Gi1/0/44
+        mask: '30'
+        network: p2p
+      '97':
+        desc: ''
+        host: nes-AR6280-1
+        intf: GigabitEthernet0/0/8
+        mask: '30'
+        status: up
+      '98':
+        desc: ''
+        host: knb-s5731
+        intf: GigabitEthernet1/0/44
+        mask: '30'
+        status: up
+    '27':
+      '0':
+        desc: ABK ПРЭС TM
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ПРЭС
+      '1':
+        desc: ''
+        host: C2911PRES
+        intf: GigabitEthernet0/0.9
+        mask: '24'
+        status: up
+    '3':
+      '0':
+        desc: KNB Users
+        gw: 1
+        mask: '24'
+        network: 1
+        place: Ноябрьск
+      '1':
+        desc: ''
+        host: knb-s5731
+        intf: Vlanif4
+        mask: '24'
+        status: up
+    '31':
+      '0':
+        desc: ПС Фортуна 110/10/10
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ПРЭС
+      '128':
+        desc: ПС 110 Фортуна Vlan 106 FWKtoRtr
+        mask: '29'
+        network: p2p
+      '131':
+        desc: ''
+        host: C1921FORTUNA
+        intf: GigabitEthernet0/1.106
+        mask: '29'
+        status: up
+      '2':
+        desc: ''
+        host: sw2960Fortuna
+        intf: Vlan3
+        mask: '25'
+        status: up
+      '224':
+        desc: ''
+        gw: 225
+        mask: '27'
+        network: 1
+      '225':
+        desc: ''
+        host: C1921FORTUNA
+        intf: GigabitEthernet0/1.107
+        mask: '27'
+        status: up
+    '32':
+      '0':
+        desc: ПС Сигнал 110/10/10
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ПРЭС
+      '128':
+        desc: ПС 110 Сигнал Vlan 106 FWKtoRtr
+        mask: '29'
+        network: p2p
+      '131':
+        desc: ''
+        host: C1811SIGNAL
+        intf: Vlan106
+        mask: '29'
+        status: up
+      '160':
+        desc: ''
+        gw: 161
+        mask: '27'
+        network: 1
+      '161':
+        desc: ''
+        host: C1811SIGNAL
+        intf: Vlan105
+        mask: '27'
+        status: up
+      '224':
+        desc: ''
+        gw: 225
+        mask: '27'
+        network: 1
+      '225':
+        desc: ''
+        host: C1811SIGNAL
+        intf: Vlan107
+        mask: '27'
+        status: up
+    '33':
+      '0':
+        desc: ПС Светлая 110/6
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ПРЭС
+      '1':
+        desc: ''
+        host: C2911PRES
+        intf: GigabitEthernet0/1.33
+        mask: '24'
+        status: up
+    '34':
+      '0':
+        desc: ПС Тарасовская 110/35/6
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ПРЭС
+      '1':
+        desc: ''
+        host: C2911PRES
+        intf: GigabitEthernet0/1.34
+        mask: '24'
+        status: up
+    '35':
+      '0':
+        desc: ПП Северный
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ПРЭС
+      '128':
+        desc: ПС 110 ПП Северный Vlan 106 FWKtoRtr
+        mask: '29'
+        network: p2p
+      '129':
+        desc: ''
+        host: rtSever2520-1
+        intf: Vlan106
+        mask: '29'
+        status: up
+      '130':
+        desc: ''
+        host: rtSever2520-2
+        intf: Vlan106
+        mask: '29'
+        status: up
+      '160':
+        desc: ''
+        gw: 161
+        mask: '27'
+        network: 1
+      '162':
+        desc: ''
+        host: rtSever2520-1
+        intf: Vlan105
+        mask: '27'
+        status: up
+      '163':
+        desc: ''
+        host: rtSever2520-2
+        intf: Vlan105
+        mask: '27'
+        status: up
+      '192':
+        desc: ''
+        gw: 193
+        mask: '27'
+        network: 1
+      '194':
+        desc: ''
+        host: rtSever2520-1
+        intf: Vlan6
+        mask: '27'
+        status: up
+      '195':
+        desc: ''
+        host: rtSever2520-2
+        intf: Vlan6
+        mask: '27'
+        status: up
+      '2':
+        desc: ''
+        host: rtSever2520-1
+        intf: Vlan3
+        mask: '25'
+        status: administratively down
+      '220':
+        desc: ''
+        host: swSever2960-1
+        intf: Vlan6
+        mask: '27'
+        status: up
+      '221':
+        desc: ''
+        host: swSever2960-2
+        intf: Vlan6
+        mask: '27'
+        status: up
+      '224':
+        desc: ''
+        gw: 225
+        mask: '27'
+        network: 1
+      '226':
+        desc: ''
+        host: rtSever2520-1
+        intf: Vlan107
+        mask: '27'
+        status: up
+      '227':
+        desc: ''
+        host: rtSever2520-2
+        intf: Vlan107
+        mask: '27'
+        status: up
+      '252':
+        desc: ''
+        host: swSever2960-1
+        intf: Vlan107
+        mask: '27'
+        status: up
+      '3':
+        desc: ''
+        host: rtSever2520-2
+        intf: Vlan3
+        mask: '25'
+        status: administratively down
+      '51':
+        desc: ''
+        host: swSever2960-1
+        intf: Vlan3
+        mask: '25'
+        status: up
+    '36':
+      '0':
+        desc: ПС УКПГ 110/6
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ПРЭС
+      '1':
+        desc: ''
+        host: C2911PRES
+        intf: GigabitEthernet0/1.36
+        mask: '24'
+        status: up
+    '37':
+      '0':
+        desc: ПС Комсомольская 110/35/6
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ПРЭС
+      '1':
+        desc: ''
+        host: C2911PRES
+        intf: GigabitEthernet0/1.37
+        mask: '24'
+        status: up
+    '38':
+      '0':
+        desc: ПП Комсомольский
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ПРЭС
+      '1':
+        desc: ''
+        host: C2911PRES
+        intf: GigabitEthernet0/1.38
+        mask: '24'
+        status: up
+    '39':
+      '0':
+        desc: СП Барсуковский
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ПРЭС
+      '1':
+        desc: ''
+        host: C2911PRES
+        intf: GigabitEthernet0/1.39
+        mask: '24'
+        status: up
+    '40':
+      '0':
+        desc: ПС НовоПурпейская 110/35/6
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ПРЭС
+      '1':
+        desc: ''
+        host: C2911NOVOPURPE
+        intf: GigabitEthernet0/0.3
+        mask: '25'
+        status: up
+      '2':
+        desc: ''
+        host: swNOVOPURPE
+        intf: Vlan3
+        mask: '25'
+        status: up
+    '41':
+      '0':
+        desc: ПС Барсуковская 110/35/6
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ПРЭС
+    '42':
+      '0':
+        desc: ПС Геолог 110/10
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ПРЭС
+      '128':
+        desc: ПС 110 Горизонт Vlan 106 FWKtoRtr
+        mask: '29'
+        network: p2p
+      '131':
+        desc: ''
+        host: C2911GEOLOG
+        intf: GigabitEthernet0/0.106
+        mask: '29'
+        status: up
+      '160':
+        desc: ''
+        gw: 161
+        mask: '27'
+        network: 1
+      '161':
+        desc: ''
+        host: C2911GEOLOG
+        intf: GigabitEthernet0/0.105
+        mask: '27'
+        status: up
+      '192':
+        desc: ''
+        gw: 193
+        mask: '27'
+        network: 1
+      '193':
+        desc: ''
+        host: C2911GEOLOG
+        intf: GigabitEthernet0/0.6
+        mask: '27'
+        status: up
+      '222':
+        desc: ''
+        host: swGEOLOG
+        intf: Vlan6
+        mask: '27'
+        status: up
+    '43':
+      '0':
+        desc: ПС Градиент 110/6
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ПРЭС
+      '1':
+        desc: ''
+        host: c2801GRADIENT
+        intf: FastEthernet0/0.3
+        mask: '25'
+        status: up
+      '2':
+        desc: ''
+        host: swGradient
+        intf: Vlan3
+        mask: '25'
+        status: up
+    '44':
+      '0':
+        desc: ПС Карьер 110/6
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ПРЭС
+    '45':
+      '0':
+        desc: ПС Кирпичная 110/10
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ПРЭС
+      '128':
+        desc: ПС 110 Кирпичная Vlan 106 FWKtoRtr
+        mask: '29'
+        network: p2p
+      '131':
+        desc: ''
+        host: C2911KIRPICH
+        intf: GigabitEthernet0/0.106
+        mask: '29'
+        status: up
+      '160':
+        desc: ''
+        gw: 161
+        mask: '27'
+        network: 1
+      '161':
+        desc: ''
+        host: C2911KIRPICH
+        intf: GigabitEthernet0/0.105
+        mask: '27'
+        status: up
+      '192':
+        desc: ''
+        gw: 193
+        mask: '27'
+        network: 1
+      '193':
+        desc: ''
+        host: C2911KIRPICH
+        intf: GigabitEthernet0/0.6
+        mask: '27'
+        status: up
+      '2':
+        desc: ''
+        host: swKIRPICH
+        intf: Vlan3
+        mask: '25'
+        status: up
+      '222':
+        desc: ''
+        host: swKIRPICH
+        intf: Vlan6
+        mask: '27'
+        status: up
+    '46':
+      '0':
+        desc: ПС Кристалл 110/35/6
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ПРЭС
+    '47':
+      '0':
+        desc: ПС Майская 110/35/6
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ПРЭС
+    '48':
+      '0':
+        desc: ПС Мара-Яха 110/35/6
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ПРЭС
+    '49':
+      '0':
+        desc: ПС Победа 110/35/10
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ПРЭС
+      '1':
+        desc: ''
+        host: C1841POBEDA
+        intf: FastEthernet0/0.3
+        mask: '25'
+        status: up
+      '2':
+        desc: ''
+        host: swPOBEDA
+        intf: Vlan3
+        mask: '25'
+        status: up
+    '5':
+      '0':
+        desc: ASCUE_PTK
+        gw: 1
+        mask: '24'
+        network: 1
+        place: Ноябрьск
+    '50':
+      '0':
+        desc: ПС Пурпейская 110/6
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ПРЭС
+    '51':
+      '0':
+        desc: ПС СК (Северный Купол)
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ПРЭС
+    '52':
+      '0':
+        desc: ПС Таланга 110/6
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ПРЭС
+      '1':
+        desc: ''
+        host: C1841TALANGA
+        intf: FastEthernet0/0.3
+        mask: '25'
+        status: up
+      '2':
+        desc: ''
+        host: swTALANGA
+        intf: Vlan3
+        mask: '25'
+        status: up
+    '53':
+      '0':
+        desc: ПС Харампурская 110/35/6
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ПРЭС
+    '54':
+      '0':
+        desc: ПС Южно-Харампурская 110/35/6
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ПРЭС
+    '55':
+      '0':
+        desc: ПС Карьер-2 110/6
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ПРЭС
+    '56':
+      '0':
+        desc: ПС Арсенал
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ПРЭС
+      '1':
+        desc: ''
+        host: C2911PRES
+        intf: GigabitEthernet0/1.26
+        mask: '24'
+        status: up
+    '57':
+      '0':
+        desc: ПС Таркосале
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ПРЭС
+    '58':
+      '0':
+        desc: ПС ГДН
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ПРЭС
+      '128':
+        desc: ПС 110 ГДН Vlan 106 FWKtoRtr
+        mask: '29'
+        network: p2p
+      '129':
+        desc: ''
+        host: rtGDN2520-1
+        intf: Vlan106
+        mask: '29'
+        status: up
+      '130':
+        desc: ''
+        host: rtGDN2324-2
+        intf: vlan 106
+        mask: '29'
+        status: UP
+      '192':
+        desc: ''
+        gw: 193
+        mask: '27'
+        network: 1
+      '193':
+        desc: ''
+        host: rtGDN2520-1
+        intf: Vlan6
+        mask: '27'
+        status: up
+      '220':
+        desc: ''
+        host: swGDN2960-1
+        intf: Vlan6
+        mask: '27'
+        status: up
+      '221':
+        desc: ''
+        host: swGDN2960-2
+        intf: Vlan6
+        mask: '27'
+        status: up
+      '224':
+        desc: ''
+        gw: 225
+        mask: '27'
+        network: 1
+      '226':
+        desc: ''
+        host: rtGDN2520-1
+        intf: Vlan107
+        mask: '27'
+        status: up
+      '227':
+        desc: ''
+        host: rtGDN2324-2
+        intf: vlan 107
+        mask: '27'
+        status: UP
+      '3':
+        desc: ''
+        host: rtGDN2324-2
+        intf: vlan 3
+        mask: '25'
+        status: DOWN
+    '60':
+      '0':
+        desc: ПС Геращенко 110/35/6
+        gw: 1
+        mask: '24'
+        network: 1
+        place: МРЭС
+      '128':
+        desc: ПС 110 Геращенко Vlan 106 FWKtoRtr
+        mask: '29'
+        network: p2p
+      '131':
+        desc: ''
+        host: C1921GERASHENKO
+        intf: GigabitEthernet0/1.106
+        mask: '29'
+        status: up
+      '192':
+        desc: ''
+        gw: 193
+        mask: '27'
+        network: 1
+      '193':
+        desc: ''
+        host: C1921GERASHENKO
+        intf: GigabitEthernet0/1.6
+        mask: '27'
+        status: up
+      '222':
+        desc: ''
+        host: swGERASHENKO
+        intf: Vlan6
+        mask: '27'
+        status: up
+    '61':
+      '0':
+        desc: ПС Жемчужина 110/35/6
+        gw: 1
+        mask: '24'
+        network: 1
+        place: МРЭС
+    '62':
+      '0':
+        desc: ПС КНС-9 110/35/6
+        gw: 1
+        mask: '24'
+        network: 1
+        place: МРЭС
+      '1':
+        desc: ''
+        host: C2911KNS9
+        intf: GigabitEthernet0/0.3
+        mask: '25'
+        status: up
+      '2':
+        desc: ''
+        host: swKNS9
+        intf: Vlan3
+        mask: '25'
+        status: up
+      '224':
+        desc: ''
+        gw: 225
+        mask: '27'
+        network: 1
+      '225':
+        desc: ''
+        host: C2911KNS9
+        intf: GigabitEthernet0/0.107
+        mask: '27'
+        status: up
+    '63':
+      '0':
+        desc: ПС Крайняя 110/35/6
+        gw: 1
+        mask: '24'
+        network: 1
+        place: МРЭС
+      '1':
+        desc: ''
+        host: C2911KRAI
+        intf: GigabitEthernet0/0.3
+        mask: '24'
+        status: up
+      '2':
+        desc: ''
+        host: swKRAINYAYA
+        intf: Vlan3
+        mask: '25'
+        status: up
+    '64':
+      '0':
+        desc: ПС Курская 110/6/6
+        gw: 1
+        mask: '24'
+        network: 1
+        place: МРЭС
+    '65':
+      '0':
+        desc: ПС Орловская 110/35/6
+        gw: 1
+        mask: '24'
+        network: 1
+        place: МРЭС
+    '66':
+      '0':
+        desc: ПС Пяку-Пур 110/6
+        gw: 1
+        mask: '24'
+        network: 1
+        place: МРЭС
+    '67':
+      '0':
+        desc: ПС Стрела 110/35/6
+        gw: 1
+        mask: '24'
+        network: 1
+        place: МРЭС
+    '68':
+      '0':
+        desc: ПС Сугмутская 110/35/6
+        gw: 1
+        mask: '24'
+        network: 1
+        place: МРЭС
+    '69':
+      '0':
+        desc: ПС Суторминская 110/35/6
+        gw: 1
+        mask: '24'
+        network: 1
+        place: МРЭС
+      '1':
+        desc: ''
+        host: C2911SUTORMA
+        intf: GigabitEthernet0/0.3
+        mask: '25'
+        status: up
+      '2':
+        desc: ''
+        host: swSUTORMA
+        intf: Vlan3
+        mask: '25'
+        status: up
+    '7':
+      '0':
+        desc: VOIP ЦОК IP phone
+        gw: 1
+        mask: '24'
+        network: 1
+        place: Ноябрьск
+      '251':
+        desc: ''
+        host: nes-s5731-1
+        intf: Vlanif17
+        mask: '24'
+        status: up
+      '252':
+        desc: ''
+        host: nes-s5731-2
+        intf: Vlanif17
+        mask: '24'
+        status: up
+      '253':
+        desc: ''
+        host: NES-CE6820-1
+        intf: Vlanif17
+        mask: '24'
+        status: up
+      '254':
+        desc: ''
+        host: NES-CE6820-2
+        intf: Vlanif17
+        mask: '24'
+        status: up
+    '70':
+      '0':
+        desc: ПС Трудовая 110/35/6
+        gw: 1
+        mask: '24'
+        network: 1
+        place: МРЭС
+      '128':
+        desc: ПС 110 Трудовая Vlan 106 FWKtoRtr
+        mask: '29'
+        network: p2p
+      '129':
+        desc: ''
+        host: Trud-s5731-1
+        intf: Vlanif106
+        mask: '29'
+        status: up
+      '130':
+        desc: ''
+        host: Trud-s5731-2
+        intf: Vlanif106
+        mask: '29'
+        status: up
+      '192':
+        desc: ''
+        gw: 193
+        mask: '27'
+        network: 1
+      '194':
+        desc: ''
+        host: Trud-s5731-1
+        intf: Vlanif6
+        mask: '27'
+        status: up
+      '195':
+        desc: ''
+        host: Trud-s5731-2
+        intf: Vlanif6
+        mask: '27'
+        status: up
+      '2':
+        desc: ''
+        host: Trud-s5731-1
+        intf: Vlanif3
+        mask: '25'
+        status: up
+      '3':
+        desc: ''
+        host: Trud-s5731-2
+        intf: Vlanif3
+        mask: '25'
+        status: up
+    '71':
+      '0':
+        desc: ПС Ударная 110/35/6
+        gw: 1
+        mask: '24'
+        network: 1
+        place: МРЭС
+    '72':
+      '0':
+        desc: ПС Ханупа 110/10/10
+        gw: 1
+        mask: '24'
+        network: 1
+        place: МРЭС
+    '73':
+      '0':
+        desc: ПС Муравленковская 220/110
+        gw: 1
+        mask: '24'
+        network: 1
+        place: МРЭС
+      '1':
+        desc: ''
+        host: C2911MRES
+        intf: GigabitEthernet0/2.73
+        mask: '25'
+        status: up
+    '8':
+      '0':
+        desc: Management VLAN RPB
+        gw: 1
+        mask: '24'
+        network: 1
+        place: Ноябрьск
+      '128':
+        desc: ''
+        gw: 129
+        mask: '25'
+        network: 1
+      '131':
+        desc: ''
+        host: sw2960REAL
+        intf: Vlan3
+        mask: '25'
+        status: up
+      '137':
+        desc: ''
+        host: sw2960SMIT
+        intf: Vlan3
+        mask: '24'
+        status: up
+      '138':
+        desc: ''
+        host: sw2960RSC
+        intf: Vlan3
+        mask: '24'
+        status: up
+      '146':
+        desc: ''
+        host: sw2950-ASCUE-PTK
+        intf: Vlan3
+        mask: '24'
+        status: up
+      '151':
+        desc: ''
+        host: CiscoNNG
+        intf: FastEthernet0/0
+        mask: '24'
+        status: up
+      '248':
+        desc: ''
+        host: rpb-LAZ-s5731
+        intf: Vlanif3
+        mask: '24'
+        status: up
+      '249':
+        desc: ''
+        host: rpb-TM-s5731
+        intf: Vlanif3
+        mask: '24'
+        status: up
+      '250':
+        desc: ''
+        host: rpb-s5731
+        intf: Vlanif3
+        mask: '24'
+        status: up
+      '251':
+        desc: ''
+        host: nes-s5731-1
+        intf: Vlanif3
+        mask: '24'
+        status: up
+      '252':
+        desc: ''
+        host: nes-s5731-2
+        intf: Vlanif3
+        mask: '24'
+        status: up
+      '253':
+        desc: ''
+        host: NES-CE6820-1
+        intf: Vlanif3
+        mask: '24'
+        status: up
+      '254':
+        desc: ''
+        host: NES-CE6820-2
+        intf: Vlanif3
+        mask: '24'
+        status: up
+    '80':
+      '0':
+        desc: ПС Вынгаяхинская 110/35/6
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ВРЭС
+      '160':
+        desc: ''
+        gw: 161
+        mask: '27'
+        network: 1
+      '162':
+        desc: ''
+        host: ps-vyngayaha-s5731-1
+        intf: Vlanif105
+        mask: '27'
+        status: up
+      '163':
+        desc: ''
+        host: ps-vyngayaha-s5731-2
+        intf: Vlanif105
+        mask: '27'
+        status: up
+      '192':
+        desc: ''
+        gw: 193
+        mask: '27'
+        network: 1
+      '194':
+        desc: ''
+        host: ps-vyngayaha-s5731-1
+        intf: Vlanif6
+        mask: '27'
+        status: up
+      '195':
+        desc: ''
+        host: ps-vyngayaha-s5731-2
+        intf: Vlanif6
+        mask: '27'
+        status: up
+      '2':
+        desc: ''
+        host: ps-vyngayaha-s5731-1
+        intf: Vlanif3
+        mask: '25'
+        status: up
+      '224':
+        desc: ''
+        gw: 225
+        mask: '27'
+        network: 1
+      '226':
+        desc: ''
+        host: ps-vyngayaha-s5731-1
+        intf: Vlanif107
+        mask: '27'
+        status: up
+      '227':
+        desc: ''
+        host: ps-vyngayaha-s5731-2
+        intf: Vlanif107
+        mask: '27'
+        status: up
+      '3':
+        desc: ''
+        host: ps-vyngayaha-s5731-2
+        intf: Vlanif3
+        mask: '25'
+        status: up
+    '81':
+      '0':
+        desc: ПС Губкинская 110/6
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ВРЭС
+      '128':
+        desc: ПС 110 Губкинская Vlan 106 FWKtoRtr
+        mask: '29'
+        network: p2p
+      '129':
+        desc: ''
+        host: ps-gubkinskaya-s5731-1
+        intf: Vlanif106
+        mask: '29'
+        status: up
+      '130':
+        desc: ''
+        host: ps-gubkinskaya-s5731-2
+        intf: Vlanif106
+        mask: '29'
+        status: up
+      '160':
+        desc: ''
+        gw: 161
+        mask: '27'
+        network: 1
+      '162':
+        desc: ''
+        host: ps-gubkinskaya-s5731-1
+        intf: Vlanif105
+        mask: '27'
+        status: up
+      '163':
+        desc: ''
+        host: ps-gubkinskaya-s5731-2
+        intf: Vlanif105
+        mask: '27'
+        status: up
+      '192':
+        desc: ''
+        gw: 193
+        mask: '27'
+        network: 1
+      '194':
+        desc: ''
+        host: ps-gubkinskaya-s5731-1
+        intf: Vlanif6
+        mask: '27'
+        status: up
+      '195':
+        desc: ''
+        host: ps-gubkinskaya-s5731-2
+        intf: Vlanif6
+        mask: '27'
+        status: up
+      '2':
+        desc: ''
+        host: ps-gubkinskaya-s5731-1
+        intf: Vlanif3
+        mask: '25'
+        status: '*down'
+      '219':
+        desc: ''
+        host: ps-gubkin-zru6-swt2
+        intf: vlan 6
+        mask: '27'
+        status: UP
+      '220':
+        desc: ''
+        host: ps-gubkin-zru6-swt1
+        intf: vlan 6
+        mask: '27'
+        status: UP
+      '221':
+        desc: ''
+        host: ps-gubkin-swt2
+        intf: vlan 6
+        mask: '27'
+        status: UP
+      '222':
+        desc: ''
+        host: ps-gubkin-swt1
+        intf: vlan 6
+        mask: '27'
+        status: UP
+      '224':
+        desc: ''
+        gw: 225
+        mask: '27'
+        network: 1
+      '226':
+        desc: ''
+        host: ps-gubkinskaya-s5731-1
+        intf: Vlanif107
+        mask: '27'
+        status: up
+      '227':
+        desc: ''
+        host: ps-gubkinskaya-s5731-2
+        intf: Vlanif107
+        mask: '27'
+        status: up
+      '3':
+        desc: ''
+        host: ps-gubkinskaya-s5731-2
+        intf: Vlanif3
+        mask: '25'
+        status: '*down'
+    '82':
+      '0':
+        desc: ПС Еты-Пур 110/35/6
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ВРЭС
+    '83':
+      '0':
+        desc: ПС Кедр 110/6
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ВРЭС
+      '128':
+        desc: ПС 110 Кедр Vlan 106 FWKtoRtr
+        mask: '29'
+        network: p2p
+      '129':
+        desc: ''
+        host: ps-kedr-s5731-1
+        intf: Vlanif106
+        mask: '29'
+        status: up
+      '130':
+        desc: ''
+        host: ps-kedr-s5731-2
+        intf: Vlanif106
+        mask: '29'
+        status: up
+      '160':
+        desc: ''
+        gw: 161
+        mask: '27'
+        network: 1
+      '162':
+        desc: ''
+        host: ps-kedr-s5731-1
+        intf: Vlanif105
+        mask: '27'
+        status: up
+      '163':
+        desc: ''
+        host: ps-kedr-s5731-2
+        intf: Vlanif105
+        mask: '27'
+        status: up
+      '192':
+        desc: ''
+        gw: 193
+        mask: '27'
+        network: 1
+      '194':
+        desc: ''
+        host: ps-kedr-s5731-1
+        intf: Vlanif6
+        mask: '27'
+        status: up
+      '195':
+        desc: ''
+        host: ps-kedr-s5731-2
+        intf: Vlanif6
+        mask: '27'
+        status: up
+      '2':
+        desc: ''
+        host: ps-kedr-s5731-1
+        intf: Vlanif3
+        mask: '25'
+        status: '*down'
+      '219':
+        desc: ''
+        host: ps-kedr-krun2-swt2
+        intf: vlan 6
+        mask: '27'
+        status: UP
+      '220':
+        desc: ''
+        host: ps-kedr-krun2-swt1
+        intf: vlan 6
+        mask: '27'
+        status: UP
+      '221':
+        desc: ''
+        host: ps-kedr-swt2
+        intf: vlan 6
+        mask: '27'
+        status: UP
+      '222':
+        desc: ''
+        host: ps-kedr-swt1
+        intf: vlan 6
+        mask: '27'
+        status: UP
+      '224':
+        desc: ''
+        gw: 225
+        mask: '27'
+        network: 1
+      '226':
+        desc: ''
+        host: ps-kedr-s5731-1
+        intf: Vlanif107
+        mask: '27'
+        status: up
+      '227':
+        desc: ''
+        host: ps-kedr-s5731-2
+        intf: Vlanif107
+        mask: '27'
+        status: up
+      '3':
+        desc: ''
+        host: ps-kedr-s5731-2
+        intf: Vlanif3
+        mask: '25'
+        status: '*down'
+    '84':
+      '0':
+        desc: ПС Маяк 110/10
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ВРЭС
+      '160':
+        desc: ''
+        gw: 161
+        mask: '27'
+        network: 1
+      '162':
+        desc: ''
+        host: ps-mayak-s5731-1
+        intf: Vlanif105
+        mask: '27'
+        status: up
+      '163':
+        desc: ''
+        host: ps-mayak-s5731-2
+        intf: Vlanif105
+        mask: '27'
+        status: up
+      '192':
+        desc: ''
+        gw: 193
+        mask: '27'
+        network: 1
+      '194':
+        desc: ''
+        host: ps-mayak-s5731-1
+        intf: Vlanif6
+        mask: '27'
+        status: up
+      '195':
+        desc: ''
+        host: ps-mayak-s5731-2
+        intf: Vlanif6
+        mask: '27'
+        status: up
+      '2':
+        desc: ''
+        host: ps-mayak-s5731-1
+        intf: Vlanif3
+        mask: '25'
+        status: up
+      '224':
+        desc: ''
+        gw: 225
+        mask: '27'
+        network: 1
+      '226':
+        desc: ''
+        host: ps-mayak-s5731-1
+        intf: Vlanif107
+        mask: '27'
+        status: up
+      '227':
+        desc: ''
+        host: ps-mayak-s5731-2
+        intf: Vlanif107
+        mask: '27'
+        status: up
+      '3':
+        desc: ''
+        host: ps-mayak-s5731-2
+        intf: Vlanif3
+        mask: '25'
+        status: up
+    '85':
+      '0':
+        desc: ПС Новогодняя 110/35/6
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ВРЭС
+      '160':
+        desc: ''
+        gw: 161
+        mask: '27'
+        network: 1
+      '162':
+        desc: ''
+        host: ps-Novogodnaya-s5731-1
+        intf: Vlanif105
+        mask: '27'
+        status: up
+      '163':
+        desc: ''
+        host: ps-Novogodnaya-s5731-2
+        intf: Vlanif105
+        mask: '27'
+        status: up
+      '192':
+        desc: ''
+        gw: 193
+        mask: '27'
+        network: 1
+      '194':
+        desc: ''
+        host: ps-Novogodnaya-s5731-1
+        intf: Vlanif6
+        mask: '27'
+        status: up
+      '195':
+        desc: ''
+        host: ps-Novogodnaya-s5731-2
+        intf: Vlanif6
+        mask: '27'
+        status: up
+      '2':
+        desc: ''
+        host: ps-Novogodnaya-s5731-1
+        intf: Vlanif3
+        mask: '25'
+        status: up
+      '224':
+        desc: ''
+        gw: 225
+        mask: '27'
+        network: 1
+      '226':
+        desc: ''
+        host: ps-Novogodnaya-s5731-1
+        intf: Vlanif107
+        mask: '27'
+        status: up
+      '227':
+        desc: ''
+        host: ps-Novogodnaya-s5731-2
+        intf: Vlanif107
+        mask: '27'
+        status: up
+      '3':
+        desc: ''
+        host: ps-Novogodnaya-s5731-2
+        intf: Vlanif3
+        mask: '25'
+        status: up
+    '86':
+      '0':
+        desc: ПС Песчаная 110/6
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ВРЭС
+    '87':
+      '0':
+        desc: ПС Погружная 110/35/6
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ВРЭС
+    '88':
+      '0':
+        desc: ПС Янтарная 110/35/6
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ВРЭС
+      '128':
+        desc: ПС 110 Янтарная Vlan 106 FWKtoRtr
+        mask: '29'
+        network: p2p
+      '129':
+        desc: ''
+        host: ps-yantarnaya-s5731-1
+        intf: Vlanif106
+        mask: '29'
+        status: up
+      '130':
+        desc: ''
+        host: ps-yantarnaya-s5731-2
+        intf: Vlanif106
+        mask: '29'
+        status: up
+      '192':
+        desc: ''
+        gw: 193
+        mask: '27'
+        network: 1
+      '194':
+        desc: ''
+        host: ps-yantarnaya-s5731-1
+        intf: Vlanif6
+        mask: '27'
+        status: up
+      '195':
+        desc: ''
+        host: ps-yantarnaya-s5731-2
+        intf: Vlanif6
+        mask: '27'
+        status: up
+      '224':
+        desc: ''
+        gw: 225
+        mask: '27'
+        network: 1
+      '226':
+        desc: ''
+        host: ps-yantarnaya-s5731-1
+        intf: Vlanif107
+        mask: '27'
+        status: up
+      '227':
+        desc: ''
+        host: ps-yantarnaya-s5731-2
+        intf: Vlanif107
+        mask: '27'
+        status: up
+    '89':
+      '0':
+        desc: ПС Вынгапуровская 220
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ВРЭС
+    '9':
+      '0':
+        desc: VDMZ
+        gw: 1
+        mask: '24'
+        network: 1
+        place: Ноябрьск
+      '11':
+        desc: ''
+        host: NoES-H8000-PE-1
+        intf: GigabitEthernet0/4/0.2(10G)
+        mask: '24'
+        status: up
+      '12':
+        desc: ''
+        host: NoES-H8000-PE-2
+        intf: GigabitEthernet0/4/0.2(10G)
+        mask: '24'
+        status: up
+      '21':
+        desc: ''
+        host: NES-CE6820-1
+        intf: Vlanif2
+        mask: '24'
+        status: up
+      '22':
+        desc: ''
+        host: NES-CE6820-2
+        intf: Vlanif2
+        mask: '24'
+        status: up
+      '8':
+        desc: ''
+        host: nes-s5731-1
+        intf: Vlanif2
+        mask: '24'
+        status: up
+      '9':
+        desc: ''
+        host: nes-s5731-2
+        intf: Vlanif2
+        mask: '24'
+        status: up
+    '90':
+      '0':
+        desc: ABK ВРЭС Users
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ВРЭС
+      '2':
+        desc: ''
+        host: VRES-s5731-1
+        intf: Vlanif4
+        mask: '24'
+        status: up
+      '3':
+        desc: ''
+        host: VRES-s5731-2
+        intf: Vlanif4
+        mask: '24'
+        status: up
+    '91':
+      '0':
+        desc: ABK ВРЭС ASTU
+        gw: 1
+        mask: '24'
+        network: 1
+        place: ВРЭС
+      '192':
+        desc: ''
+        gw: 193
+        mask: '27'
+        network: 1
+      '194':
+        desc: ''
+        host: VRES-s5731-1
+        intf: Vlanif6
+        mask: '27'
+        status: up
+      '195':
+        desc: ''
+        host: VRES-s5731-2
+        intf: Vlanif6
+        mask: '27'
+        status: up
+      '2':
+        desc: ''
+        host: VRES-s5731-1
+        intf: Vlanif3
+        mask: '25'
+        status: up
+      '224':
+        desc: ''
+        gw: 225
+        mask: '27'
+        network: 1
+      '226':
+        desc: ''
+        host: VRES-s5731-1
+        intf: Vlanif107
+        mask: '27'
+        status: up
+      '227':
+        desc: ''
+        host: VRES-s5731-2
+        intf: Vlanif107
+        mask: '27'
+        status: up
+      '3':
+        desc: ''
+        host: VRES-s5731-2
+        intf: Vlanif3
+        mask: '25'
+        status: up
+    '95':
+      '0':
+        desc: ''
+        gw: 1
+        mask: '24'
+        network: 1
+      '1':
+        desc: ''
+        host: ps-Novogodnaya-s5731-2
+        intf: Vlanif95
+        mask: '24'
+        status: up
+    desc: IP сети Ноябрьские ЭС
+    mask: 16
+  '24':
+    '23':
+      '0':
+        desc: ''
+        mask: '29'
+        network: p2p
+      '1':
+        desc: ''
+        host: C2911KIRPICH
+        intf: GigabitEthernet0/0.300
+        mask: '29'
+        status: administratively down
+  '47':
+    '1':
+      '0':
+        desc: РПБ НЭС
+        gw: 1
+        mask: 24
+        network: true
+      '1':
+        host: Спутниковый модем
+        port: FE1
+      '2':
+        host: nes-s5731-1
+        port: GigabitEthernet0/0/9
+    '10':
+      '0':
+        desc: ПС 110 ГДН
+        gw: 1
+        mask: 24
+        network: true
+      '1':
+        host: Спутниковый модем
+        port: FE1
+      '2':
+        host: rtGDN2520-1
+        port: FastEthernet0/15
+    '11':
+      '0':
+        desc: ПС 110 Маяк
+        gw: 1
+        mask: 24
+        network: true
+      '1':
+        host: Спутниковый модем
+        port: FE1
+    '12':
+      '0':
+        desc: ПС 110 Геращенко
+        gw: 1
+        mask: 24
+        network: true
+      '1':
+        host: Спутниковый модем
+        port: FE1
+    '2':
+      '0':
+        desc: ПС 110 Кедр
+        gw: 1
+        mask: 24
+        network: true
+      '1':
+        host: Спутниковый модем
+        port: FE1
+      '2':
+        host: VRRP IP
+        port: vrid 47
+      '3':
+        desc: '**HN7440S FE1 10.47.2.1'
+        host: ps-kedr-s5731-1
+        port: GigabitEthernet0/0/3
+      '4':
+        desc: '**HN7440S FE2 10.47.2.1'
+        host: ps-kedr-s5731-2
+        port: GigabitEthernet0/0/3
+    '3':
+      '0':
+        desc: ПС 110 Пурпейская
+        gw: 1
+        mask: 24
+        network: true
+      '1':
+        host: Спутниковый модем
+        port: FE1
+    '4':
+      '0':
+        desc: ПС 110 Харампурская
+        gw: 1
+        mask: 24
+        network: true
+      '1':
+        host: Спутниковый модем
+        port: FE1
+    '5':
+      '0':
+        desc: ПС 110 Южно-Харампурская
+        gw: 1
+        mask: 24
+        network: true
+      '1':
+        host: Спутниковый модем
+        port: FE1
+    '6':
+      '0':
+        desc: ПС 110 Губкинская
+        gw: 1
+        mask: 24
+        network: true
+      '1':
+        host: Спутниковый модем
+        port: FE1
+      '2':
+        host: VRRP IP
+        port: vrid 47
+      '3':
+        desc: '**HN7440S FE1 10.47.6.1'
+        host: ps-gubkinskaya-s5731-1
+        port: GigabitEthernet0/0/3
+      '4':
+        desc: '**HN7440S FE2 10.47.6.1'
+        host: ps-gubkinskaya-s5731-2
+        port: GigabitEthernet0/0/3
+    '7':
+      '0':
+        desc: ПС 110 Северный Купол
+        gw: 1
+        mask: 24
+        network: true
+      '1':
+        host: Спутниковый модем
+        port: FE1
+    '8':
+      '0':
+        desc: ПС 110 Еты-Пур
+        gw: 1
+        mask: 24
+        network: true
+      '1':
+        host: Спутниковый модем
+        port: FE1
+    '9':
+      '0':
+        desc: ПС 110 Карьер
+        gw: 1
+        mask: 24
+        network: true
+      '1':
+        host: Спутниковый модем
+        port: FE1
+    desc: IP адреса спутникового провайдера
+    mask: 16
+'172':
+  '16':
+    '16':
+      '0':
+        desc: ''
+        gw: 1
+        mask: '24'
+        network: 1
+      '249':
+        desc: ''
+        host: C2911PRES
+        intf: GigabitEthernet0/1.16
+        mask: '24'
+        status: up
+  '18':
+    '0':
+      '0':
+        desc: ''
+        gw: 1
+        mask: '24'
+        network: 1
+      '1':
+        desc: ''
+        host: swSever2960-1
+        intf: Vlan18
+        mask: '24'
+        status: up
+      '2':
+        desc: ''
+        host: sw2960PRESVOLS
+        intf: Vlan18
+        mask: '24'
+        status: up
+  '19':
+    '0':
+      '0':
+        desc: ''
+        gw: 1
+        mask: '24'
+        network: 1
+      '1':
+        desc: ''
+        host: swSever2960-2
+        intf: Vlan19
+        mask: '24'
+        status: up
+      '2':
+        desc: ''
+        host: swGDN2960-1
+        intf: Vlan19
+        mask: '24'
+        status: up
+'192':
+  '168':
+    '0':
+      '0':
+        desc: ''
+        gw: 1
+        mask: '28'
+        network: 1
+      '1':
+        desc: ''
+        host: VRES-s5731-2
+        intf: GigabitEthernet0/0/1
+        mask: '28'
+        status: up
+      '32':
+        desc: ''
+        gw: 33
+        mask: '28'
+        network: 1
+      '33':
+        desc: ''
+        host: ps-Novogodnaya-s5731-2
+        intf: GigabitEthernet0/0/1
+        mask: '28'
+        status: up
+      '96':
+        desc: ''
+        mask: '29'
+        network: p2p
+      '97':
+        desc: ''
+        host: CiscoNNG
+        intf: FastEthernet0/1
+        mask: '29'
+        status: up
+    '1':
+      '0':
+        desc: ''
+        gw: 1
+        mask: '24'
+        network: 1
+      '151':
+        desc: ''
+        host: swGDN2960-1
+        intf: Vlan107
+        mask: '24'
+        status: up
+    '100':
+      '0':
+        desc: ''
+        gw: 1
+        mask: '24'
+        network: 1
+      '160':
+        desc: ''
+        host: nes-s5731-2
+        intf: GigabitEthernet0/0/8
+        mask: '24'
+        status: up
+    '5':
+      '232':
+        desc: ''
+        mask: '29'
+        network: p2p
+      '235':
+        desc: ''
+        host: C2911KRAI
+        intf: GigabitEthernet0/2
+        mask: '29'
+        status: administratively down
+'3':
+  '3':
+    '3':
+      '0':
+        desc: ''
+        gw: 1
+        mask: '24'
+        network: 1
+      '254':
+        desc: ''
+        host: nes-s5731-1
+        intf: Vlanif106
+        mask: '24'
+        status: up

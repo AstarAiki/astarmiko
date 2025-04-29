@@ -1,0 +1,8 @@
+Value ADDR (\d+\.\d+\.\d+\.\d+)
+Value PROTO (\S+)
+Value NEXTHOP (\d+\.\d+\.\d+\.\d+)
+Value INTF (\S+)
+
+
+Start
+  ^\s+${ADDR}/\d+\s+${PROTO}\s+\d+\s+\d+\s+\w+\s+${NEXTHOP}\s+${INTF} -> Record

@@ -1,0 +1,7 @@
+Value ADDR ([^)]*)
+Value MAC (\w{2}:\w{2}:\w{2}:\w{2}:\w{2}:\w{2})
+Value INTF (\S+)
+
+
+Start
+  ^.*?\(${ADDR}\)\s+at\s+${MAC}\s+.*on\s+${INTF} -> Record

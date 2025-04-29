@@ -1,0 +1,7 @@
+Value ADDR (\d+\.\d+\.\d+\.\d+)
+Value NEXTHOP (\d+\.\d+\.\d+\.\d+)
+Value INTF (\S+)
+
+
+Start
+  ^\s+\*\s+${ADDR},\s+from\s+${NEXTHOP}.+via\s+${INTF} -> Record

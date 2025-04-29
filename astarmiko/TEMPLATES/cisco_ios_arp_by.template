@@ -1,0 +1,7 @@
+Value ADDR (\d+\.\d+\.\d+\.\d+)
+Value MAC (\S+)
+Value INTF (\S+)
+
+
+Start
+  ^Internet\s+${ADDR}\s+\d+\s+${MAC}\s+\w+\s+${INTF} -> Record

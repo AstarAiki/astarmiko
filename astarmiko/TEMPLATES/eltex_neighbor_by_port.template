@@ -1,0 +1,9 @@
+Value NBNAME (\S+)
+Value LOCALINTF (\S+)
+Value NBINTF (\S+)
+
+
+Start
+  ^Port: ${LOCALINTF}
+  ^Port ID: ${NBINTF}
+  ^System Name: ${NBNAME} -> Record

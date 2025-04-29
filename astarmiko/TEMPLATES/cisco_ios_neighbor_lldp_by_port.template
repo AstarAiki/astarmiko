@@ -1,0 +1,7 @@
+Value NBNAME (\D\S+)
+Value LOCALINTF (\S+)
+Value NBINTF (\S+)
+
+
+Start
+  ^${NBNAME}\s+${LOCALINTF}\s+\d+\s+\w+\s+${NBINTF} -> Record

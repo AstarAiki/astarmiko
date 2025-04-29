@@ -1,0 +1,4 @@
+Value INTF (\S+)
+
+Start
+  ^${INTF}.+\s+888 -> Record

@@ -1,0 +1,20 @@
+Value PORT (\d/\d/\d)
+Value TRTYPE (.+$)
+Value CONNTYPE (.+$)
+Value WAVELENGTH (.+$)
+Value TRANSDISTANCE (.+$)
+Value VENDOR (.+$)
+Value VENDORPN (.+$)
+Value MANUSN (.+$)
+Value MANUDATE (.+$)
+
+Start
+  ^XGigabitEthernet${PORT} transceiver information:
+  ^\s+Transceiver Type.+:${TRTYPE}
+  ^\s+Connector Type.+:${CONNTYPE}
+  ^\s+Wavelength(nm).+:${WAVELENGTH}
+  ^\s+Transfer Distance.+:${TRANSDISTANCE}
+  ^\s+Vendor Name.+:${VENDOR}
+  ^\s+Vendor Part Number.+:${VENDORPN}
+  ^\s+Manu\. Serial Number.+:${MANUSN}
+  ^\s+Manufacturing Date.+:${MANUDATE} -> Record

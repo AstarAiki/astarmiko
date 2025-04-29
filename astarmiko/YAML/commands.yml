@@ -1,0 +1,99 @@
+commands:
+    "mac_delimeters":
+        desc: 'Diffrent devices show mac addresses with difrent dekimeters, there is all variants of delimeters on you devices with form of address^ 4 digits by 3 groups or 2 digits by 6 groups'
+        cisco_ios: 
+            - '.'
+            - 4
+        huawei: 
+            - '-'
+            - 4
+        huawei_vrpv8: 
+            - '-'
+            - 4
+        eltex: 
+            - '-'
+            - 2
+    "mac_addr_tbl_by":
+        desc: 'show mac addres table and filter by mac'
+        cisco_ios: 'show mac address-table | in {}'
+        huawei: 'display mac-address | in {}'
+        huawei_vrpv8: 'display mac-address | in {}'
+        eltex: 'show mac address-table | in {}'
+    "mac_addr_tbl_byport":
+        desc: 'show mac addres table on defined port'
+        cisco_ios: 'show mac address-table interface {}'
+        huawei: 'display mac-address {}'
+        huawei_vrpv8: 'display mac-address interface {}'
+        eltex: 'show mac address-table | in {}'
+    "neighbor":
+        desc: 'show cdp (or lldp) neighbor brief'
+        cisco_ios: 'show cdp neighbor detail'
+        huawei: 'display lldp neighbor'
+        huawei_vrpv8: 'display lldp neighbor'
+        eltex: 'show lldp neighbors detail'
+    "neighbor_by_port":
+        desc: 'show cdp (or lldp) neighbor brief'
+        cisco_ios: 'show lldp neighbor'
+        huawei: 'display lldp neighbor'
+        huawei_vrpv8: 'display lldp neighbor'
+        eltex: 'show lldp neighbors detail'
+    "arp_by":
+        desc: 'show arp table on device filtered by some string'
+        cisco_ios: 'show arp | in {}  +'
+        huawei: 'display  arp | in {}  +'
+        huawei_vrpv8: 'display  arp | in {}  +'
+        eltex: 'show arp | in {}  +'
+    "ethchannel_member":
+        desc: 'Show interfaces that members of EtherChanell (Eth-Trunk, Port-Channel)'
+        cisco_ios: 'show etherchannel {} port'
+        huawei: 'display eth-trunk {}'
+        huawei_vrpv8: 'display eth-trunk {}'
+        eltex: 'show interfaces Port-Channel {}'
+    "ip_route_tbl_by":
+        desc: 'Show ip route table filtered by defined ip'
+        cisco_ios: 'show ip route {}'
+        huawei: 'display ip routing-table {}'
+        huawei_vrpv8: 'display ip routing-table {}'
+        eltex: 'show ip route address {}'
+    "current_config":
+        desc: 'Show current configuration'
+        cisco_ios: 'show running'
+        huawei: 'dis curr'
+        huawei_vrpv8: 'dis curr'
+        eltex: 'show running'
+    "ip_int_br":
+        desc: 'show ip int brief exclude unassigned'
+        cisco_ios: 'sh ip int br | ex unassigned'
+        huawei: 'dis ip int br | ex unassigned'
+        huawei_vrpv8: 'dis ip int br | ex unassigned'
+        eltex: 'sh ip int'
+    "":
+        desc: ''
+        cisco_ios: ''
+        huawei: ''
+        huawei: ''
+        eltex: ''
+    "":
+        desc: ''
+        cisco_ios: ''
+        huawei: ''
+        huawei: ''
+        eltex: ''
+    "":
+        desc: ''
+        cisco_ios: ''
+        huawei: ''
+        huawei: ''
+        eltex: ''
+    "":
+        desc: ''
+        cisco_ios: ''
+        huawei: ''
+        huawei: ''
+        eltex: ''
+    "":
+        desc: ''
+        cisco_ios: ''
+        huawei: ''
+        huawei: ''
+        eltex: ''

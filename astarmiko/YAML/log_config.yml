@@ -1,0 +1,18 @@
+logging:
+  enable: true          # global logging enable
+  format: json          # json | text
+  stdout: true          # duplicate to stdout (useful for debugging)
+
+  rsyslog:
+    enabled: true
+    address: /dev/log    # or IP:port for remote
+
+  loki:
+    enabled: false
+    url: http://localhost:3100/loki/api/v1/push
+
+  elasticsearch:
+    enabled: false
+    url: http://localhost:9200
+    index: logs
+
