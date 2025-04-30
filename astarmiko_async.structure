@@ -1,0 +1,13 @@
+astarmiko_async/
+├── __init__.py
+├── base.py                 # Основная синхронная логика (AstarMiko)
+├── async_exec.py           # Async execute/show/set
+├── async_backup.py         # Async config backup
+├── cli.py                  # CLI интерфейс
+├── log_config.py           # Загрузка конфигурации логов
+├── optional_loggers.py     # Вывод в rsyslog, Loki, Elasticsearch
+├── log_config.yml          # Конфиг логирования
+
+pyproject.toml              # Установка проекта (PEP 621)
+README.md                   # Документация
+
