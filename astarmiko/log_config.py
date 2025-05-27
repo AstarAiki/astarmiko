@@ -45,5 +45,5 @@ class JsonLogFormatter(logging.Formatter):
         return json.dumps(log_entry, ensure_ascii=False)
 
 
-# можно вызывать setup_logging(get_log_config()) при старте программы
+# you can use setup_logging(get_log_config()) when start your programm
 

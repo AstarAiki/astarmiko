@@ -15,10 +15,9 @@ from netmiko import (
     NetmikoAuthenticationException,
 )
 from datetime import datetime
-#logging.basicConfig(filename='d:/network/net_func.log',format='%(asctime)s : %(level)s - %(message)s', datefmt='%Y-%B-%d %H:%M:%S', level=logging.WARNING)
 
 ac = '' #Global object represent configuration attributes
- 
+
 def debug_logger(func):
     """
     Декоратор, который отслеживает все точки выхода из функции.
@@ -28,7 +27,7 @@ def debug_logger(func):
     def wrapper(*args, **kwargs):
         print(f"DEBUG: Вызов функции {func.__name__}")
         print(f"DEBUG: Входные аргументы - args: {args}, kwargs: {kwargs}")
-        
+
         try:
             result = func(*args, **kwargs)
             print(f"DEBUG: Функция {func.__name__} вернула (нормальный выход): {result}")
@@ -51,33 +50,33 @@ def setup_logging(
     enable_console: bool = True
 ) -> None:
     """
-    Настройка логирования для модуля.
-    
-    Args:
-        level: Уровень логирования (logging.DEBUG, logging.INFO и т.д.)
-        log_file: Путь к файлу для записи логов (если None - не записывать в файл)
-        format_str: Формат строки лога
-        enable_console: Включить вывод в консоль
-    """
-    # Удаляем все существующие обработчики
-    logger.handlers.clear()
-    
-    # Устанавливаем уровень логирования
-    logger.setLevel(level)
-    
+    Logging settings for module.
 
-        
-    
-    # Создаем форматтер
+    Args:
+        level: Logging level (logging.DEBUG, logging.INFO и т.д.)
+        log_file: Path to logging file (if None - don't write to file)
+        format_str: Logging aormat
+        enable_console: Enable output to console
+    """
+    # Delete all existing halders
+    logger.handlers.clear()
+
+    # Set log level
+    logger.setLevel(level)
+
+
+
+
+    # Create formatter
     formatter = logging.Formatter(format_str)
-    
-    # Настраиваем вывод в консоль
+
+    # Tune output to console
     if enable_console:
         console_handler = logging.StreamHandler(sys.stdout)
         console_handler.setFormatter(formatter)
         logger.addHandler(console_handler)
-    
-    # Настраиваем запись в файл если указан
+
+    # Tune writing to log file if enabled
     if log_file is not None:
         file_handler = logging.FileHandler(log_file)
         file_handler.setFormatter(formatter)
@@ -86,10 +85,10 @@ def setup_logging(
 
 def setup_config(path_to_conf):
     ''' Initialize conf object ac with attributes from path_to_conf
-    
+
     Args:
         path_to_conf (str): full path to config file ( yaml, json, format)
-        
+
     '''
     from astarconf import  Astarconf
     global ac
@@ -125,7 +124,7 @@ def setup_config(path_to_conf):
 
 async def snmp_get_oid(host: str, community: str, oid: str, port: int = 161, version: int = 2, prnerr: bool = False):
     '''Function get OID's by SNMP from device without ssh access (like russian NGFW Kontinent)
-    
+
     Args:
         host (str): ip address of NGFW
         community (str): community string for SNMP ver.2
@@ -133,7 +132,7 @@ async def snmp_get_oid(host: str, community: str, oid: str, port: int = 161, ver
         port (int): port dor SNMP access, default 161
         version (int): version of SNMP, default is 2
         prnerr (bool): selector to print or not errors in stdout
-    
+
     Returns:
         result (str): value of oid
     '''
@@ -157,7 +156,7 @@ async def snmp_get_oid(host: str, community: str, oid: str, port: int = 161, ver
     if prnerr:
         if errorIndication:
             print(errorIndication)
-    
+
         elif errorStatus:
             print(
                 "{} at {}".format(
@@ -191,10 +190,10 @@ async def snmp_get_oid(host: str, community: str, oid: str, port: int = 161, ver
 
 def ping_one_ip(ip_address):
     '''Function get one ip address and return 0 if all is o'key or else error code
-    
+
     Args:
         ip_address (str): ip address to ping
-    
+
     Returns:
         return code of ping: 0 if alive other if not
     '''
@@ -204,11 +203,11 @@ def ping_one_ip(ip_address):
         reply = sp.run(['ping','-n','3',ip_address], stdout = sp.DEVNULL)
     else:
         reply = sp.run(['ping','-c','3','-n',ip_address], stdout = sp.DEVNULL)
-    
+
     return reply.returncode
 
 
-    
+
 def _try_connect(device, func, *args, **kwargs):
     """Internal function to handle connection attempts with availability check"""
     def is_device_available(ip):
@@ -223,15 +222,15 @@ def _try_connect(device, func, *args, **kwargs):
         if not is_device_available(device_params['ip']):
             logger.warning(f"Device {device_params['host']} ({device_params['ip']}) is unreachable")
             return False
-            
+
         try:
             start_msg = 'Connecting to {}...'
             logger.info(start_msg.format(device_params['ip']))
-            
+
             with ConnectHandler(**device_params) as ssh:
                 ssh.enable()
                 return func(ssh, *args, **kwargs)
-                
+
         except NetmikoTimeoutException as error:
             logger.warning(f"Connection timeout to {device_params['ip']}: {error}")
             return False
@@ -244,7 +243,7 @@ def _try_connect(device, func, *args, **kwargs):
         return connect_with_credentials(device)
     except NetmikoAuthenticationException:
         pass
-    
+
     # Try additional accounts if available
     if hasattr(ac, 'add_account'):
         for account in ac.add_account:
@@ -255,7 +254,7 @@ def _try_connect(device, func, *args, **kwargs):
                 return connect_with_credentials(new_device)
             except NetmikoAuthenticationException:
                 continue
-    
+
     logger.error(f"All authentication attempts failed for {device['ip']}")
     return False
 
@@ -263,17 +262,17 @@ def _try_connect(device, func, *args, **kwargs):
 def send_config_by_one(device, commands):
     '''The function connects via SSH (using netmiko) to ONE device and performs
      ONE command in configuration mode based on the arguments passed.
-    
+
     Args:
         device (dict): dictionary in netmiko format for use with ConnectHandler(**device)
         commands (list or str): command in list ['some command'] to send to device (if string - it converted to list
-        
+
     Returns:
         tuple: (good_commands, failed_commands) where each is a dict with command:result pairs
     '''
     if isinstance(commands, str):
         commands = commands.strip().split('\n')
-    
+
     good = {}
     failed = {}
     errors_str = re.compile(r'Invalid input detected|Incomplete command|Ambiguous command|Unrecognized command')
@@ -289,18 +288,18 @@ def send_config_by_one(device, commands):
                 logging.warning(f"Command {command} raise error: {errors_str.search(result).group()} on device {device['ip']}")
                 failed[command] = result
         return (good, failed)
-    
+
     return _try_connect(device, execute_commands)
 
 
 def send_config_commands(device, commands):
     '''The function connects via SSH (using netmiko) to ONE device and performs 
     a list of commands in configuration mode based on the arguments passed.
-    
+
     Args:
         device (dict): dictionary in netmiko format for use with ConnectHandler(**device)
         commands (list or str): command in list ['some command'] to send to device (if string - it converted to list
-        
+
     Returns:
         str: device output or False if connection failed
     '''
@@ -312,23 +311,23 @@ def send_config_commands(device, commands):
         time.sleep(10)
         result += ssh.send_command_timing('write')
         return result
-    
+
     return _try_connect(device, execute_commands)
 
 def send_show_command(device, commands):
     '''The function connects via SSH (using netmiko) to ONE device
     and executes the specified show (display) command.
-    
+
     Args:
         device (dict): dictionary in netmiko format for use with ConnectHandler(**device)
-        commands (str): command to send to device 
-        
+        commands (str): command to send to device
+
     Returns:
         str: command output or False if connection failed
     '''
     def execute_command(ssh):
         return ssh.send_command(commands)
-    
+
     return _try_connect(device, execute_command)
 
 
@@ -337,7 +336,7 @@ def send_show_command(device, commands):
 
 def templatizator(*args, special = False):
     '''Function convert console output to dict using textfsm template
-    
+
     Args:
         args[0] (str): output from console of device
         args[1] (str):  1. the standard command itself in the form of an abbreviation for which 
@@ -350,7 +349,7 @@ def templatizator(*args, special = False):
                         device_type (args[1] is abbreviated command from ac.commands
                         if special = True, args[1] is not abbreviated command that one is name of file
                         with textFSM template, must be located in directory defined by ac.templpath 
-    
+
     Returns:
         list of lists obtained using the corresponding textfsm template
     '''
@@ -371,13 +370,13 @@ def templatizator(*args, special = False):
 
 
 def port_name_normalize(port):
-    '''The function gets the port name and if it is abbreviated, returns the full name. 
-       It is actually necessary to bypass the Huawei hardware property to return 
+    '''The function gets the port name and if it is abbreviated, returns the full name.
+       It is actually necessary to bypass the Huawei hardware property to return
        the interface name as GE and require the input of Gi
-    
+
     Args:
         port (str): name of port from device's console
-        
+
     Returns:
         (str) correct long format of port name
     '''
@@ -405,15 +404,15 @@ def port_name_normalize(port):
             return portnorm
 
 def get_port_by_mac(device, mac):
-    '''Function searches for the port to which a device with mac address is connected 
-    
+    '''Function searches for the port to which a device with mac address is connected
+
     Args:
         device (dict): dictionary in netmiko format for use with ConnectHandler(**device)
-        
+
     Returns:
-        a list of [Port,Status] where Status is True if  the destination port is edge port 
+        a list of [Port,Status] where Status is True if  the destination port is edge port
         and False if there is another switch behind this port
-        Port - out[2] (str): name of port 
+        Port - out[2] (str): name of port
     '''
     isEdgedPort = True
 
@@ -436,14 +435,14 @@ def get_port_by_mac(device, mac):
 def convert_mac(mac,device_type):
     '''Function converts mac address string from any known formats to format device with device_type
        MAC can be in the form of 4 by 3 or 6 by 2 separators are also different
-    
+
     Args:
         mac (str): string of mac address
         device_type (str): string of device_type like in netmiko
-    
+
     Returns:
         MAC string in the form accepted on this hardware with device_type = device_type
-    
+
     '''
     mac = mac.lower()
     trudelim, digit_by_group =  ac.commands["mac_delimeters"][device_type]
@@ -470,12 +469,12 @@ def convert_mac(mac,device_type):
 
 def is_ip_correct(ip):
     '''Function checks  ip address fo correctness
-        if there is standart error in russian layout when commas entered 
+        if there is standart error in russian layout when commas entered
         instead of dots correct this one
-    
+
     Args:
         ip (str): string of ip address
-    
+
     Returns:
         string of ip address or False if ip is not correct
     '''
@@ -492,23 +491,23 @@ def is_ip_correct(ip):
 
 
 def nslookup(hostname, reverse = True):
-    '''The function gets the host name and returns a list of its IP addresses. 
+    '''The function gets the host name and returns a list of its IP addresses.
         Or vice versa (reverse = True) finds the DNS name by IP address
-    
+
     Args:
         hostname (str):  name or ip of host
         reverse (bool): selector of reverse lookup by ip (default) or dirrect lookup by name
-    
+
     Returns:
         name of host
     '''
     import socket, subprocess
-    
+
     if reverse:
         try:
             ip = socket.gethostbyname(hostname)
         except:
-            ip = False 
+            ip = False
         return ip
     else:
         if os.name == 'nt':
@@ -530,13 +529,13 @@ def del_exeption(config):
         example: configs from many cisco devices different day by day
         only by string with command 'ntp clock-period'
         it prevents us from knowing if the config has been changed
-    
+
     Args:
         config (list): list of config lines from device
-    
+
     Returns:
         config (list): list of config lines from device without exeption lines
-        
+
     '''
     to_lookup = ['ntp clock-period']
     for i, line in enumerate(config):
@@ -572,7 +571,7 @@ class Activka:
     '''
     def __init__(self, byname, *args):
         '''Class initialisation
-        
+
         Args:
             byname (str): file activka_byname.yaml - list of all network devices by name
            *args (str):  optional parameter, file activka_byip.yaml - list of all ip adresses of all devices
@@ -591,7 +590,7 @@ class Activka:
         devices.remove('LEVEL')
         devices.remove('SEGMENT')
         self.devices = devices
-        self.levels = wholedict['LEVEL']
+        .levels = wholedict['LEVEL']
         self.segment = wholedict['SEGMENT']
         del wholedict['LEVEL']
         del wholedict['SEGMENT']
@@ -603,20 +602,20 @@ class Activka:
         self.wholedict = wholedict
         self.dev_type = dev_type
         self.by_ip = by_ip
-        
-    
+
+
     def __repr__(self):
         return(f'{self.__class__.__name__}({self.__class__.__doc__})')
-    
+
     def choose(self, device, withoutname = False):
         '''Function prepare dictionary in netmiko format for use with ConnectHandler(**device)
-        
+
         Args:
             device (str): device name as defined in activka_byname.yaml
             withoutname (bool, optional): selector for return type - 
                                         {dictionary for conect} if False (default)
                                         {device_name:{dictionary for conect}} if True
-        
+
         Returns:
             out (dict): {dictionary for conect} or {device_name:{dictionary for conect}}
         '''
@@ -631,17 +630,17 @@ class Activka:
 
     def filter(self, device_type = None, levels = None, segment = None):
         '''Function select devices from our device filtered by 3 parameters
-        
+
         Args:
-            device_type (str):  device_type like in netmiko 
-            levels (list): type of device - 
+            device_type (str):  device_type like in netmiko
+            levels (list): type of device -
                             'R' - router
                             'L3' - L3 swith
                             'L2' - L2 switch
-            segment (list): segmennts of networks (see documentation for activka_byname.yaml)
-        
+            segment (list): segments of networks (see documentation for activka_byname.yaml)
+
         Returns:
-            cycle2 (dict): dictionary of the form {device_name:{dictionary for conect},} 
+            cycle2 (dict): dictionary of the form {device_name:{dictionary for conect},}
             filtered from wholedict by parameters device_type, levels or segment
         '''
         cycle1 = {}
@@ -664,33 +663,32 @@ class Activka:
         else:
             cycle2 = cycle1
         return cycle2
-    
+
     def setconfig(self, device, commands):
         '''Functions change configuration by commands
-        
+
         Args:
             device (str): device name as defined in activka_byname.yaml
             commands (list): list of commands to transmit to device console
-            log (bool): selector of loggin is on (True) or off (False) by default
-        
+
         Returns:
             result (str): output from device console
         '''
         dev = self.choose(device, withoutname = True)
         result = send_config_commands(dev, commands)
         return result
-    
+
     def _get_neighbor_by_port(self, device, func, *args):
         '''Function get cdp or lldp neighbor on device's port 
-        
+
         Args:
             device (str): device's name
             func (str): abbreviated command 'neighbor_by_port'
             args[0] (str): name of port in normolize form
-        
+
         Returns:
             neighbor[0] (str): name of other switch connected to port
-        
+
         '''
         port = args[0]
         m = re.search(r'(Eth-Trunk|Po)(\S+)', port)
@@ -712,11 +710,11 @@ class Activka:
                 intl = neighbor[1]
             if intf == intl:
                 return neighbor[0]
-        return False        
+        return False
 
     def _mac_addr_tbl_byport(self, dev, outlist, isEdgedPort):
         '''Sub-Function for self.getinfo()  Get mac address table for defined port
-        
+
         Args:
             dev (dict): dictionary in netmiko format for ConnectHandler(**dev)
             outlist (list): otput of self.getinfo(device, 'mac_addr_tbl_by'
@@ -739,12 +737,12 @@ class Activka:
                 isEdgedPort = False
         #print(f'DEBUG getinfo return  mac_add_table outlist[0][2] = {outlist[0][2]} isEdgedPort = {isEdgedPort}')
         return [outlist[0][2], isEdgedPort]
-    
+
     def getinfo(self, device, func, *args, othercmd = False, txtFSMtmpl = False):
         '''The function receives the output of a command (func) from network equipment 'device' 
             command maybe "standard" (see dictionary 'commands') with arguments if they needed, or
             maybe ANY command then the 'othercmd variable must be set to True
-        
+
         Args:
             device (str): device's name from activka_byname.yaml
             func (str): 1. standard abbreviated command (see commands.yml and DOCUMENTAITION.md;
@@ -754,7 +752,7 @@ class Activka:
                                         or any commands (True)
             txtFSMtmpl (str, optional): A template file for FSM based text parsing, if othercmd = True.
                                         Defaults to None
-        
+
         Returns:
             outlist (list): list of list obtained using the corresponding textfsm template
             outlist (str):  the direct output of the entered command if textfsm template not defined 
@@ -763,7 +761,7 @@ class Activka:
         #print(f'DEBUG: starting getinfo device= {device}  func = {func} *args = {args}')
         if func == 'neighbor_by_port':
             return self._get_neighbor_by_port(device, func, args[0])
-            
+
         else:
             status = True
             dev = self.choose(device, withoutname = True)
@@ -810,10 +808,10 @@ class Activka:
         del lines[0:i]
         lines[0] = ''
         return lines
-            
+
     def get_curr_config(self, device, list_ = True):
         '''Function returns the current configuration of device
-        
+
         Args:
             device (str): name of device
             list_ (bool, optional): flag to define type of return
@@ -838,10 +836,10 @@ class Activka:
 
     def list_of_all_ip_intf(self, device):
         '''Function get all ip interface on device
-        
+
         Args:
             device (str): name of device
-        
+
         Returns:
             todo (list): list of [interface, ip_address, mask, status(up|down), protocol(up|down)]
         '''
@@ -873,17 +871,17 @@ class Activka:
         return todo
 
 
-    def execute_on_devices(self, devices: Union[str, List[str]], commands: Union[str, List[str]], 
+    def execute_on_devices(self, devices: Union[str, List[str]], commands: Union[str, List[str]],
                           timeout: int = 30, delay_factor: float = 1.0) -> Dict[str, Any]:
         """
         Execute commands on multiple devices
-        
+
         Args:
             devices: Single device name or list of device names
             commands: Command or list of commands to execute
             timeout: Timeout per device in seconds
             delay_factor: Factor to adjust delays for slow devices
-            
+
         Returns:
             Dictionary with results:
             {
@@ -894,33 +892,33 @@ class Activka:
         """
         if isinstance(devices, str):
             devices = [devices]
-            
+
         if isinstance(commands, str):
             commands = [commands]
-            
+
         results = {
             'success': {},
             'failed': {},
             'unreachable': []
         }
-        
+
         for device_name in devices:
             device = self.choose(device_name, withoutname=True)
-            
+
             if not self._is_device_available(device):
                 results['unreachable'].append(device_name)
                 continue
-                
+
             try:
                 output = []
                 for cmd in commands:
                     result = self.getinfo(device_name, cmd, othercmd=True)
                     output.append(result)
-                    
+
                 results['success'][device_name] = '\n'.join(output) if len(output) > 1 else output[0]
             except Exception as e:
                 results['failed'][device_name] = str(e)
-                
+
         return results
 
 
@@ -929,13 +927,13 @@ class Activka:
                           timeout: int = 30, delay_factor: float = 1.0) -> Dict[str, Any]:
         """
         Change config on multiple devices
-        
+
         Args:
             devices: Single device name or list of device names
             commands: Command or list of commands to execute
             timeout: Timeout per device in seconds
             delay_factor: Factor to adjust delays for slow devices
-            
+
         Returns:
             Dictionary with results:
             {
@@ -946,41 +944,41 @@ class Activka:
         """
         if isinstance(devices, str):
             devices = [devices]
-            
+
         if isinstance(commands, str):
             commands = [commands]
-            
+
         results = {
             'success': {},
             'failed': {},
             'unreachable': []
         }
-        
+
         for device_name in devices:
             device = self.choose(device_name, withoutname=True)
-            
+
             if not self._is_device_available(device):
                 results['unreachable'].append(device_name)
                 continue
-                
+
             try:
                 output = []
                 result = send_config_commands(device, commands)
                 output.append(result)
-                    
+
                 results['success'][device_name] = '\n'.join(output) if len(output) > 1 else output[0]
             except Exception as e:
                 results['failed'][device_name] = str(e)
-                
+
         return results
-    
+
     def _is_device_available(self, device: dict) -> bool:
         """Check if device is reachable and responsive"""
         try:
             # First check basic ping
             if ping_one_ip(device['ip']) != 0:
                 return False
-                
+
             # Then check if we can establish TCP connection to SSH port
             import socket
             with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -993,7 +991,14 @@ class Activka:
 
 
 class ActivkaBackup(Activka):
+    '''The class bassed on Activka for get config backup
+    '''
     def __init__(self, byname):
+        '''Class initialisation
+
+        Args:
+            byname (str): file activka_byname.yaml - list of all network devices by name
+        '''
         super().__init__(byname)
         import socket
         self._setup_backup_servers()
@@ -1011,7 +1016,7 @@ class ActivkaBackup(Activka):
             'password': ac.main_backup_server['password'],
             'local_root': ac.main_backup_server['local_root']
         }
-        
+
         self.second_backup_server = {
             'name': ac.second_backup_server['name'],
             'protocol': 'ftp',
@@ -1026,12 +1031,12 @@ class ActivkaBackup(Activka):
         """Setup protocol handlers based on current host"""
         import socket
         is_main_server = socket.gethostname() == self.main_backup_server['name']
-        
+
         # Default to local handlers
         self.get_backup_list = self._get_backup_list_local
         self.get_backup_config = self._get_backup_config_local
         self.write_backup = self._write_backup_local
-        
+
         if not is_main_server:
             # Use remote handlers
             self.get_backup_list = self._get_backup_list_remote
@@ -1041,11 +1046,11 @@ class ActivkaBackup(Activka):
     def compare_configs(self, device: str, ignore_lines: List[str] = None) -> Dict[str, Any]:
         """
         Compare current configuration with last backup
-        
+
         Args:
             device: Device name to compare configs for
             ignore_lines: List of regex patterns to ignore in comparison
-            
+
         Returns:
             Dictionary with comparison results:
             {
@@ -1057,27 +1062,27 @@ class ActivkaBackup(Activka):
         """
         current = self.get_curr_config(device)
         backup = self.get_backup_config(self.segment[device], device)
-        
+
         if not backup:
             return {'changed': True, 'added': current, 'removed': [], 'changed_lines': []}
-        
+
         return self._config_diff(current, backup, ignore_lines)
 
     def _config_diff(self, config1: List[str], config2: List[str], ignore_lines: List[str] = None) -> Dict[str, Any]:
         """
         Compare two configurations and return differences
-        
+
         Args:
             config1: First configuration (lines)
             config2: Second configuration (lines)
             ignore_lines: List of regex patterns to ignore
-            
+
         Returns:
             Dictionary with diff results
         """
         if ignore_lines is None:
             ignore_lines = []
-            
+
         def should_ignore(line):
             for pattern in ignore_lines:
                 if re.search(pattern, line):
@@ -1092,7 +1097,7 @@ class ActivkaBackup(Activka):
 
         added = list(set1 - set2)
         removed = list(set2 - set1)
-        
+
         # Find changed lines (same context but different content)
         changed_lines = []
         context = 3
@@ -1121,16 +1126,16 @@ class ActivkaBackup(Activka):
         """Write backup using SCP protocol"""
         import paramiko
         from io import StringIO
-        
+
         server = self.second_backup_server if second else self.main_backup_server
         ssh = paramiko.SSHClient()
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        
+
         try:
             ssh.connect(hostname=server['name'],
                        username=server['user'],
                        password=server['password'])
-            
+
             with ssh.open_sftp() as sftp:
                 remote_path = f"{server['scp_root']}{segment}/{filename}"
                 with sftp.file(remote_path, 'w') as f:
@@ -1145,14 +1150,14 @@ class ActivkaBackup(Activka):
         """Write backup using SFTP protocol"""
         import paramiko
         from io import StringIO
-        
+
         server = self.second_backup_server if second else self.main_backup_server
         transport = paramiko.Transport((server['name'], 22))
-        
+
         try:
             transport.connect(username=server['user'], password=server['password'])
             sftp = paramiko.SFTPClient.from_transport(transport)
-            
+
             remote_path = f"{server['sftp_root']}{segment}/{filename}"
             with sftp.file(remote_path, 'w') as f:
                 f.write(content)
@@ -1166,22 +1171,22 @@ class ActivkaBackup(Activka):
         """Get backup config using SCP protocol"""
         import paramiko
         from io import StringIO
-        
+
         server = self.second_backup_server if second else self.main_backup_server
         ssh = paramiko.SSHClient()
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        
+
         try:
             ssh.connect(hostname=server['name'],
                        username=server['user'],
                        password=server['password'])
-            
+
             with ssh.open_sftp() as sftp:
                 remote_path = f"{server['scp_root']}{segment}/{device}-*"
                 files = sorted(sftp.listdir(remote_path), reverse=True)
                 if not files:
                     return []
-                
+
                 with sftp.file(f"{remote_path}/{files[0]}", 'r') as f:
                     content = f.read().decode('utf-8')
                     return content.splitlines()
@@ -1190,3 +1195,24 @@ class ActivkaBackup(Activka):
             return []
         finally:
             ssh.close()
+
+    def _get_backup_config(self, segment: str, device: str) ->
+    List[str]:
+        '''The function returns a list of backup files in the segment folder
+
+        Args:
+            segment (str): segment (folder) under ftp_root  (ftp_root/segment/)
+            device (str, optional): name of device
+
+        Returns:
+            out (list): list of all backup files in the segment folder if device= None
+                        or list of  backup files only for this device
+        '''
+        from os import  path
+        local_path =
+        f"{self.main_backup_server['local_root']}{segment}/{device}-*"
+        files = [f for _, _, f in os.walk(where)][0]
+        out = self._get_files_of_dir(files, device)
+        return out
+
+

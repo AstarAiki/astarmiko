@@ -110,7 +110,7 @@ class ActivkaAsync(Activka):
         await tqdm_asyncio.gather(*(worker(dev) for dev in devices), desc="Executing config commands")
         return results
 
-# === Пример использования ===
+# === Example of using ===
 if __name__ == "__main__":
     import sys
 

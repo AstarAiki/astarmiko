@@ -63,7 +63,7 @@ class ActivkaAsync(Activka):
         await asyncio.gather(*(worker(dev) for dev in devices))
         return results
 
-# === Пример использования ===
+# === Example of using ===
 if __name__ == "__main__":
     import sys
 

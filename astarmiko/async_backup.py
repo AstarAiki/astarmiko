@@ -42,7 +42,7 @@ class ActivkaBackupAsync(Activka):
 
     def _get_timestamp(self):
         from datetime import datetime
-        return datetime.now().strftime('%Y%m%d-%H%M%S')
+        return datetime.now().strftime('%Y%m%d')
 
 # === Пример использования ===
 if __name__ == '__main__':
