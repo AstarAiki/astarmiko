@@ -1,90 +1,58 @@
-# manage.py
+# cli.py
 import argparse
-import base
-from base import Activka, setup_config
+import asyncio
+import json
+from astarmiko_async.async_exec import ActivkaAsync
+from astarmiko_async.base import setup_config
+from log_config import get_log_config, setup_logging
 
-def debug_logger(func):
-    """
-    Декоратор, который отслеживает все точки выхода из функции.
-    """
-    import functools
-    @functools.wraps(func)
-    def wrapper(*args, **kwargs):
-        print(f"DEBUG: Вызов функции {func.__name__}")
-        print(f"DEBUG: Входные аргументы - args: {args}, kwargs: {kwargs}")
-
-        try:
-            result = func(*args, **kwargs)
-            print(f"DEBUG: Функция {func.__name__} вернула (нормальный выход): {result}")
-            return result
-        except Exception as e:
-            print(f"DEBUG: Функция {func.__name__} вышла с исключением: {e}")
-            raise
-    return wrapper
-
-def main():
-    parser = argparse.ArgumentParser(description="AstarMiko CLI Utility")
-    subparsers = parser.add_subparsers(dest="command")
-
-    # Подкоманда: backup
-    backup_parser = subparsers.add_parser("backup", help="Получить текущий конфиг устройства")
-    backup_parser.add_argument("--device", required=True)
-    backup_parser.add_argument("--conf", default="astarmiko.yml")
-
-    # Подкоманда: show
-    show_parser = subparsers.add_parser("show", help="Выполнить show-команду")
-    show_parser.add_argument("--device", required=True)
-    show_parser.add_argument("--cmd", required=True)
-    show_parser.add_argument("--conf", default="astarmiko.yml")
-
-    # Подкоманда: set
-    set_parser = subparsers.add_parser("set", help="Выполнить конфигурационную команду")
-    set_parser.add_argument("--device", required=True)
-    set_parser.add_argument("--cmd", required=True)
-    set_parser.add_argument("--log", action="store_true")
-    set_parser.add_argument("--conf", default="astarmiko.yml")
-
-    # Подкоманда: filter
-    filter_parser = subparsers.add_parser("filter", help="Фильтрация устройств по параметрам")
-    filter_parser.add_argument("--segment", nargs='*')
-    filter_parser.add_argument("--level", nargs='*')
-    filter_parser.add_argument("--type", nargs='*')
-    filter_parser.add_argument("--conf", default="astarmiko.yml")
+async def main():
+    parser = argparse.ArgumentParser(description="AstarMiko Async CLI")
+    parser.add_argument("command", choices=["show", "set"], help="Operation to perform")
+    parser.add_argument("--device", nargs='+', required=True, help="Device name(s)")
+    parser.add_argument("--cmd", help="Command as string or JSON")
+    parser.add_argument("--cmd-file", help="Path to file with commands in JSON format")
+    parser.add_argument("--conf", default="astarmiko.yml", help="Config file path")
+    parser.add_argument("--rsyslog", action="store_true")
+    parser.add_argument("--loki", action="store_true")
+    parser.add_argument("--elastic", action="store_true")
 
     args = parser.parse_args()
-    if not args.command:
-        parser.print_help()
+    setup_config(args.conf)
+    logcfg = get_log_config()
+    setup_logging(logcfg)
+
+    a = ActivkaAsync("activka_byname.yaml")
+
+    commands = None
+    if args.cmd_file:
+        try:
+            with open(args.cmd_file, 'r', encoding='utf-8') as f:
+                commands = json.load(f)
+        except Exception as e:
+            print(f"Failed to load --cmd-file: {e}")
+            return
+    elif args.cmd:
+        try:
+            commands = json.loads(args.cmd) if args.cmd.strip().startswith("{") else [args.cmd]
+        except Exception as e:
+            print(f"Failed to parse --cmd: {e}")
+            return
+    else:
+        print("Either --cmd or --cmd-file must be provided")
         return
 
-    setup_config(args.conf)
-    a = Activka("activka_byname.yaml")
-    if not args.device[0].isalpha():
-        args.device = a.by_ip[args.device]
-    if args.command == "backup":
-        config = a.get_curr_config(args.device)
-        print('\n'.join(config))
-
-    elif args.command == "show":
-        result = a.getinfo(args.device, args.cmd, othercmd=True)
-        if isinstance(result, list):
-            for line in result:
-                print(line)
-        else:
-            print(result)
-
+    if args.command == "show":
+        result = await a.execute_on_devices(
+            args.device, commands,
+            rsyslog=args.rsyslog, loki=args.loki, elastic=args.elastic)
     elif args.command == "set":
-        result = a.setconfig(args.device, args.cmd.split(';'), log=args.log)
-        print(result)
+        result = await a.setconfig_on_devices(
+            args.device, commands,
+            rsyslog=args.rsyslog, loki=args.loki, elastic=args.elastic)
 
-    elif args.command == "filter":
-        result = a.filter(
-            segment=args.segment,
-            levels=args.level,
-            device_type=args.type
-        )
-        print("Найдено устройств:", len(result))
-        for name, data in result.items():
-            print(f"{name} ({data['ip']}) - {data['device_type']}")
+    print(result)
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
+

@@ -365,8 +365,15 @@ def mac_routine(myactivka,ip):
 
 
 if __name__ == "__main__":
-    setup_config("C:/Users/starkov/My Documents/LiClipse Workspace/astarmiko/fh.yml")
-    from astarmiko.baseAI import ac
+    '''
+    If file with this python script named fh.py it look up fh.yml configuration file in same directory
+    '''
+    file_path = os.path.abspath(sys.argv[0])
+    file_name = os.path.splitext(os.path.basename(file_path))[0]
+    base_dir = os.path.dirname(file_path)
+    path_to_cfg = os.path.abspath(os.path.join(base_dir, f'{file_name}.yml'))
+    setup_config(path_to_cfg)
+    from astarmiko.baseAI import ac 
     file = ac.localpath + 'messages_' + ac.language + '.yaml'
     with open(file, encoding='utf8') as f:
         message = yaml.safe_load(f)

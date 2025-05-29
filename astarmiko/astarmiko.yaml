@@ -5,7 +5,7 @@ phone_mac:
 - 001a
 templpath: /home/mypython/astarmiko/TEMPLATES/
 user: gAAAAABn7NmekcfGhIjrwJRXL6v0QRm3SAz4dz-GSm16gu7dpBIyw5omo-A1d3-LjaNwPwTN6Vg-1jzW5_0aPeFbwe0p6TZtsQ==
-dict_of_cmd: C:/Users/starkov/My Documents/LiClipse Workspace/astarmiko/astarmiko/YAML/commands.yml
+dict_of_cmd: /home/mypython/astarmiko/YAML/commands.yml
 logging: True
 logfile: /home/mypython/
 loglevel: DEBUG
