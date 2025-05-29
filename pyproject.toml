@@ -1,30 +1,32 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
 [project]
-name = "astarmiko_async"
-version = "0.2.0"
-description = "Asynchronous network automation with CLI, logging, and configuration management"
+name = "astarmiko"
+version = "0.1.0"
+description = "Async SSH automation for enterprise network equipment"
 authors = [
-    { name = "Your Name", email = "your.email@example.com" }
+  { name="astaraiki", email="your.email@example.com" }
 ]
 readme = "README.md"
 license = { text = "MIT" }
 requires-python = ">=3.8"
 dependencies = [
+    "netmiko",
     "aiofiles",
     "asyncssh",
     "tqdm",
-    "astarconf>=1.0.3",
-    "requests"
+    "textfsm",
+    "pyyaml",
+    "requests",
+    "pysnmp"
 ]
 
-[project.scripts]
-astarmiko-cli = "astarmiko_async.cli:main"
-
-[build-system]
-requires = ["setuptools", "wheel"]
-build-backend = "setuptools.build_meta"
-
 [project.urls]
-Homepage = "https://github.com/astaraiki/astarmiko_async"
-Documentation = "https://github.com/astaraiki/astarmiko_async/wiki"
-Issues = "https://github.com/astaraiki/astarmiko_async/issues"
+"Homepage" = "https://github.com/astaraiki/astarmiko"
+
+[project.scripts]
+astarmiko-cli = "astarmiko.scripts.acm:main"
+findhost = "astarmiko.scripts.fh:main"
 
