@@ -22,8 +22,8 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'astarmiko-cli=astarmiko.scripts.acm:main',
-            'findhost=astarmiko.scripts.fh:main'
+            'acm=astarmiko.scripts.acm:main',
+            'fh=astarmiko.scripts.fh:main'
         ],
     },
     classifiers=[

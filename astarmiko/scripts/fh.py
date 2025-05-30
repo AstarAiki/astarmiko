@@ -362,9 +362,7 @@ def mac_routine(myactivka,ip):
     else:
         return out[0]
 
-
-
-if __name__ == "__main__":
+def findhost(argv=None):
     '''
     If file with this python script named fh.py it look up fh.yml configuration file in same directory
     '''
@@ -395,7 +393,7 @@ if __name__ == "__main__":
             ip = input(message[0])
 
     print(message[1])
-    myactivka = Activka('activka_byname.yaml', 'activka_byip.yaml')
+    myactivka = Activka('activka_byname.yaml')
     is_mac = convert_mac(ip,'cisco_ios')
     repeat_out = []
     while True:
@@ -423,6 +421,11 @@ if __name__ == "__main__":
                     break
             is_mac = convert_mac(ip,'cisco_ios')                                       
 
+def main():
+    import sys
+    from .fh import findhost 
+    findhost(sys.argv[1:])
+
 '''
     #читаем настройки лога из конфигурационного файла
 if isinstance(ac.looging, bool):
@@ -435,4 +438,4 @@ if isinstance(ac.log_format_str, str):
     if ac.log_format_str:
         format_str = ac.log_format_str
 '''
-            
+

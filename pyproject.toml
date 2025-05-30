@@ -7,7 +7,7 @@ name = "astarmiko"
 version = "0.1.0"
 description = "Async SSH automation for enterprise network equipment"
 authors = [
-  { name="astaraiki", email="your.email@example.com" }
+  { name="Andrey Starkov", email="astar@andreystarkov.com" }
 ]
 readme = "README.md"
 license = { text = "MIT" }
@@ -20,13 +20,14 @@ dependencies = [
     "textfsm",
     "pyyaml",
     "requests",
-    "pysnmp"
+    "pysnmp",
+    "astarconf"
 ]
 
 [project.urls]
 "Homepage" = "https://github.com/astaraiki/astarmiko"
 
 [project.scripts]
-astarmiko-cli = "astarmiko.scripts.acm:main"
-findhost = "astarmiko.scripts.fh:main"
+acm = "astarmiko.scripts.acm:main"
+fh = "astarmiko.scripts.fh:main"
 
