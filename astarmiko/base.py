@@ -590,7 +590,7 @@ class Activka:
         devices.remove('LEVEL')
         devices.remove('SEGMENT')
         self.devices = devices
-        .levels = wholedict['LEVEL']
+        self.levels = wholedict['LEVEL']
         self.segment = wholedict['SEGMENT']
         del wholedict['LEVEL']
         del wholedict['SEGMENT']

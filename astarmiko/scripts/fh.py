@@ -35,7 +35,6 @@ def debug_logger(func):
 
 message = dict()
 
-@debug_logger
 def check_firewall(myactivka, ip, routerstart):
     '''Functions check there is firewall between host with ip and other network
     
@@ -117,7 +116,6 @@ def get_host_description_ad(hostname):
         out = message[26]
     return out
 
-@debug_logger
 def findbehindfw(myactivka, m):
     '''Function return start port for serching host if it is behind firewall
     
@@ -247,7 +245,6 @@ def findbymac(myactivka, mac_to_find, devices):
     return return_text       
 
 
-@debug_logger
 def find_router_to_start(myactivka, ip, is_mac = False, router = None):
     '''
     Function get IP (or MAC if is_mac=True) address and lookup routers as start point 
