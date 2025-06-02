@@ -6,8 +6,15 @@ import re
 import time
 import sys
 from typing import Optional, Any, List, Dict, Union
-from pysnmp.hlapi.v3arch.asyncio import *
-import asyncio
+from pysnmp.hlapi.v3arch.asyncio import (
+        CommunityData,
+        SnmpEngine,
+        UdpTransportTarget,
+        ObjectType,
+        ObjectIdentity,
+        ContextData,
+        get_cmd,
+        )
 
 # from future.backports.test.pystone import TRUE
 from netmiko import (
@@ -15,7 +22,6 @@ from netmiko import (
     NetmikoTimeoutException,
     NetmikoAuthenticationException,
 )
-from datetime import datetime
 
 ac = ""  # Global object represent configuration attributes
 
@@ -34,7 +40,8 @@ def debug_logger(func):
         try:
             result = func(*args, **kwargs)
             print(
-                f"DEBUG: Функция {func.__name__} вернула (нормальный выход): {result}"
+                f"DEBUG: Функция {func.__name__} вернула (нормальный выход): "
+                f"{result}"
             )
             return result
         except Exception as e:
@@ -47,7 +54,8 @@ def debug_logger(func):
 logger = logging.getLogger(__name__)
 _DEFAULT_LOG_LEVEL = logging.WARNING
 _DEFAULT_LOG_FORMAT = (
-    "%(asctime)s - %(name)s - %(levelname)s - [%(module)s.%(funcName)s] - %(message)s"
+    "%(asctime)s - %(name)s - %(levelname)s - [%(module)s.%(funcName)s] -\
+    %(message)s"
 )
 
 
@@ -137,7 +145,8 @@ async def snmp_get_oid(
     version: int = 2,
     prnerr: bool = False,
 ):
-    """Function get OID's by SNMP from device without ssh access (like russian NGFW Kontinent)
+    """Function get OID's by SNMP from device without ssh access
+       (like russian NGFW Kontinent)
 
     Args:
         host (str): ip address of NGFW
@@ -179,12 +188,9 @@ async def snmp_get_oid(
                 )
             )
     else:
-        # print(f'DEBUG_0 in snmp_get_oid  we are here')
         if errorIndication:
             result.append(errorIndication)
-            # print(f'DEBUG_1 in snmp_get_oid  result = {result}')
         elif errorStatus:
-            # print(f'DEBUG_02 in snmp_get_oid  we are here')
             result.append(
                 "{} at {}".format(
                     errorStatus.prettyPrint(),
@@ -192,18 +198,14 @@ async def snmp_get_oid(
                 )
             )
             result.append(False)
-            # print(f'DEBUG_2 in snmp_get_oid  result = {result}')
         else:
-            # print(f'DEBUG_03 in snmp_get_oid  we are here {str(varBinds[0].prettyPrint())}')
             result.append(str(varBinds[0].prettyPrint()))
-            # print(f'DEBUG_3 in snmp_get_oid  result = {result}')
-    # snmpEngine.close_dispatcher()
-    # print(f'DEBUG in snmp_get_oid  result = {result}')
     return result
 
 
 def ping_one_ip(ip_address):
-    """Function get one ip address and return 0 if all is o'key or else error code
+    """Function get one ip address and return 0 if all is o'key
+       or else error code
 
     Args:
         ip_address (str): ip address to ping
@@ -217,13 +219,15 @@ def ping_one_ip(ip_address):
     if os.name == "nt":
         reply = sp.run(["ping", "-n", "3", ip_address], stdout=sp.DEVNULL)
     else:
-        reply = sp.run(["ping", "-c", "3", "-n", ip_address], stdout=sp.DEVNULL)
+        reply = sp.run(["ping", "-c", "3", "-n", ip_address],
+                       stdout=sp.DEVNULL)
 
     return reply.returncode
 
 
 def _try_connect(device, func, *args, **kwargs):
-    """Internal function to handle connection attempts with availability check"""
+    """Internal function to handle connection attempts with availability check
+    """
 
     def is_device_available(ip):
         """Check if device is reachable"""
@@ -236,7 +240,8 @@ def _try_connect(device, func, *args, **kwargs):
     def connect_with_credentials(device_params):
         if not is_device_available(device_params["ip"]):
             logger.warning(
-                f"Device {device_params['host']} ({device_params['ip']}) is unreachable"
+                f"Device {device_params['host']} ({device_params['ip']}) "
+                f"is unreachable"
             )
             return False
 
@@ -249,11 +254,15 @@ def _try_connect(device, func, *args, **kwargs):
                 return func(ssh, *args, **kwargs)
 
         except NetmikoTimeoutException as error:
-            logger.warning(f"Connection timeout to {device_params['ip']}: {error}")
+            logger.warning(
+                    f"Connection timeout to {device_params['ip']}: "
+                    f"{error}"
+                    )
             return False
         except NetmikoAuthenticationException as error:
             logger.warning(
-                f"Authentication failed for {device_params['username']}@{device_params['ip']}"
+                f"Authentication failed for "
+                f"{device_params['username']}@{device_params['ip']}"
             )
             raise  # Re-raise to handle in outer function
 
@@ -283,11 +292,14 @@ def send_config_by_one(device, commands):
      ONE command in configuration mode based on the arguments passed.
 
     Args:
-        device (dict): dictionary in netmiko format for use with ConnectHandler(**device)
-        commands (list or str): command in list ['some command'] to send to device (if string - it converted to list
+        device (dict): dictionary in netmiko format for use with
+        ConnectHandler(**device)
+        commands (list or str): command in list ['some command']
+        to send to device (if string - it converted to list
 
     Returns:
-        tuple: (good_commands, failed_commands) where each is a dict with command:result pairs
+        tuple: (good_commands, failed_commands) where each is a dict
+        with command:result pairs
     """
     if isinstance(commands, str):
         commands = commands.strip().split("\n")
@@ -295,7 +307,10 @@ def send_config_by_one(device, commands):
     good = {}
     failed = {}
     errors_str = re.compile(
-        r"Invalid input detected|Incomplete command|Ambiguous command|Unrecognized command"
+        r"Invalid input detected|"
+        r"Incomplete command|"
+        r"Ambiguous command|"
+        r"Unrecognized command"
     )
 
     def execute_commands(ssh):
@@ -305,9 +320,15 @@ def send_config_by_one(device, commands):
                 good[command] = result
             else:
                 error_match = errors_str.search(result)
-                error_msg = error_match.group() if error_match else "Unknown error"
+                error_msg = (
+                        error_match.group()
+                        if error_match
+                        else "Unknown error"
+                )
                 logging.warning(
-                    f"Command {command} raise error: {errors_str.search(result).group()} on device {device['ip']}"
+                    f"Command {command} raise error: "
+                    f"{errors_str.search(result).group()} "
+                    f"on device {device['ip']}"
                 )
                 failed[command] = result
         return (good, failed)
@@ -320,8 +341,10 @@ def send_config_commands(device, commands):
     a list of commands in configuration mode based on the arguments passed.
 
     Args:
-        device (dict): dictionary in netmiko format for use with ConnectHandler(**device)
-        commands (list or str): command in list ['some command'] to send to device (if string - it converted to list
+        device (dict): dictionary in netmiko format for use with
+        ConnectHandler(**device)
+        commands (list or str): command in list ['some command']
+        to send to device (if string - it converted to list
 
     Returns:
         str: device output or False if connection failed
@@ -330,7 +353,8 @@ def send_config_commands(device, commands):
         commands = commands.strip().split("\n")
 
     def execute_commands(ssh):
-        result = ssh.send_config_set(commands, delay_factor=20, cmd_verify=False)
+        result = ssh.send_config_set(commands, delay_factor=20,
+                                     cmd_verify=False)
         time.sleep(10)
         result += ssh.send_command_timing("write")
         return result
@@ -343,7 +367,8 @@ def send_show_command(device, commands):
     and executes the specified show (display) command.
 
     Args:
-        device (dict): dictionary in netmiko format for use with ConnectHandler(**device)
+        device (dict): dictionary in netmiko format for use with
+        ConnectHandler(**device)
         commands (str): command to send to device
 
     Returns:
@@ -361,16 +386,20 @@ def templatizator(*args, special=False):
 
     Args:
         args[0] (str): output from console of device
-        args[1] (str):  1. the standard command itself in the form of an abbreviation for which
-                        there is a textFSM template or
-                        2. any command, then a second positional parameter is needed
-                        - the template file name and the special variable must be set to True
-        args[2] (str):  if special = False (by default) device type in form of netmiko
-                        or 'nt' or 'posix' if args[0] output from console of
-                        Windows or Posix systems
-                        device_type (args[1] is abbreviated command from ac.commands
-                        if special = True, args[1] is not abbreviated command that one is name of file
-                        with textFSM template, must be located in directory defined by ac.templpath
+        args[1] (str):  1. the standard command itself in the form of
+                        an abbreviation for which there is a textFSM template
+                        or
+                        2. any command, then a second positional parameter
+                        is needed - the template file name and the special
+                        variable must be set to True
+        args[2] (str):  if special = False (by default) device type
+                        in form of netmiko or 'nt' or 'posix' if args[0]
+                        output from console of Windows or Posix systems
+                        device_type (args[1] is abbreviated command from
+                        ac.commands if special = True, args[1] is not
+                        abbreviated command that one is name of file
+                        with textFSM template, must be located
+                        in directory defined by ac.templpath
 
     Returns:
         list of lists obtained using the corresponding textfsm template
@@ -391,9 +420,10 @@ def templatizator(*args, special=False):
 
 
 def port_name_normalize(port):
-    """The function gets the port name and if it is abbreviated, returns the full name.
-       It is actually necessary to bypass the Huawei hardware property to return
-       the interface name as GE and require the input of Gi
+    """The function gets the port name and if it is abbreviated,
+       returns the full name.
+       It is actually necessary to bypass the Huawei hardware property
+       to return the interface name as GE and require the input of Gi
 
     Args:
         port (str): name of port from device's console
@@ -426,34 +456,44 @@ def port_name_normalize(port):
 
 
 def get_port_by_mac(device, mac):
-    """Function searches for the port to which a device with mac address is connected
+    """Function searches for the port to which a device with mac address
+       is connected
 
     Args:
-        device (dict): dictionary in netmiko format for use with ConnectHandler(**device)
+        device (dict): dictionary in netmiko format for use with
+        ConnectHandler(**device)
 
     Returns:
-        a list of [Port,Status] where Status is True if  the destination port is edge port
-        and False if there is another switch behind this port
+        a list of [Port,Status] where Status is True if  the destination port
+        is edge port and False if there is another switch behind this port
         Port - out[2] (str): name of port
     """
     isEdgedPort = True
 
-    command = ac.commands["mac_addr_tbl_bymac"][device["device_type"]].format(mac)
+    command = (
+            ac.commands["mac_addr_tbl_bymac"][device["device_type"]]
+            .format(mac)
+    )
     todo = send_show_command(device, command)
     out = templatizator(todo, "mac_address_table", device["device_type"])[0]
     out[2] = port_name_normalize(out[2])
-    command = ac.commands["mac_addr_tbl_byport"][device["device_type"]].format(out[2])
+    command = (
+            ac.commands["mac_addr_tbl_byport"][device["device_type"]]
+            .format(out[2])
+    )
     todo = send_show_command(device, command)
     outwhole = templatizator(todo, "mac_address_table", device["device_type"])
     if len(outwhole) > 2:
         if (
             len(outwhole) == 3
-        ):  # если компютер включен через IP телефон то светится 2 MAC в 2-х VLAN
+        ):  # If the computer is switched on via IP phone,
+            # 2 MAC in 2 VLANs are lit up
             for (
                 mac
             ) in (
                 ac.phone_mac
-            ):  # у нас все телефоны имеют MAC начинающийся на 805e но ведь могут появиться и другие
+            ):  # All our phones have a MAC starting with 805e,
+                # but there could be others.
                 if mac in outwhole[2][0]:
                     return [out[2], isEdgedPort]
         else:
@@ -462,40 +502,58 @@ def get_port_by_mac(device, mac):
 
 
 def convert_mac(mac, device_type):
-    """Function converts mac address string from any known formats to format device with device_type
-       MAC can be in the form of 4 by 3 or 6 by 2 separators are also different
+    """Function converts mac address string from any known formats to format
+       device with device_type
+       MAC can be in the form of 4 by 3 or 6 by 2
+       separators are also different
 
     Args:
         mac (str): string of mac address
         device_type (str): string of device_type like in netmiko
 
     Returns:
-        MAC string in the form accepted on this hardware with device_type = device_type
+        MAC string in the form accepted on this hardware
+        with device_type = device_type
 
     """
     mac = mac.lower()
     trudelim, digit_by_group = ac.commands["mac_delimeters"][device_type]
     p4 = re.compile(
-        r"(?P<oct1>[0-9a-fA-F]{4})[-|.|:](?P<oct2>[0-9a-fA-F]{4})[-|.|:](?P<oct3>[0-9a-fA-F]{4})",
+        r"(?P<oct1>[0-9a-fA-F]{4})[-|.|:]"
+        r"(?P<oct2>[0-9a-fA-F]{4})[-|.|:]"
+        r"(?P<oct3>[0-9a-fA-F]{4})",
         re.ASCII,
     )
     p6 = re.compile(
-        r"(?P<oct1>[0-9a-fA-F]{2})[-|.|:](?P<oct2>[0-9a-fA-F]{2})[-|.|:](?P<oct3>[0-9a-fA-F]{2})[-|.|:](?P<oct4>[0-9a-fA-F]{2})[-|.|:](?P<oct5>[0-9a-fA-F]{2})[-|.|:](?P<oct6>[0-9a-fA-F]{2})",
+        (
+            r"(?P<oct1>[0-9a-fA-F]{2})[-|.|:]"
+            r"(?P<oct2>[0-9a-fA-F]{2})[-|.|:]"
+            r"(?P<oct3>[0-9a-fA-F]{2})[-|.|:]"
+            r"(?P<oct4>[0-9a-fA-F]{2})[-|.|:]"
+            r"(?P<oct5>[0-9a-fA-F]{2})[-|.|:]"
+            r"(?P<oct6>[0-9a-fA-F]{2})"
+        ),
         re.ASCII,
     )
     m = p4.search(mac)
     if m:
         if digit_by_group == 4:
-            trumac = f"{m.group(1)}{trudelim}{m.group(2)}{trudelim}{m.group(3)}"
+            trumac = f"{m.group(1)}{trudelim}{m.group(2)}{trudelim}"
+            f"{m.group(3)}"
         else:
-            trumac = f"{m.group(1)[0:2]}{trudelim}{m.group(1)[2:4]}{trudelim}{m.group(2)[0:2]}{trudelim}{m.group(2)[2:4]}{trudelim}{m.group(3)[0:2]}{trudelim}{m.group(3)[2:4]}"
+            trumac = f"{m.group(1)[0:2]}{trudelim}{m.group(1)[2:4]}{trudelim}"
+            f"{m.group(2)[0:2]}{trudelim}{m.group(2)[2:4]}{trudelim}"
+            f"{m.group(3)[0:2]}{trudelim}{m.group(3)[2:4]}"
     else:
         m = p6.search(mac)
         if m:
             if digit_by_group == 4:
-                trumac = f"{m.group(1)}{m.group(2)}{trudelim}{m.group(3)}{m.group(4)}{trudelim}{m.group(5)}{m.group(6)}"
+                trumac = f"{m.group(1)}{m.group(2)}{trudelim}{m.group(3)}"
+                f"{m.group(4)}{trudelim}{m.group(5)}{m.group(6)}"
             else:
-                trumac = f"{m.group(1)}{trudelim}{m.group(2)}{trudelim}{m.group(3)}{trudelim}{m.group(4)}{trudelim}{m.group(5)}{trudelim}{m.group(6)}"
+                trumac = f"{m.group(1)}{trudelim}{m.group(2)}{trudelim}"
+                f"{m.group(3)}{trudelim}{m.group(4)}{trudelim}{m.group(5)}"
+                f"{trudelim}{m.group(6)}"
         else:
             return False
     return trumac
@@ -527,17 +585,19 @@ def nslookup(hostname, reverse=True):
 
     Args:
         hostname (str):  name or ip of host
-        reverse (bool): selector of reverse lookup by ip (default) or dirrect lookup by name
+        reverse (bool): selector of reverse lookup by ip (default) or dirrect
+        lookup by name
 
     Returns:
         name of host
     """
-    import socket, subprocess
+    import socket
+    import subprocess
 
     if reverse:
         try:
             ip = socket.gethostbyname(hostname)
-        except:
+        except socket.gaierror:
             ip = False
         return ip
     else:
@@ -585,21 +645,6 @@ def check_identity(curr_config, last_backup):
         return False
 
 
-class TimeMeasure:
-    """
-    The class allows you to measure the execution time of a program or subroutine
-    """
-
-    def __init__(self):
-        pass
-
-    def __enter__(self):
-        self.start = time.time()
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        print(f"Время выполнения программы заняло: {time.time() - self.start}")
-
-
 class Activka:
     """The class represents all our network devices - routers and switches"""
 
@@ -607,8 +652,10 @@ class Activka:
         """Class initialisation
 
         Args:
-            byname (str): file activka_byname.yaml - list of all network devices by name
-           *args (str):  optional parameter, file activka_byip.yaml - list of all ip adresses of all devices
+            byname (str): file activka_byname.yaml -
+            list of all network devices by name
+           *args (str):  optional parameter, file activka_byip.yaml -
+           list of all ip adresses of all devices
         """
         username = ac.user
         password = ac.password
@@ -641,23 +688,23 @@ class Activka:
         return f"{self.__class__.__name__}({self.__class__.__doc__})"
 
     def choose(self, device, withoutname=False):
-        """Function prepare dictionary in netmiko format for use with ConnectHandler(**device)
+        """Function prepare dictionary in netmiko format for use with
+           ConnectHandler(**device)
 
         Args:
             device (str): device name as defined in activka_byname.yaml
             withoutname (bool, optional): selector for return type -
-                                        {dictionary for conect} if False (default)
-                                        {device_name:{dictionary for conect}} if True
+                            {dictionary for conect} if False (default)
+                            {device_name:{dictionary for conect}} if True
 
         Returns:
-            out (dict): {dictionary for conect} or {device_name:{dictionary for conect}}
+            out (dict): {dictionary for conect}
+                        or {device_name:{dictionary for conect}}
         """
         out = {}
         if withoutname:
-            # print(f'DEBUG: wholedict[device] = {self.wholedict[device]}')
             out.update(self.wholedict[device])
         else:
-            # print(f'DEBUG: wholedict[device] = {self.wholedict[device]}')
             out[device] = self.wholedict[device]
         return out
 
@@ -670,17 +717,21 @@ class Activka:
                             'R' - router
                             'L3' - L3 swith
                             'L2' - L2 switch
-            segment (list): segments of networks (see documentation for activka_byname.yaml)
+            segment (list): segments of networks
+            (see documentation for activka_byname.yaml)
 
         Returns:
-            cycle2 (dict): dictionary of the form {device_name:{dictionary for conect},}
-            filtered from wholedict by parameters device_type, levels or segment
+            cycle2 (dict): dictionary of the form
+                           {device_name:{dictionary for conect},}
+                           filtered from wholedict by parameters device_type,
+                           levels or segment
         """
         cycle1 = {}
         cycle2 = {}
         if segment:
             device_by_seg = [
-                key for key in self.segment.keys() if self.segment[key] == segment
+                key for key in self.segment.keys() if
+                self.segment[key] == segment
             ]
         if device_type:
             if not segment:
@@ -698,7 +749,8 @@ class Activka:
             else:
                 cycle1 = {d: self.wholedict[d] for d in device_by_seg}
         if levels:
-            cycle2 = {d: cycle1[d] for d in cycle1.keys() if self.levels[d] in levels}
+            cycle2 = {d: cycle1[d] for d in cycle1.keys() if
+                      self.levels[d] in levels}
         else:
             cycle2 = cycle1
         return cycle2
@@ -732,19 +784,20 @@ class Activka:
         port = args[0]
         m = re.search(r"(Eth-Trunk|Po)(\S+)", port)
         if m:
-            port = self.getinfo(device, "ethchannel_member", m.group(2))[0][0][0]
+            port = self.getinfo(device, "ethchannel_member",
+                                m.group(2))[0][0][0]
             port = port_name_normalize(port)
         nblist = self.getinfo(device, "neighbor", "pusto")
         subintf = re.compile(r"\.\d+")
         p = subintf.search(port)
         if p:
-            intf = port[0 : p.start(0)]
+            intf = port[0: p.start(0)]
         else:
             intf = port
         for neighbor in nblist:
             lp = subintf.search(neighbor[1])
             if lp:
-                intl = neighbor[1][0 : lp.start(0)]
+                intl = neighbor[1][0: lp.start(0)]
             else:
                 intl = neighbor[1]
             if intf == intl:
@@ -752,7 +805,8 @@ class Activka:
         return False
 
     def _mac_addr_tbl_byport(self, dev, outlist, isEdgedPort):
-        """Sub-Function for self.getinfo()  Get mac address table for defined port
+        """Sub-Function for self.getinfo()  Get mac address table
+           for defined port
 
         Args:
             dev (dict): dictionary in netmiko format for ConnectHandler(**dev)
@@ -762,50 +816,58 @@ class Activka:
         Returns:
             list [outlist[0][2], isEdgedPort]
         """
-        # print(f'DEBUG _mac_addr_tbl_byport receive  outlist = {outlist} isEdgedPort = {isEdgedPort}')
         outlist[0][2] = port_name_normalize(outlist[0][2])
-        command = ac.commands["mac_addr_tbl_byport"][dev["device_type"]].format(
-            outlist[0][2]
+        command = (
+                ac.commands["mac_addr_tbl_byport"][dev["device_type"]]
+                .format(outlist[0][2])
         )
         todo = send_show_command(dev, command)
-        outwhole = templatizator(todo, "mac_addr_tbl_byport", dev["device_type"])
+        outwhole = templatizator(todo, "mac_addr_tbl_byport",
+                                 dev["device_type"])
         if len(outwhole) > 2:
             if (
                 len(outwhole) == 3
-            ):  # если компютер включен через IP телефон то светится 2 MAC в 2-х VLAN
+            ):  # If the computer is switched on via IP phone,
+                # 2 MAC in 2 VLANs are lit up
                 for (
                     mac
                 ) in (
                     ac.phone_mac
-                ):  # у нас все телефоны имеют MAC начинающийся на 805e но ведь могут появиться и другие
+                ):  # All our phones have a MAC starting with 805e,
+                    # but there could be others.
                     if mac in outwhole[2][0]:
                         return [outlist[0][2], isEdgedPort]
             else:
                 isEdgedPort = False
-        # print(f'DEBUG getinfo return  mac_add_table outlist[0][2] = {outlist[0][2]} isEdgedPort = {isEdgedPort}')
         return [outlist[0][2], isEdgedPort]
 
     def getinfo(self, device, func, *args, othercmd=False, txtFSMtmpl=False):
-        """The function receives the output of a command (func) from network equipment 'device'
-            command maybe "standard" (see dictionary 'commands') with arguments if they needed, or
-            maybe ANY command then the 'othercmd variable must be set to True
+        """The function receives the output of a command (func)
+           from network equipment 'device'
+           command maybe "standard" (see dictionary 'commands')
+           with arguments if they needed, or maybe ANY command
+           then the 'othercmd variable must be set to True
 
         Args:
             device (str): device's name from activka_byname.yaml
-            func (str): 1. standard abbreviated command (see commands.yml and DOCUMENTAITION.md;
+            func (str): 1. standard abbreviated command (see commands.yml
+                           and DOCUMENTAITION.md;
                         2. any command, selector othercmd must be True
-            *args (str): if standard func requires arguments, this is place for it
-            othercmd (bool, optional): flag that defines  'func' is "standard command" (default False)
+            *args (str): if standard func requires arguments,
+                         this is place for it
+            othercmd (bool, optional): flag that defines  'func' is
+                                       "standard command" (default False)
                                         or any commands (True)
-            txtFSMtmpl (str, optional): A template file for FSM based text parsing, if othercmd = True.
-                                        Defaults to None
+            txtFSMtmpl (str, optional): A template file for FSM based text
+                             parsing, if othercmd = True. Defaults to None
 
         Returns:
-            outlist (list): list of list obtained using the corresponding textfsm template
-            outlist (str):  the direct output of the entered command if textfsm template not defined
+            outlist (list): list of list obtained using the corresponding
+                            textfsm template
+            outlist (str):  the direct output of the entered command if
+                            textfsm template not defined
 
         """
-        # print(f'DEBUG: starting getinfo device= {device}  func = {func} *args = {args}')
         if func == "neighbor_by_port":
             return self._get_neighbor_by_port(device, func, args[0])
 
@@ -814,16 +876,16 @@ class Activka:
             dev = self.choose(device, withoutname=True)
             if not othercmd:
                 if args[0]:
-                    command = ac.commands[func][dev["device_type"]].format(args[0])
+                    command = (
+                            ac.commands[func][dev["device_type"]]
+                            .format(args[0])
+                    )
                 else:
                     command = ac.commands[func][dev["device_type"]]
-                # print(f'DEBUG: getinfo func = {func} args[0] = {args[0]}  command = {command}')
             else:
                 command = func
-                # print(f'DEBUG: getinfo по идее должны оказаться здесь command = {command}')
             todo = send_show_command(dev, command)
             if not todo:
-                # print(f'DEBUG: getinfo return no TODO, exit')
                 return False
             if not txtFSMtmpl:
                 if not othercmd:
@@ -836,13 +898,10 @@ class Activka:
             else:
                 outlist = templatizator(todo, txtFSMtmpl, special=True)
             if func == "mac_addr_tbl_by":
-                # print(f'DEBUG: getinfo prepare to return from _mac_addr_tbl_byport - outlist = {outlist} status = {status}')
                 return self._mac_addr_tbl_byport(dev, outlist, status)
             if not outlist:
-                # print(f'DEBUG getinfo return  false becouse not outlist ')
                 return False
             else:
-                # print(f'DEBUG getinfo LAST return  outlist = {outlist} status = {status}')
                 return outlist
 
     def _unnecessary_truncate(self, lines):
@@ -863,7 +922,8 @@ class Activka:
             device (str): name of device
             list_ (bool, optional): flag to define type of return
         Returns:
-            config (list): current config as list of lists; if list_=True (default)
+            config (list): current config as list of lists;
+                           if list_=True (default)
             content (str): current config as string; if list_= False
         """
         device_type = self.choose(device, withoutname=True)["device_type"]
@@ -874,7 +934,8 @@ class Activka:
             config = self._unnecessary_truncate(
                 config
             )  # first string is not config on cisco
-            config = del_exeption(config)  # delete variable string saved to config
+            # delete variable string saved to config
+            config = del_exeption(config)
         if list_:
             return config
         else:
@@ -890,7 +951,8 @@ class Activka:
             device (str): name of device
 
         Returns:
-            todo (list): list of [interface, ip_address, mask, status(up|down), protocol(up|down)]
+            todo (list): list of [interface, ip_address, mask, status(up|down),
+                         protocol(up|down)]
         """
         mask = {
             "255.255.255.255": "32",
@@ -908,7 +970,8 @@ class Activka:
         regexp = r"ip address \S+\s+(\S+)"
         command = ac.commands["ip_int_br"][dev["device_type"]]
         template = f"{dev['device_type']}_ip_int_br.template"
-        todo = self.getinfo(device, command, othercmd=True, txtFSMtmpl=template)
+        todo = self.getinfo(device, command, othercmd=True,
+                            txtFSMtmpl=template)
         if todo:
             if dev["device_type"] == "cisco_ios":
                 for line in todo:
@@ -1041,7 +1104,8 @@ class Activka:
                 return s.connect_ex((device["ip"], 22)) == 0
         except Exception as e:
             logger.warning(
-                f"Device availability check failed for {device['host']}: {str(e)}"
+                f"Device availability check failed for "
+                f"{device['host']}: {str(e)}"
             )
             return False
 
@@ -1053,10 +1117,10 @@ class ActivkaBackup(Activka):
         """Class initialisation
 
         Args:
-            byname (str): file activka_byname.yaml - list of all network devices by name
+            byname (str): file activka_byname.yaml -
+            list of all network devices by name
         """
         super().__init__(byname)
-        import socket
 
         self._setup_backup_servers()
         self._setup_protocol_handlers()
@@ -1088,7 +1152,9 @@ class ActivkaBackup(Activka):
         """Setup protocol handlers based on current host"""
         import socket
 
-        is_main_server = socket.gethostname() == self.main_backup_server["name"]
+        is_main_server = (
+                socket.gethostname() == self.main_backup_server["name"]
+                )
 
         # Default to local handlers
         self.get_backup_list = self._get_backup_list_local
@@ -1134,7 +1200,10 @@ class ActivkaBackup(Activka):
         return self._config_diff(current, backup, ignore_lines)
 
     def _config_diff(
-        self, config1: List[str], config2: List[str], ignore_lines: List[str] = None
+        self,
+        config1: List[str],
+        config2: List[str],
+        ignore_lines: List[str] = None
     ) -> Dict[str, Any]:
         """
         Compare two configurations and return differences
@@ -1157,10 +1226,14 @@ class ActivkaBackup(Activka):
             return False
 
         clean1 = [
-            line.strip() for line in config1 if line.strip() and not should_ignore(line)
+            line.strip()
+            for line in config1
+            if line.strip() and not should_ignore(line)
         ]
         clean2 = [
-            line.strip() for line in config2 if line.strip() and not should_ignore(line)
+            line.strip()
+            for line in config2
+            if line.strip() and not should_ignore(line)
         ]
 
         set1 = set(clean1)
@@ -1183,7 +1256,7 @@ class ActivkaBackup(Activka):
                         "backup": clean2[i],
                         "context": {
                             "before": clean1[start:i],
-                            "after": clean1[i + 1 : end],
+                            "after": clean1[(i + 1): end],
                         },
                     }
                 )
@@ -1202,7 +1275,11 @@ class ActivkaBackup(Activka):
         import paramiko
         from io import StringIO
 
-        server = self.second_backup_server if second else self.main_backup_server
+        server = (
+                self.second_backup_server
+                if second
+                else self.main_backup_server
+                )
         ssh = paramiko.SSHClient()
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
@@ -1230,11 +1307,16 @@ class ActivkaBackup(Activka):
         import paramiko
         from io import StringIO
 
-        server = self.second_backup_server if second else self.main_backup_server
+        server = (
+                self.second_backup_server
+                if second
+                else self.main_backup_server
+                )
         transport = paramiko.Transport((server["name"], 22))
 
         try:
-            transport.connect(username=server["user"], password=server["password"])
+            transport.connect(username=server["user"],
+                              password=server["password"])
             sftp = paramiko.SFTPClient.from_transport(transport)
 
             remote_path = f"{server['sftp_root']}{segment}/{filename}"
@@ -1253,7 +1335,11 @@ class ActivkaBackup(Activka):
         import paramiko
         from io import StringIO
 
-        server = self.second_backup_server if second else self.main_backup_server
+        server = (
+                self.second_backup_server
+                if second
+                else self.main_backup_server
+                )
         ssh = paramiko.SSHClient()
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
@@ -1287,12 +1373,16 @@ class ActivkaBackup(Activka):
             device (str, optional): name of device
 
         Returns:
-            out (list): list of all backup files in the segment folder if device= None
+            out (list): list of all backup files in the segment folder if
+                        device= None
                         or list of  backup files only for this device
         """
         from os import path
 
-        local_path = f"{self.main_backup_server['local_root']}{segment}/{device}-*"
+        local_path = (
+                f"{self.main_backup_server['local_root']}"
+                f"{segment}/{device}-*"
+                )
         files = [f for _, _, f in os.walk(where)][0]
         out = self._get_files_of_dir(files, device)
         return out
