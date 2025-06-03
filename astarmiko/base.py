@@ -118,16 +118,16 @@ def setup_config(path_to_conf):
     format_str = _DEFAULT_LOG_FORMAT
     level = _DEFAULT_LOG_LEVEL
     enable_console = True
-    if isinstance(ac.logging, bool):
+    if isinstance(getattr(ac, "logging", None), bool):
         if ac.logging:
             enable_console = True
-        elif isinstance(ac.logfile, str):
+        elif isinstance(getattr(ac, "logfile", None), str):
             if ac.logging and ac.logfile:
                 log_file = ac.logfile
-    if isinstance(ac.log_format_str, str):
+    if isinstance(getattr(ac, "log_format_str", None), str):
         if ac.log_format_str:
             format_str = ac.log_format_str
-    if isinstance(ac.loglevel, str):
+    if isinstance(getattr(ac, "loglevel", None), str):
         level = getattr(logging, ac.loglevel)
     setup_logging(
         level=level,
