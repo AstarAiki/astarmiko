@@ -384,12 +384,13 @@ def findhost(argv=None):
     If file with this python script named fh.py it look up fh.yml
     configuration file in same directory
     """
+    global message
     file_path = os.path.abspath(sys.argv[0])
     file_name = os.path.splitext(os.path.basename(file_path))[0]
     base_dir = os.path.dirname(file_path)
     path_to_cfg = os.path.abspath(os.path.join(base_dir, f"{file_name}.yml"))
     setup_config(path_to_cfg)
-    from astarmiko.baseAI import ac
+    from astarmiko.base import ac
 
     file = ac.localpath + "messages_" + ac.language + ".yaml"
     with open(file, encoding="utf8") as f:
