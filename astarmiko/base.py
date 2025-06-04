@@ -97,44 +97,37 @@ def setup_logging(
 
 
 def setup_config(path_to_conf):
-    """Initialize conf object ac with attributes from path_to_conf
+    ''' Initialize conf object ac with attributes from path_to_conf
 
     Args:
         path_to_conf (str): full path to config file ( yaml, json, format)
-
-    """
+    '''
     from astarconf import Astarconf
-
     global ac
     ac = Astarconf(path_to_conf)
     try:
-        dict_of_cmd = ac.dict_of_cmd
-        with open(dict_of_cmd) as f:
-            commands = yaml.safe_load(f)
-        ac.commands = commands["commands"]
+        dict_of_cmd = getattr(ac, 'dict_of_cmd', None)
+        if dict_of_cmd:
+            with open(dict_of_cmd) as f:
+                commands = yaml.safe_load(f)
+            ac.commands = commands['commands']
     except AttributeError:
         pass
-    log_file = None
-    format_str = _DEFAULT_LOG_FORMAT
-    level = _DEFAULT_LOG_LEVEL
-    enable_console = True
-    if isinstance(getattr(ac, "logging", None), bool):
+
+    log_file = getattr(ac, 'logfile', None)
+    format_str = getattr(ac, 'log_format_str', _DEFAULT_LOG_FORMAT)
+    level_str = getattr(ac, 'loglevel', 'INFO').upper()  # default INFO
+
+    # Convert loglevel string to logging level constant
+    level = getattr(logging, level_str, _DEFAULT_LOG_LEVEL)
+
+    enable_console = False
+    if isinstance(getattr(ac, 'logging', None), bool):
         if ac.logging:
             enable_console = True
-        elif isinstance(getattr(ac, "logfile", None), str):
-            if ac.logging and ac.logfile:
-                log_file = ac.logfile
-    if isinstance(getattr(ac, "log_format_str", None), str):
-        if ac.log_format_str:
-            format_str = ac.log_format_str
-    if isinstance(getattr(ac, "loglevel", None), str):
-        level = getattr(logging, ac.loglevel)
-    setup_logging(
-        level=level,
-        log_file=log_file,
-        format_str=format_str,
-        enable_console=enable_console,
-    )
+
+    setup_logging(level=level, log_file=log_file, format_str=format_str,
+                  enable_console=enable_console)
 
 
 async def snmp_get_oid(
