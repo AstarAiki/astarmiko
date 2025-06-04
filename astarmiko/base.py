@@ -233,8 +233,7 @@ def _try_connect(device, func, *args, **kwargs):
     def connect_with_credentials(device_params):
         if not is_device_available(device_params["ip"]):
             logger.warning(
-                f"Device {device_params['host']} ({device_params['ip']}) "
-                f"is unreachable"
+                f"Device {device_params['ip']} is unreachable"
             )
             return False
 
