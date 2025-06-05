@@ -2,9 +2,9 @@
 import argparse
 import asyncio
 import json
-from astarmiko_async.async_exec import ActivkaAsync
-from astarmiko_async.base import setup_config
-from log_config import get_log_config, setup_logging
+from astarmiko.async_exec import ActivkaAsync
+from astarmiko.base import setup_config
+from astarmiko.log_config import get_log_config, setup_logging
 
 
 async def main():

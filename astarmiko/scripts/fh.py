@@ -159,31 +159,25 @@ def findchain(myactivka, m, hostname=False):
     # ‘L3’ - L3 коммутатор или ‘CH’ checkpoint это необходимо чтобы понять
     # где начинать поиск по таблице MAC адресов (на роутере бессмысленно,
     # надо добраться до первого коммутатора в цепочке
-    if not myactivka.levels[m[3]] == "CH":
-        # проверяем, не светится ли искомый нами MAC на Ether-Channel
-        # интерфейсе, если да, нам необходимо получить имена интерфейсов
-        # в него входящих, так как и cdp и lldp оперируют физическими
-        # интерфейсами
-        match = re.search(r"(Eth-Trunk|Po)(\d+)", m[2])
-        if match:
-            m[2] = str(
-                myactivka.getinfo(m[3], "ethchannel_member",
-                                  match.group(2))[0][0][0]
+    # проверяем, не светится ли искомый нами MAC на Ether-Channel
+    # интерфейсе, если да, нам необходимо получить имена интерфейсов
+    # в него входящих, так как и cdp и lldp оперируют физическими
+    # интерфейсами
+    match = re.search(r"(Eth-Trunk|Po)(\d+)", m[2])
+    if match:
+        m[2] = str(
+            myactivka.getinfo(m[3], "ethchannel_member",
+                                match.group(2))[0][0][0]
             )
-            m[2] = port_name_normalize(m[2])
-            # если стартовая точка - роутер, ищем первый на пути коммутатор,
-            # если L3 коммутатор - начнем поиск с него
-        if myactivka.levels[m[3]] == "R":
-            sw = myactivka.getinfo(m[3], "neighbor_by_port", m[2])
-        else:
-            sw = m[3]
+        m[2] = port_name_normalize(m[2])
+        # если стартовая точка - роутер, ищем первый на пути коммутатор,
+        # если L3 коммутатор - начнем поиск с него
+    if myactivka.levels[m[3]] == "R":
+        sw = myactivka.getinfo(m[3], "neighbor_by_port", m[2])
     else:
-        if m[3] == "ChPSever-HA":
-            sw = "swSever2960-1"
-        elif m[3] == "ChPGDN-HA":
-            sw = "swGDN2960-1"
-            # и в бесконечном цикле идем по цепочке коммутаторов,
-            # пока не найдем последний, к которому подключен хост
+        sw = m[3]
+    # и в бесконечном цикле идем по цепочке коммутаторов,
+    # пока не найдем последний, к которому подключен хост
 
     while True:
         match = re.search(r"([-a-zA-Z0-9]+)(\.\S+)", sw)

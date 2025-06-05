@@ -56,9 +56,8 @@ class ActivkaAsync(Activka):
 
                 device_type = device.get("device_type")
                 cmd_list = commands.get(device_type, [])
-                           if isinstance(commands, dict)
-                           else commands
-
+                if isinstance(commands, dict)
+                else commands
                 log.log(f"Connecting to {device['ip']}")
                 output = []
                 for cmd in cmd_list:
