@@ -279,98 +279,45 @@ def _try_connect(device, func, *args, **kwargs):
     return False
 
 
-def send_config_by_one(device, commands):
-    """The function connects via SSH (using netmiko) to ONE device and performs
-     ONE command in configuration mode based on the arguments passed.
+def send_commands(device, commands, mode='exec', validate_each=False):
+    '''
+    Main function to send command to device
 
     Args:
-        device (dict): dictionary in netmiko format for use with
-        ConnectHandler(**device)
-        commands (list or str): command in list ['some command']
-        to send to device (if string - it converted to list
-
-    Returns:
-        tuple: (good_commands, failed_commands) where each is a dict
-        with command:result pairs
-    """
+        device (str): name of device from activka_byname.yaml
+        commands (list or str): one command or list of ones
+                    if string - convert to list
+        mode (str): 'exec' by default, for other use 'config'
+                if the value is different it is interpreted as config mode
+    '''
     if isinstance(commands, str):
-        commands = commands.strip().split("\n")
+        commands = commands.strip().split('\n')
 
-    good = {}
-    failed = {}
-    errors_str = re.compile(
-        r"Invalid input detected|"
-        r"Incomplete command|"
-        r"Ambiguous command|"
-        r"Unrecognized command"
-    )
+    errors_str = re.compile(r'Invalid input|'
+                            r'Incomplete|'
+                            r'Ambiguous|'
+                            r'Unrecognized')
 
-    def execute_commands(ssh):
-        for command in commands:
-            result = ssh.send_config_set(command)
-            if not errors_str.search(result):
-                good[command] = result
-            else:
-                error_match = errors_str.search(result)
-                error_msg = (
-                        error_match.group()
-                        if error_match
-                        else "Unknown error"
-                )
-                logging.warning(
-                    f"Command {command} raise error: "
-                    f"{errors_str.search(result).group()} "
-                    f"on device {device['ip']}"
-                )
-                failed[command] = result
-        return (good, failed)
+    def exec_mode(ssh):
+        return ssh.send_command(commands[0])
 
-    return _try_connect(device, execute_commands)
+    def config_mode(ssh):
+        if validate_each:
+            good, failed = {}, {}
+            for cmd in commands:
+                result = ssh.send_config_set(cmd)
+                if not errors_str.search(result):
+                    good[cmd] = result
+                else:
+                    failed[cmd] = result
+            return good, failed
+        else:
+            result = ssh.send_config_set(commands, delay_factor=20, cmd_verify=False)
+            result += ssh.send_command_timing('write')
+            return result
 
-
-def send_config_commands(device, commands):
-    """The function connects via SSH (using netmiko) to ONE device and performs
-    a list of commands in configuration mode based on the arguments passed.
-
-    Args:
-        device (dict): dictionary in netmiko format for use with
-        ConnectHandler(**device)
-        commands (list or str): command in list ['some command']
-        to send to device (if string - it converted to list
-
-    Returns:
-        str: device output or False if connection failed
-    """
-    if isinstance(commands, str):
-        commands = commands.strip().split("\n")
-
-    def execute_commands(ssh):
-        result = ssh.send_config_set(commands, delay_factor=20,
-                                     cmd_verify=False)
-        time.sleep(10)
-        result += ssh.send_command_timing("write")
-        return result
-
-    return _try_connect(device, execute_commands)
-
-
-def send_show_command(device, commands):
-    """The function connects via SSH (using netmiko) to ONE device
-    and executes the specified show (display) command.
-
-    Args:
-        device (dict): dictionary in netmiko format for use with
-        ConnectHandler(**device)
-        commands (str): command to send to device
-
-    Returns:
-        str: command output or False if connection failed
-    """
-
-    def execute_command(ssh):
-        return ssh.send_command(commands)
-
-    return _try_connect(device, execute_command)
+    func = exec_mode if mode == 'exec' else config_mode
+    return _try_connect(device, func)
 
 
 def templatizator(*args, special=False):

@@ -63,11 +63,8 @@ Configures module parameters using a YAML file. Parameters may include:
 
 This function was added because astarmiko relies on SSH, but some devices (e.g., Russian-made *Kontinent-4* firewalls) only support SNMP for retrieving ARP/MAC tables.
 
-### send_config_by_one, send_config_commands
+### send_commands
 Push one or a list of configuration commands to a device.
-
-### send_show_command
-Send a show command to a device.
 
 ### port_name_normalize
 Normalizes port names (e.g., Huawei devices return GE0/0/1 in output but require GI0/0/1 in commands).
