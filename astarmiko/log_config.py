@@ -1,5 +1,5 @@
 # log_config.py
-from astarconf import AstarConf
+from astarconf import Astarconf
 import logging
 import logging.handlers
 import json

@@ -4,7 +4,7 @@ from astarmiko.base import Activka, setup_config, send_commands, ping_one_ip
 import logging
 import json
 from tqdm.asyncio import tqdm_asyncio
-from optional_loggers import forward_log_entry
+from astarmiko.optional_loggers import forward_log_entry
 
 def is_reachable(ip: str) -> bool:
     return ping_one_ip(ip) == 0
@@ -55,9 +55,7 @@ class ActivkaAsync(Activka):
                     return
 
                 device_type = device.get("device_type")
-                cmd_list = commands.get(device_type, [])
-                if isinstance(commands, dict)
-                else commands
+                cmd_list = commands.get(device_type, []) if isinstance(commands, dict) else commands
                 log.log(f"Connecting to {device['ip']}")
                 output = []
                 for cmd in cmd_list:
@@ -95,9 +93,7 @@ class ActivkaAsync(Activka):
                     return
 
                 device_type = device.get("device_type")
-                cmd_list = commands.get(device_type, [])
-                            if isinstance(commands, dict)
-                            else commands
+                cmd_list = commands.get(device_type, []) if isinstance(commands, dict) else commands
                 log.log(f"Connecting to {device['ip']}")
                 result = send_commands(device, cmd_list, mode='config')
                 results['success'][device_name] = result
