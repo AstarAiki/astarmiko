@@ -413,14 +413,14 @@ def get_port_by_mac(device, mac):
             ac.commands["mac_addr_tbl_bymac"][device["device_type"]]
             .format(mac)
     )
-    todo = send_show_command(device, command)
+    todo = send_commands(device, command, mode='exec')
     out = templatizator(todo, "mac_address_table", device["device_type"])[0]
     out[2] = port_name_normalize(out[2])
     command = (
             ac.commands["mac_addr_tbl_byport"][device["device_type"]]
             .format(out[2])
     )
-    todo = send_show_command(device, command)
+    todo = send_commands(device, command, mode='exec')
     outwhole = templatizator(todo, "mac_address_table", device["device_type"])
     if len(outwhole) > 2:
         if (
@@ -705,7 +705,7 @@ class Activka:
             result (str): output from device console
         """
         dev = self.choose(device, withoutname=True)
-        result = send_config_commands(dev, commands)
+        result = send_commands(dev, commands, mode='config')
         return result
 
     def _get_neighbor_by_port(self, device, func, *args):
@@ -760,7 +760,7 @@ class Activka:
                 ac.commands["mac_addr_tbl_byport"][dev["device_type"]]
                 .format(outlist[0][2])
         )
-        todo = send_show_command(dev, command)
+        todo = send_commands(dev, command, mode='exec')
         outwhole = templatizator(todo, "mac_addr_tbl_byport",
                                  dev["device_type"])
         if len(outwhole) > 2:
@@ -823,7 +823,7 @@ class Activka:
                     command = ac.commands[func][dev["device_type"]]
             else:
                 command = func
-            todo = send_show_command(dev, command)
+            todo = send_commands(dev, command, mode='exec')
             if not todo:
                 return False
             if not txtFSMtmpl:
@@ -1017,9 +1017,8 @@ class Activka:
 
             try:
                 output = []
-                result = send_config_commands(device, commands)
+                result = send_commands(device, commands, mode='config')
                 output.append(result)
-
                 results["success"][device_name] = (
                     "\n".join(output) if len(output) > 1 else output[0]
                 )
