@@ -608,8 +608,8 @@ class Activka:
         by_ip = {}
         wholedict = {k.lower(): v for k, v in wholedict.items()}
         devices = list(wholedict.keys())
-        devices.remove("LEVEL")
-        devices.remove("SEGMENT")
+        devices.remove("level")
+        devices.remove("segment")
         self.devices = devices
         self.levels = {k.lower(): v for k, v in wholedict["level"].items()}
         self.segment = {k.lower(): v for k, v in wholedict["segment"].items()}
