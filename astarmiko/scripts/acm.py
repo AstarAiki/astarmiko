@@ -1,4 +1,4 @@
-# cli.py
+# acm.py
 import argparse
 import asyncio
 import json
@@ -7,7 +7,7 @@ from astarmiko.base import setup_config
 from astarmiko.log_config import get_log_config, setup_logging
 
 
-async def main():
+async def async_main():
     parser = argparse.ArgumentParser(description="AstarMiko Async CLI")
     parser.add_argument("command", choices=["show", "set"],
                         help="Operation to perform")
@@ -70,5 +70,8 @@ async def main():
     print(result)
 
 
+def main():
+    asyncio.run(async_main())
+
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()
