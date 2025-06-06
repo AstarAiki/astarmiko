@@ -8,11 +8,13 @@ import json
 def get_log_config(path=None):
     try:
         if isinstance(path, str):
-            conf = Astarconf(path)
+            ac = Astarconf(path)
         else:
             sys.exit("You must specify configuration file" )
     except SystemExit as message:
         print(message)
+    log_conf_path = f"{ac.localpath}/YAML/log_config.yaml")
+    conf = Astarconf(log_conf_path)
     logconf = conf.get("log", {})
     return {
         "format": logconf.get("format", "json"),
