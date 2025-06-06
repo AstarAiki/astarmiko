@@ -24,7 +24,7 @@ async def async_main():
 
     args = parser.parse_args()
     setup_config(args.conf)
-    logcfg = get_log_config()
+    logcfg = get_log_config(args.conf)
     setup_logging(logcfg)
 
     a = ActivkaAsync("activka_byname.yaml")

@@ -5,8 +5,14 @@ import logging.handlers
 import json
 
 
-def get_log_config(path="log_config.yml"):
-    conf = AstarConf(path)
+def get_log_config(path=None):
+    try:
+        if isinstance(path, str):
+            conf = Astarconf(path)
+        else:
+            sys.exit("You must specify configuration file" )
+    except SystemExit as message:
+        print(message)
     logconf = conf.get("log", {})
     return {
         "format": logconf.get("format", "json"),
