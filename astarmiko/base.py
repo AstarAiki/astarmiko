@@ -606,14 +606,15 @@ class Activka:
             self.routerbyip = allip
         dev_type = {}
         by_ip = {}
+        wholedict = {k.lower(): v for k, v in wholedict.items()}
         devices = list(wholedict.keys())
         devices.remove("LEVEL")
         devices.remove("SEGMENT")
         self.devices = devices
-        self.levels = wholedict["LEVEL"]
-        self.segment = wholedict["SEGMENT"]
-        del wholedict["LEVEL"]
-        del wholedict["SEGMENT"]
+        self.levels = {k.lower(): v for k, v in wholedict["level"].items()}
+        self.segment = {k.lower(): v for k, v in wholedict["segment"].items()}
+        del wholedict["level"]
+        del wholedict["segment"]
         for d in devices:
             wholedict[d]["username"] = username
             wholedict[d]["password"] = password
@@ -641,6 +642,7 @@ class Activka:
                         or {device_name:{dictionary for conect}}
         """
         out = {}
+        device = device.lower()
         if withoutname:
             out.update(self.wholedict[device])
         else:
@@ -704,6 +706,7 @@ class Activka:
         Returns:
             result (str): output from device console
         """
+        device = device.lower()
         dev = self.choose(device, withoutname=True)
         result = send_commands(dev, commands, mode='config')
         return result
@@ -720,6 +723,7 @@ class Activka:
             neighbor[0] (str): name of other switch connected to port
 
         """
+        device = device.lower()
         port = args[0]
         m = re.search(r"(Eth-Trunk|Po)(\S+)", port)
         if m:
@@ -807,6 +811,7 @@ class Activka:
                             textfsm template not defined
 
         """
+        device = device.lower()
         if func == "neighbor_by_port":
             return self._get_neighbor_by_port(device, func, args[0])
 
@@ -865,6 +870,7 @@ class Activka:
                            if list_=True (default)
             content (str): current config as string; if list_= False
         """
+        device = device.lower()
         device_type = self.choose(device, withoutname=True)["device_type"]
         command = ac.commands["current_config"][device_type]
         _config = self.getinfo(device, command, othercmd=True)
@@ -904,6 +910,7 @@ class Activka:
             "255.255.255.0": "24",
             "255.255.254.0": "23",
         }
+        device = device.lower()
         exclude_intf = ["NVI0"]
         dev = self.choose(device, withoutname=True)
         regexp = r"ip address \S+\s+(\S+)"
@@ -956,6 +963,7 @@ class Activka:
         results = {"success": {}, "failed": {}, "unreachable": []}
 
         for device_name in devices:
+            device_name = device_name.lower()
             device = self.choose(device_name, withoutname=True)
 
             if not self._is_device_available(device):
@@ -1009,6 +1017,7 @@ class Activka:
         results = {"success": {}, "failed": {}, "unreachable": []}
 
         for device_name in devices:
+            device_name = device_name.lower()
             device = self.choose(device_name, withoutname=True)
 
             if not self._is_device_available(device):
@@ -1124,6 +1133,7 @@ class ActivkaBackup(Activka):
                 'changed_lines': list
             }
         """
+        device = device.lower()
         current = self.get_curr_config(device)
         backup = self.get_backup_config(self.segment[device], device)
 
@@ -1273,6 +1283,7 @@ class ActivkaBackup(Activka):
         import paramiko
         from io import StringIO
 
+        device = device.lower()
         server = (
                 self.second_backup_server
                 if second
@@ -1317,6 +1328,7 @@ class ActivkaBackup(Activka):
         """
         from os import path
 
+        device = device.lower()
         local_path = (
                 f"{self.main_backup_server['local_root']}"
                 f"{segment}/{device}-*"
