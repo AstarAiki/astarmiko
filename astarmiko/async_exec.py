@@ -39,8 +39,7 @@ class ActivkaAsync(Activka):
                                  commands: Union[str, List[str],
                                                  Dict[str, List[str]]],
                                  rsyslog=False, loki=False,
-                                 elastic=False, use_template=False)
-    -> Dict[str, Any]:
+                                 elastic=False, use_template=False) -> Dict[str, Any]:
         if isinstance(devices, str):
             devices = [devices]
 
