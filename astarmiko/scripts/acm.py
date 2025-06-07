@@ -4,7 +4,7 @@ import argparse
 import asyncio
 import json
 from astarmiko.async_exec import ActivkaAsync
-from astarmiko.base import setup_config, ac
+from astarmiko.base import setup_config
 from astarmiko.log_config import get_log_config, setup_logging
 
 async def async_main():
@@ -20,11 +20,14 @@ async def async_main():
 
     args = parser.parse_args()
     setup_config(args.conf)
-    logcfg = get_log_config()
+    
+    from astarmiko.base import ac
+    
+    logcfg = get_log_config(f"{ac.localpath}YAML/log_config/yaml")
     setup_logging(logcfg)
 
     a = ActivkaAsync("activka_byname.yaml")
-
+    
     # Определяем команды
     commands = None
     use_template = False

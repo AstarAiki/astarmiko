@@ -3,6 +3,7 @@ from astarconf import Astarconf
 import logging
 import logging.handlers
 import json
+import sys
 
 
 def get_log_config(path=None):
