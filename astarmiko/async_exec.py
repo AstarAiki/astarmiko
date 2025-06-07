@@ -39,7 +39,8 @@ class ActivkaAsync(Activka):
                                  commands: Union[str, List[str],
                                                  Dict[str, List[str]]],
                                  rsyslog=False, loki=False,
-                                 elastic=False) -> Dict[str, Any]:
+                                 elastic=False, use_template=False)
+    -> Dict[str, Any]:
         if isinstance(devices, str):
             devices = [devices]
 
@@ -60,7 +61,16 @@ class ActivkaAsync(Activka):
                 output = []
                 for cmd in cmd_list:
                     res = send_commands(device, cmd, mode='exec')
-                    output.append(res)
+                    if use_template:
+                        tmpl = ac.commands.get(cmd, {}).get(device_type)
+                        if tmpl:
+                            parsed = templatizator(res, cmd, device_type)
+                            output.append(parsed)
+                        else:
+                            output.append(res)
+                    else:
+                        output.append(res)
+
                 results['success'][device_name] = '\n'.join(output)
                 log.log("Commands are successfully executed")
             except Exception as e:

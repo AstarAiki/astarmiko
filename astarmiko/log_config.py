@@ -14,9 +14,9 @@ def get_log_config(path=None):
             sys.exit("You must specify configuration file" )
     except SystemExit as message:
         print(message)
-    log_conf_path = f"{ac.localpath}/YAML/log_config.yaml"
+    log_conf_path = f"{ac['localpath']}/YAML/log_config.yaml"
     conf = Astarconf(log_conf_path)
-    logconf = conf.get("log", {})
+    logconf = conf.get("logging", {})
     return {
         "format": logconf.get("format", "json"),
         "stdout": logconf.get("stdout", True),

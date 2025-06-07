@@ -23,7 +23,7 @@ async def async_main():
     
     from astarmiko.base import ac
     
-    logcfg = get_log_config(f"{ac.localpath}YAML/log_config/yaml")
+    logcfg = get_log_config(args.conf)
     setup_logging(logcfg)
 
     a = ActivkaAsync("activka_byname.yaml")
