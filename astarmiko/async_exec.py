@@ -40,6 +40,8 @@ class ActivkaAsync(Activka):
                                                  Dict[str, List[str]]],
                                  rsyslog=False, loki=False,
                                  elastic=False, use_template=False) -> Dict[str, Any]:
+
+        from astarmiko.base import ac
         if isinstance(devices, str):
             devices = [devices]
 
@@ -55,7 +57,10 @@ class ActivkaAsync(Activka):
                     return
 
                 device_type = device.get("device_type")
-                cmd_list = commands.get(device_type, []) if isinstance(commands, dict) else commands
+                if commands[0] in ac.commands:
+                    cmd_list = ac.commands[commands[0]][device_type]
+                else:
+                    cmd_list = commands.get(device_type, []) if isinstance(commands, dict) else commands
                 log.log(f"Connecting to {device['ip']}")
                 output = []
                 for cmd in cmd_list:
