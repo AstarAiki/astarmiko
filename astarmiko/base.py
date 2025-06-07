@@ -130,6 +130,10 @@ def setup_config(path_to_conf):
                   enable_console=enable_console)
 
 
+def normalize_name(name: str) -> str:
+    return ''.join(c for c in name.lower() if c.isalnum())
+
+
 async def snmp_get_oid(
     host: str,
     community: str,
@@ -606,26 +610,47 @@ class Activka:
             self.routerbyip = allip
         dev_type = {}
         by_ip = {}
+        # Приводим все ключи wholedict к нижнему регистру 
         wholedict = {k.lower(): v for k, v in wholedict.items()}
         devices = list(wholedict.keys())
         devices.remove("level")
         devices.remove("segment")
         self.devices = devices
+
+        # LEVEL и SEGMENT тоже
         self.levels = {k.lower(): v for k, v in wholedict["level"].items()}
         self.segment = {k.lower(): v for k, v in wholedict["segment"].items()}
+
         del wholedict["level"]
         del wholedict["segment"]
+
+        # Создаём словарь нормализованных имён для удобного поиска
+        self.normalized_lookup = {normalize_name(k): k for k in self.devices}
+
         for d in devices:
             wholedict[d]["username"] = username
             wholedict[d]["password"] = password
             dev_type[d] = wholedict[d]["device_type"]
             by_ip[wholedict[d]["ip"]] = d
+        
         self.wholedict = wholedict
         self.dev_type = dev_type
         self.by_ip = by_ip
 
+
+    def find_real_device_name(self, user_input: str) -> Optional[str]:
+        """
+        Find the real device name matching the user's input
+        after normalization.
+
+        """
+        norm_input = normalize_name(user_input)
+        return self.normalized_lookup.get(norm_input)
+
+
     def __repr__(self):
         return f"{self.__class__.__name__}({self.__class__.__doc__})"
+
 
     def choose(self, device, withoutname=False):
         """Function prepare dictionary in netmiko format for use with
@@ -641,12 +666,14 @@ class Activka:
             out (dict): {dictionary for conect}
                         or {device_name:{dictionary for conect}}
         """
+        real_device = self.find_real_device_name(device)
+        if not real_device:
+            raise ValueError(f"Device '{device}' not found in inventory.")
         out = {}
-        device = device.lower()
         if withoutname:
-            out.update(self.wholedict[device])
+            out.update(self.wholedict[real_device])
         else:
-            out[device] = self.wholedict[device]
+            out[real_device] = self.wholedict[real_device]
         return out
 
     def filter(self, device_type=None, levels=None, segment=None):
