@@ -1,3 +1,4 @@
+
 #!/usr/bin/env python3
 # async_exec.py
 import asyncio
@@ -10,9 +11,6 @@ from tqdm.asyncio import tqdm_asyncio
 from astarmiko.optional_loggers import forward_log_entry
 
 async def is_device_available(ip: str) -> bool:
-    """
-    Asynchronous ICMP ping to check if device is reachable.
-    """
     if os.name == "nt":
         args = ["ping", "-n", "3", ip]
     else:
@@ -46,14 +44,9 @@ class DeviceLogCapture:
             forward_log_entry(entry, rsyslog=self.use_rsyslog, loki=self.use_loki, elastic=self.use_elastic)
 
 class ActivkaAsync(Activka):
-    """
-    Activka based class with asynchronous wrapper
-    """
-
     def __init__(self, byname, ac_config, *args):
         super().__init__(byname, *args)
-        self.ac = ac_config  # сохраним объект Astarconf в атрибуте
-
+        self.ac = ac_config
 
     async def execute_on_devices(self, devices: Union[str, List[str]], commands: Union[str, List[str], Dict[str, List[str]]],
                                  rsyslog=False, loki=False, elastic=False, use_template=False) -> Dict[str, Any]:
@@ -72,20 +65,20 @@ class ActivkaAsync(Activka):
                     return
 
                 device_type = device.get("device_type")
-                cmd_list = commands.get(device_type, []) if isinstance(commands, dict) else commands
-
-                log.log(f"Connecting to {device['ip']}")
                 output = []
+
                 if use_template:
                     cmd_list = self.ac.commands.get(commands, {}).get(device_type)
-                if cmd_list:
-                    for cmd in cmd_list:
-                        res = send_commands(device, cmd, mode='exec')
-                        if use_template:
+                    if cmd_list:
+                        for cmd in cmd_list:
+                            res = send_commands(device, cmd, mode='exec')
                             parsed = templatizator(res, commands, device_type)
                             output.append(parsed)
-                        else:
-                            output.append(res)
+                else:
+                    cmd_list = commands.get(device_type, []) if isinstance(commands, dict) else commands
+                    for cmd in cmd_list:
+                        res = send_commands(device, cmd, mode='exec')
+                        output.append(res)
 
                 results['success'][device_name] = output if len(output) > 1 else output[0]
                 log.log("Commands are successfully executed")
@@ -97,7 +90,6 @@ class ActivkaAsync(Activka):
 
         await tqdm_asyncio.gather(*(worker(dev) for dev in devices), desc="Executing show commands")
         return results
-
 
     async def setconfig_on_devices(self, devices: Union[str, List[str]], commands: Union[str, List[str], Dict[str, List[str]]],
                                    rsyslog=False, loki=False, elastic=False) -> Dict[str, Any]:
