@@ -76,18 +76,16 @@ class ActivkaAsync(Activka):
 
                 log.log(f"Connecting to {device['ip']}")
                 output = []
-                for cmd in cmd_list:
-                    res = send_commands(device, cmd, mode='exec')
-
-                    if use_template:
-                        tmpl = self.ac.commands.get(cmd, {}).get(device_type)
-                        if tmpl:
-                            parsed = templatizator(res, cmd, device_type)
+                if use_template:
+                    cmd_list = self.ac.commands.get(cmd, {}).get(device_type)
+                if cmd_list:
+                    for cmd in cmd_list:
+                        res = send_commands(device, cmd, mode='exec')
+                        if use_template:
+                            parsed = templatizator(res, commands, device_type)
                             output.append(parsed)
                         else:
                             output.append(res)
-                    else:
-                        output.append(res)
 
                 results['success'][device_name] = output if len(output) > 1 else output[0]
                 log.log("Commands are successfully executed")
