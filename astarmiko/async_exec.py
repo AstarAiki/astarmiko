@@ -77,7 +77,7 @@ class ActivkaAsync(Activka):
                 log.log(f"Connecting to {device['ip']}")
                 output = []
                 if use_template:
-                    cmd_list = self.ac.commands.get(cmd, {}).get(device_type)
+                    cmd_list = self.ac.commands.get(commands, {}).get(device_type)
                 if cmd_list:
                     for cmd in cmd_list:
                         res = send_commands(device, cmd, mode='exec')
@@ -97,6 +97,7 @@ class ActivkaAsync(Activka):
 
         await tqdm_asyncio.gather(*(worker(dev) for dev in devices), desc="Executing show commands")
         return results
+
 
     async def setconfig_on_devices(self, devices: Union[str, List[str]], commands: Union[str, List[str], Dict[str, List[str]]],
                                    rsyslog=False, loki=False, elastic=False) -> Dict[str, Any]:
