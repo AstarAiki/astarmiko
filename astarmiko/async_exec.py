@@ -68,7 +68,11 @@ class ActivkaAsync(Activka):
                 output = []
 
                 if use_template:
-                    cmd_list = self.ac.commands.get(commands, {}).get(device_type)
+                    if isinstance(commands, list):
+                        cmd_abbr = commands[0]
+                    else:
+                        cmd_abbr = commands
+                    cmd_list = self.ac.commands.get(cmd_abbr, {}).get(device_type)
                     if cmd_list:
                         for cmd in cmd_list:
                             res = send_commands(device, cmd, mode='exec')
