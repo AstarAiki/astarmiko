@@ -7,7 +7,7 @@ import logging
 import json
 import os
 from tqdm.asyncio import tqdm_asyncio
-from optional_loggers import forward_log_entry
+from astarmiko.optional_loggers import forward_log_entry
 
 async def is_device_available(ip: str) -> bool:
     """
