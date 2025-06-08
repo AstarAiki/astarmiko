@@ -46,6 +46,15 @@ class DeviceLogCapture:
             forward_log_entry(entry, rsyslog=self.use_rsyslog, loki=self.use_loki, elastic=self.use_elastic)
 
 class ActivkaAsync(Activka):
+    """
+    Activka based class with asynchronous wrapper
+    """
+
+    def __init__(self, byname, ac_config, *args):
+        super().__init__(byname, *args)
+        self.ac = ac_config  # сохраним объект Astarconf в атрибуте
+
+
     async def execute_on_devices(self, devices: Union[str, List[str]], commands: Union[str, List[str], Dict[str, List[str]]],
                                  rsyslog=False, loki=False, elastic=False, use_template=False) -> Dict[str, Any]:
         if isinstance(devices, str):
@@ -71,7 +80,7 @@ class ActivkaAsync(Activka):
                     res = send_commands(device, cmd, mode='exec')
 
                     if use_template:
-                        tmpl = ac.commands.get(cmd, {}).get(device_type)
+                        tmpl = self.ac.commands.get(cmd, {}).get(device_type)
                         if tmpl:
                             parsed = templatizator(res, cmd, device_type)
                             output.append(parsed)
