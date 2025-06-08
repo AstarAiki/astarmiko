@@ -76,7 +76,7 @@ class ActivkaAsync(Activka):
                     if cmd_list:
                         for cmd in cmd_list:
                             res = send_commands(device, cmd, mode='exec')
-                            parsed = templatizator(res, commands, device_type)
+                            parsed = templatizator(res, commands, special=True)
                             output.append(parsed)
                 else:
                     cmd_list = commands.get(device_type, []) if isinstance(commands, dict) else commands
