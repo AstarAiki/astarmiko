@@ -26,7 +26,7 @@ async def async_main():
     logcfg = get_log_config(args.conf)
     setup_logging(logcfg)
 
-    a = ActivkaAsync("activka_byname.yaml")
+    a = ActivkaAsync("activka_byname.yaml", ac)
     
     # Определяем команды
     commands = None

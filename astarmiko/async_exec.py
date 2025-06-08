@@ -35,6 +35,15 @@ class DeviceLogCapture:
                               elastic=self.use_elastic)
 
 class ActivkaAsync(Activka):
+    """
+    The class is based on Activka, adds an asynchronous wrapper
+    """
+
+    def __init__(self, byname, ac_config, *args):
+        super().__init__(byname, *args)
+        self.ac = ac_config  # сохраним объект Astarconf в атрибуте
+
+
     async def execute_on_devices(self, devices: Union[str, List[str]],
                                  commands: Union[str, List[str],
                                                  Dict[str, List[str]]],
