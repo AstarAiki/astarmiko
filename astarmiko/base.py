@@ -222,17 +222,19 @@ def ping_one_ip(ip_address):
     return reply.returncode
 
 
+def is_device_available(ip):
+    """Check if device is reachable"""
+    try:
+        return ping_one_ip(ip) == 0
+    except Exception as e:
+        logger.warning(f"Ping check failed for {ip}: {str(e)}")
+        return False
+
+
 def _try_connect(device, func, *args, **kwargs):
     """Internal function to handle connection attempts with availability check
     """
 
-    def is_device_available(ip):
-        """Check if device is reachable"""
-        try:
-            return ping_one_ip(ip) == 0
-        except Exception as e:
-            logger.warning(f"Ping check failed for {ip}: {str(e)}")
-            return False
 
     def connect_with_credentials(device_params):
         if not is_device_available(device_params["ip"]):
@@ -263,10 +265,9 @@ def _try_connect(device, func, *args, **kwargs):
             raise  # Re-raise to handle in outer function
 
     # First try with original credentials
-    try:
-        return connect_with_credentials(device)
-    except NetmikoAuthenticationException:
-        pass
+    result = connect_with_credentials(device)
+    if result is not False:
+        return result  # УСПЕШНО – выходим!
 
     # Try additional accounts if available
     if hasattr(ac, "add_account"):
@@ -275,7 +276,9 @@ def _try_connect(device, func, *args, **kwargs):
                 new_device = device.copy()
                 new_device["username"] = account["user"]
                 new_device["password"] = account["password"]
-                return connect_with_credentials(new_device)
+                result = connect_with_credentials(new_device)
+                if result is not False:
+                    return result  # УСПЕШНО – выходим!
             except NetmikoAuthenticationException:
                 continue
 
