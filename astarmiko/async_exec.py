@@ -9,6 +9,22 @@ from astarmiko.optional_loggers import forward_log_entry
 def is_reachable(ip: str) -> bool:
     return ping_one_ip(ip) == 0
 
+
+async def is_device_available(ip: str) -> bool:
+    """
+    Asynchronous ICMP ping to check if device is reachable.
+    """
+    if os.name == "nt":
+        args = ["ping", "-n", "3", ip]
+    else:
+        args = ["ping", "-c", "3", ip]
+    proc = await asyncio.create_subprocess_exec(*args,
+                                                stdout=asyncio.subprocess.DEVNULL,
+                                                stderr=asyncio.subprocess.DEVNULL)
+    await proc.communicate()
+    return proc.returncode == 0
+
+
 class DeviceLogCapture:
     def __init__(self, device, use_rsyslog=False, use_loki=False,
                  use_elastic=False):
@@ -60,7 +76,7 @@ class ActivkaAsync(Activka):
             log = DeviceLogCapture(device_name, rsyslog, loki, elastic)
             try:
                 device = self.choose(device_name, withoutname=True)
-                if not is_reachable(device['ip']):
+                if not await is_device_available(device['ip']):
                     log.log("Unreachable (ICMP fail)")
                     results['unreachable'].append(device_name)
                     return
@@ -110,7 +126,7 @@ class ActivkaAsync(Activka):
             log = DeviceLogCapture(device_name, rsyslog, loki, elastic)
             try:
                 device = self.choose(device_name, withoutname=True)
-                if not is_reachable(device['ip']):
+                if not await is_device_available(device['ip']):
                     log.log("Unreachable (ICMP fail)")
                     results['unreachable'].append(device_name)
                     return
