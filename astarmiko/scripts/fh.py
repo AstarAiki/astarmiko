@@ -329,13 +329,13 @@ def ip_routine(myactivka, ip, ac):
     if not m:
         if correct_ip in myactivka.routerbyip.keys():
             device2 = myactivka.routerbyip[correct_ip]
-            int_conf = myactivka.list_of_all_ip_intf(device2)
+            int_conf = myactivka.list_of_all_ip_intf(device2.lower())
             name_mask = [
                 [line[0], line[2]] for line in int_conf
                 if line[1] == correct_ip
             ]
             print_string = message[25].format(
-                correct_ip, name_mask[0][1], name_mask[0][0], device2
+                correct_ip, name_mask[0][1], name_mask[0][0], device2.lower()
             )
             print(print_string)
             quit()
