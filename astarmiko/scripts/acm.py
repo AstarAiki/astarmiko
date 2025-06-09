@@ -9,7 +9,7 @@ from astarmiko.log_config import get_log_config, setup_logging
 
 async def async_main():
     parser = argparse.ArgumentParser(description="AstarMiko Async CLI")
-    parser.add_argument("command", choices=["show", "set"], help="Operation to perform")
+    parser.add_argument("operation", choices=["show", "set"], help="Operation to perform")
     parser.add_argument("--device", nargs="+", required=True, help="Device name(s)")
     parser.add_argument("--cmd", help="Command as string or JSON")
     parser.add_argument("--cmd-file", help="Path to file with commands in JSON format")
@@ -63,7 +63,7 @@ async def async_main():
         return
 
     # Выполняем команду
-    if args.command == "show":
+    if args.operation == "show":
         result = await a.execute_on_devices(
             real_devices, commands,
             rsyslog=args.rsyslog,
@@ -71,7 +71,7 @@ async def async_main():
             elastic=args.elastic,
             use_template=use_template
         )
-    elif args.command == "set":
+    elif args.operation == "set":
         result = await a.setconfig_on_devices(
             real_devices, commands,
             rsyslog=args.rsyslog,

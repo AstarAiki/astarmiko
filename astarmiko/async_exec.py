@@ -74,10 +74,9 @@ class ActivkaAsync(Activka):
                         cmd_abbr = commands
                     cmd_list = self.ac.commands.get(cmd_abbr, {}).get(device_type)
                     if cmd_list:
-                        for cmd in cmd_list:
-                            res = send_commands(device, cmd, mode='exec')
-                            parsed = templatizator(res, commands, special=True)
-                            output.append(parsed)
+                        res = send_commands(device, cmd_list, mode='exec')
+                        parsed = templatizator(res, cmd_abbr, special=True)
+                        output.append(parsed)
                 else:
                     cmd_list = commands.get(device_type, []) if isinstance(commands, dict) else commands
                     for cmd in cmd_list:

@@ -1,0 +1,22 @@
+Value Required CODE (\S+)
+Value NETWORK (\S+)
+Value MASK (\d+\.\d+\.\d+\.\d+\/\d+)
+Value METRIC (\[\d+\/\d+\])
+Value NEXTHOP (\d+\.\d+\.\d+\.\d+)
+Value INTERFACE (\S+)
+Value AGE (\d+\w\d+\w|\d+\w\d+|\d+\w|\d+[dhmsw]|never|\d+\w\d+h|\d+|\d+w|\d+:\d+|\d+:\d+:\d+)
+Value GATEWAY (\d+\.\d+\.\d+\.\d+)
+
+Start
+  # Основная строка с информацией
+  ^${CODE}\s+${NETWORK}\s+\[${METRIC}\] via ${NEXTHOP}, ${AGE}, ${INTERFACE} -> Record
+  # Дополнительные маршруты с переносом строки
+  ^\s+${NETWORK}\s+\[${METRIC}\] via ${NEXTHOP}, ${AGE}, ${INTERFACE} -> Record
+  # Для строчек с подсетями
+  ^\s+${NETWORK}\s+is subnetted, \d+ subnets -> Continue
+  # Локально подключенные сети (connected)
+  ^${CODE}\s+${NETWORK} is directly connected, ${INTERFACE} -> Record
+  # Локальный IP адрес интерфейса
+  ^${CODE}\s+${NETWORK} is directly connected, ${INTERFACE} -> Record
+  # Когда указаны сразу два пути (двойной next-hop)
+  ^\s+${NETWORK}\s+\[${METRIC}\] via ${NEXTHOP}, ${AGE}, ${INTERFACE} -> Record
