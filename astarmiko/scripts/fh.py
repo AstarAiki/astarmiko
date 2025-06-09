@@ -140,6 +140,7 @@ def findchain(myactivka, m, hostname=False):
     name of switch, port, IP and hostname if possible where
     host with that mac
     """
+print(f'DEBUG in findchain : m = {m}')
     end = []
     i = 0
     mac_to_find = m[1]
@@ -165,6 +166,7 @@ def findchain(myactivka, m, hostname=False):
     # интерфейсами
     match = re.search(r"(Eth-Trunk|Po)(\d+)", m[2])
     if match:
+        print(f'DEBUG in  findchain : we have match therefore we have trunk')
         m[2] = str(
             myactivka.getinfo(m[3], "ethchannel_member",
                                 match.group(2))[0][0][0]
@@ -174,21 +176,27 @@ def findchain(myactivka, m, hostname=False):
         # если L3 коммутатор - начнем поиск с него
     if myactivka.levels[m[3]] == "R":
         sw = myactivka.getinfo(m[3], "neighbor_by_port", m[2])
+        print(f'DEBUG in  findchain :we have router and sw  = {sw}')
     else:
         sw = m[3]
+        print(f'DEBUG in  findchain :we not have router and sw  = {sw}')
     # и в бесконечном цикле идем по цепочке коммутаторов,
     # пока не найдем последний, к которому подключен хост
 
     while True:
+        print(f'DEBUG in  findchain : entrance to Whyle cycle ')
         match = re.search(r"([-a-zA-Z0-9]+)(\.\S+)", sw)
         if match:
             sw = match.group(1)
+            print(f'DEBUG in  findchain: first match and sw = {sw}')
         end.append(sw)
         i += 1
         mac_to_find = convert_mac(
             mac_to_find, myactivka.choose(sw, withoutname=True)["device_type"]
         )
+        print(f'DEBUG in : mac_to_find = {}mac_to_find')
         port = myactivka.getinfo(sw, "mac_addr_tbl_by", mac_to_find)
+        print(f'DEBUG in : get port = {port}')
         # port = [имя порта, Status] где Status = True если к порту
         # подключен 1 MAC или если больше то это MAC IP телефона и
         # Status = False если дальше светится много MACов
@@ -196,6 +204,7 @@ def findchain(myactivka, m, hostname=False):
         return_text.append(message[22].format(sw, port[0]))
         if not port[1]:
             next_neighbor = myactivka.getinfo(sw, "neighbor_by_port", port[0])
+            print(f'DEBUG if not port : next_neighbor = {next_neighbor}')
             # если за портом много устройств но ни по CDP ни по LLDP
             # соседа не получаем, значит там “тупой” неуправляемый коммутатор,
             # останавливаемся и сообщаем об этом
