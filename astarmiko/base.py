@@ -465,7 +465,7 @@ def convert_mac(mac, device_type):
     mac = mac.lower()
     trudelim, digit_by_group = ac.commands["mac_delimeters"][device_type]
     p4 = re.compile(r"(?P<oct1>[0-9a-fA-F]{4})[-|.|:](?P<oct2>[0-9a-fA-F]{4})[-|.|:](?P<oct3>[0-9a-fA-F]{4})", re.ASCII)
-    p6 = re.compile(r"(?P<oct1>[0-9a-fA-F]{2})[-|.|:](?P<oct2>[0-9a-fA-F]{2})[-|.|:](?P<oct3>[0-9a-fA-F]{2})[-|.|:](?P<oct4>[0-9a-fA-F]{2})[-|.|:](?P<oct5>[0-9a-fA-F]{2})[-|.|:](?P<oct6>[0-9a-fA-F]{2})"), re.ASCII)
+    p6 = re.compile(r"(?P<oct1>[0-9a-fA-F]{2})[-|.|:](?P<oct2>[0-9a-fA-F]{2})[-|.|:](?P<oct3>[0-9a-fA-F]{2})[-|.|:](?P<oct4>[0-9a-fA-F]{2})[-|.|:](?P<oct5>[0-9a-fA-F]{2})[-|.|:](?P<oct6>[0-9a-fA-F]{2})", re.ASCII)
     m = p4.search(mac)
     if m:
         if digit_by_group == 4:
