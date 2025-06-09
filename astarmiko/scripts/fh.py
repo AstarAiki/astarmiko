@@ -6,6 +6,7 @@ import argparse
 import asyncio
 import os
 import sys
+import subprocess
 from astarmiko.base import (
     Activka,
     port_name_normalize,
@@ -36,6 +37,16 @@ def debug_logger(func):
             raise
 
     return wrapper
+
+
+def wake_up_device(ip, count=5):
+    if os.name == "nt":
+        args = ["ping", "-n", str(count), ip]
+    else:
+        args = ["ping", "-c", str(count), ip]
+    result = subprocess.run(args, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    return result.returncode == 0
+
 
 
 message = dict()
@@ -329,6 +340,9 @@ def ip_routine(myactivka, ip, ac):
             hostname = message[12]
     # по IP получаем список  m = [IP, MAC, порт на котором светится,
     # имя активки]
+    if not wake_up_device(correct_ip, count=5):
+        print(message[10].format(correct_ip))
+        sys.exit()
     m = find_router_to_start(myactivka, correct_ip, ac=ac)
     # m = [ip, mac_of_this_ip, port_where_mac_is_lit, routerstart]
     if not m:
