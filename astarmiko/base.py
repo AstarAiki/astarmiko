@@ -464,42 +464,21 @@ def convert_mac(mac, device_type):
     """
     mac = mac.lower()
     trudelim, digit_by_group = ac.commands["mac_delimeters"][device_type]
-    p4 = re.compile(
-        r"(?P<oct1>[0-9a-fA-F]{4})[-|.|:]"
-        r"(?P<oct2>[0-9a-fA-F]{4})[-|.|:]"
-        r"(?P<oct3>[0-9a-fA-F]{4})",
-        re.ASCII,
-    )
-    p6 = re.compile(
-        (
-            r"(?P<oct1>[0-9a-fA-F]{2})[-|.|:]"
-            r"(?P<oct2>[0-9a-fA-F]{2})[-|.|:]"
-            r"(?P<oct3>[0-9a-fA-F]{2})[-|.|:]"
-            r"(?P<oct4>[0-9a-fA-F]{2})[-|.|:]"
-            r"(?P<oct5>[0-9a-fA-F]{2})[-|.|:]"
-            r"(?P<oct6>[0-9a-fA-F]{2})"
-        ),
-        re.ASCII,
-    )
+    p4 = re.compile(r"(?P<oct1>[0-9a-fA-F]{4})[-|.|:](?P<oct2>[0-9a-fA-F]{4})[-|.|:](?P<oct3>[0-9a-fA-F]{4})", re.ASCII)
+    p6 = re.compile(r"(?P<oct1>[0-9a-fA-F]{2})[-|.|:](?P<oct2>[0-9a-fA-F]{2})[-|.|:](?P<oct3>[0-9a-fA-F]{2})[-|.|:](?P<oct4>[0-9a-fA-F]{2})[-|.|:](?P<oct5>[0-9a-fA-F]{2})[-|.|:](?P<oct6>[0-9a-fA-F]{2})"), re.ASCII)
     m = p4.search(mac)
     if m:
         if digit_by_group == 4:
-            trumac = f"{m.group(1)}{trudelim}{m.group(2)}{trudelim}"
-            f"{m.group(3)}"
+            trumac = f"{m.group(1)}{trudelim}{m.group(2)}{trudelim}{m.group(3)}"
         else:
-            trumac = f"{m.group(1)[0:2]}{trudelim}{m.group(1)[2:4]}{trudelim}"
-            f"{m.group(2)[0:2]}{trudelim}{m.group(2)[2:4]}{trudelim}"
-            f"{m.group(3)[0:2]}{trudelim}{m.group(3)[2:4]}"
+            trumac = f"{m.group(1)[0:2]}{trudelim}{m.group(1)[2:4]}{trudelim}{m.group(2)[0:2]}{trudelim}{m.group(2)[2:4]}{trudelim}{m.group(3)[0:2]}{trudelim}{m.group(3)[2:4]}"
     else:
         m = p6.search(mac)
         if m:
             if digit_by_group == 4:
-                trumac = f"{m.group(1)}{m.group(2)}{trudelim}{m.group(3)}"
-                f"{m.group(4)}{trudelim}{m.group(5)}{m.group(6)}"
+                trumac = f"{m.group(1)}{m.group(2)}{trudelim}{m.group(3)}{m.group(4)}{trudelim}{m.group(5)}{m.group(6)}"
             else:
-                trumac = f"{m.group(1)}{trudelim}{m.group(2)}{trudelim}"
-                f"{m.group(3)}{trudelim}{m.group(4)}{trudelim}{m.group(5)}"
-                f"{trudelim}{m.group(6)}"
+                trumac = f"{m.group(1)}{trudelim}{m.group(2)}{trudelim}{m.group(3)}{trudelim}{m.group(4)}{trudelim}{m.group(5)}{trudelim}{m.group(6)}"
         else:
             return False
     return trumac
