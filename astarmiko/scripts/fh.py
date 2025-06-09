@@ -140,7 +140,6 @@ def findchain(myactivka, m, hostname=False):
     name of switch, port, IP and hostname if possible where
     host with that mac
     """
-    print(f'DEBUG in findchain : m = {m}')
     end = []
     i = 0
     mac_to_find = m[1]
@@ -166,39 +165,30 @@ def findchain(myactivka, m, hostname=False):
     # интерфейсами
     match = re.search(r"(Eth-Trunk|Po)(\d+)", m[2])
     if match:
-        print(f'DEBUG in findchain: у нас match и поэтому транковый порт')
         m[2] = str(
             myactivka.getinfo(m[3], "ethchannel_member",
                                 match.group(2))[0][0][0]
             )
-        print(f'DEBUG in : преобразовали m[2]  = {m[2]}')
         m[2] = port_name_normalize(m[2])
-        print(f'DEBUG in : m[2] после нормализации  = {m[2]}')
         # если стартовая точка - роутер, ищем первый на пути коммутатор,
         # если L3 коммутатор - начнем поиск с него
     if myactivka.levels[m[3]] == "R":
         sw = myactivka.getinfo(m[3], "neighbor_by_port", m[2])
-        print(f'DEBUG in : мы находимся на роутере m[3] = {m[3]} и получили соседа sw= {sw}')
     else:
         sw = m[3]
-        print(f'DEBUG else : sw = {sw}')
     # и в бесконечном цикле идем по цепочке коммутаторов,
     # пока не найдем последний, к которому подключен хост
 
     while True:
-        print(f'DEBUG in зашли в цикл while')
         match = re.search(r"([-a-zA-Z0-9]+)(\.\S+)", sw)
         if match:
             sw = match.group(1)
-            print(f'DEBUG in : первый match и sw = {sw}')
         end.append(sw)
         i += 1
         mac_to_find = convert_mac(
             mac_to_find, myactivka.choose(sw, withoutname=True)["device_type"]
         )
-        print(f'DEBUG mac_to_find  = {}mac_to_find')
         port = myactivka.getinfo(sw, "mac_addr_tbl_by", mac_to_find)
-        print(f'DEBUG in :получили port = {port}')
         # port = [имя порта, Status] где Status = True если к порту
         # подключен 1 MAC или если больше то это MAC IP телефона и
         # Status = False если дальше светится много MACов
@@ -206,17 +196,14 @@ def findchain(myactivka, m, hostname=False):
         return_text.append(message[22].format(sw, port[0]))
         if not port[1]:
             next_neighbor = myactivka.getinfo(sw, "neighbor_by_port", port[0])
-            print(f'DEBUG in :получили следующего соседа  = {next_neighbor}')
             # если за портом много устройств но ни по CDP ни по LLDP
             # соседа не получаем, значит там “тупой” неуправляемый коммутатор,
             # останавливаемся и сообщаем об этом
             if not next_neighbor:
-                print(f'DEBUG а следующего соседа то и нет')
                 return_text.append(message[23].format(sw, port[0]))
                 break
             else:
                 sw = next_neighbor
-                print(f'DEBUG получили следующего соседа sw = {sw}')
         else:
             return_text.append(message[24].format(sw, port[0]))
             break
