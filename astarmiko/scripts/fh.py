@@ -178,7 +178,7 @@ def findchain(myactivka, m, hostname=False):
         # если L3 коммутатор - начнем поиск с него
     if myactivka.levels[m[3]] == "R":
         sw = myactivka.getinfo(m[3], "neighbor_by_port", m[2])
-        print(f'DEBUG in : мы находимся на роутере m[3] = {m[3] и получили соседа sw= {sw}')
+        print(f'DEBUG in : мы находимся на роутере m[3] = {m[3]} и получили соседа sw= {sw}')
     else:
         sw = m[3]
         print(f'DEBUG else : sw = {sw}')
