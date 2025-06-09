@@ -194,8 +194,9 @@ def findchain(myactivka, m, hostname=False):
         # Status = False если дальше светится много MACов
         if not port or not isinstance(port, list):
             # Если не получили корректный порт — выходим с сообщением
-            return_text.append(f"Порт для {mac_to_find} не найден на {sw}")
-            break
+            print(message[19].format(mac_to_find))
+            return_text.append(message[19].format(mac_to_find))
+            sys.exit()
         print(message[22].format(sw, port[0]))
         return_text.append(message[22].format(sw, port[0]))
         if not port[1]:
