@@ -311,7 +311,7 @@ def ip_routine(myactivka, ip, ac):
             correct_ip = ipreal
         hostname = ip
     else:
-        # а вдруг команду old_fh.exe вызвали из буфера а адрес ввели при
+        # а вдруг команду fh вызвали из буфера а адрес ввели при
         # русской раскладке и вместо “.” у вас “,” или просто ошиблись -
         # проверяем и возвращаем правильный IP
         correct_ip = is_ip_correct(ip)
@@ -341,6 +341,7 @@ def ip_routine(myactivka, ip, ac):
             quit()
         print(message[13])
         quit()
+    m[3] = m[3].lower()
     if m[2] == "FIREWALL":
         # if firewall m = [ip, mac_of_this_ip, 'FIREWALL', routerstart,
         # ip_add_of_firewall]
@@ -363,7 +364,7 @@ def mac_routine(myactivka, ip):
         print(a, b)
     seg = input(message[8])
     seg_name = sl[int(seg)]
-    seg_devices = [dev for dev, value in myactivka.segment.items()
+    seg_devices = [dev.lower() for dev, value in myactivka.segment.items()
                    if value == seg_name]
     out = findbymac(myactivka, ip, seg_devices)
     if not out:
