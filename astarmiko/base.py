@@ -570,6 +570,18 @@ def check_identity(curr_config, last_backup):
         return False
 
 
+class TimeMeasure:
+    '''
+    The class allows you to measure the execution time of a program or subroutine
+    '''
+    def __init__(self):
+        pass
+    def __enter__(self):
+        self.start = time.time()
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        print(f'Время выполнения программы заняло: {time.time() - self.start}')
+
+
 class Activka:
     """The class represents all our network devices - routers and switches"""
 
@@ -1065,141 +1077,315 @@ class Activka:
             )
             return False
 
-
 class ActivkaBackup(Activka):
-    """
-    Класс для управления бэкапами конфигурации.
-    """
-
+    '''
+    Class is child of class Activka, used for config backup
+    '''
+    
+    data = []
     def __init__(self, byname):
         super().__init__(byname)
         import socket
-
-        self.main_backup_server = {
-            "name": ac.main_backup_server["name"],
-            "protocol": "local",
-            "ftp_root": ac.main_backup_server["ftp_root"],
-            "ftp_user": ac.main_backup_server["user"],
-            "ftp_password": ac.main_backup_server["password"],
-            "local_root": ac.main_backup_server["local_root"],
-        }
-        self.second_backup_server = {
-            "name": ac.second_backup_server["name"],
-            "protocol": "ftp",
-            "ftp_root": ac.second_backup_server["ftp_root"],
-            "ftp_user": ac.second_backup_server["user"],
-            "ftp_password": ac.second_backup_server["password"],
-        }
-
+        self.main_backup_server = {}
+        self.second_backup_server = {}
+        self.main_backup_server['name'] = ac.main_backup_server['name']
+        self.main_backup_server['protocol'] = 'local'
+        self.main_backup_server['ftp_root'] = ac.main_backup_server['ftp_root']
+        self.main_backup_server['ftp_user'] = ac.main_backup_server['user']
+        self.main_backup_server['ftp_password'] = ac.main_backup_server['password']
+        self.main_backup_server['local_root'] = ac.main_backup_server['local_root']
+        self.second_backup_server['name'] = ac.second_backup_server['name']
+        self.second_backup_server['protocol'] = 'ftp'
+        self.second_backup_server['ftp_root'] = ac.second_backup_server['ftp_root']
+        self.second_backup_server['ftp_user'] = ac.second_backup_server['user']
+        self.second_backup_server['ftp_password'] = ac.second_backup_server['password']
         self.get_backup_list = self._get_backup_list_local
         self.get_backup_config = self._get_backup_config_local
         self.write_backup = self._write_backup_local
-
-        if not socket.gethostname() == self.main_backup_server["name"]:
+        
+        
+        if not socket.gethostname() == self.main_backup_server['name']:
+            self.main_backup_server['protocol'] = 'ftp'
             self.get_backup_list = self._get_backup_list_ftp
             self.get_backup_config = self._get_backup_config_ftp
             self.write_backup = self._write_backup_ftp
+    
+    def _set_ftp_var(self, second):
+        '''Function set parameters for ftp connection
+        
+        Args:
+            second (bool): flag to define main backup server (second is False)
+                            or second backup server (second is True)
+        
+        Returns:
+            ftp_root (str): path to ftp root
+            ftp_params (dict): dictionary for ftp connection
+        '''
+        if second:
+            ftp_params = {
+                'host': self.second_backup_server['name'],           
+                'user': self.second_backup_server['ftp_user'],       
+                'passwd': self.second_backup_server['ftp_password'],
+                'acct' : self.second_backup_server['ftp_user'],
+                } 
+            ftp_root  = self.second_backup_server['ftp_root']
+        else:
+            ftp_params = {
+                'host': self.main_backup_server['name'],           
+                'user': self.main_backup_server['ftp_user'],       
+                'passwd': self.main_backup_server['ftp_password'],
+                'acct' : self.main_backup_server['ftp_user'],
+                } 
+            ftp_root  = self.main_backup_server['ftp_root']
+        return (ftp_root, ftp_params)
+    
 
-    def _get_backup_list_local(self, segment, device=None):
-        from os import path, walk
-        where = path.join(self.main_backup_server["local_root"], segment)
-        files = [f for _, _, f in walk(where)][0]
-        return self._get_files_of_dir(files, device)
+        
+    
+    def _get_backup_list_local(self, segment, device= None):
+        '''The function returns a list of backup files in the segment folder
+        
+        Args:
+            segment (str): segment (folder) under ftp_root  (ftp_root/segment/)
+            device (str, optional): name of device
+        
+        Returns:
+            out (list): list of all backup files in the segment folder if device= None
+                        or list of  backup files only for this device
+        '''
+        from os import  path
+        where = path.join(self.main_backup_server['local_root'], segment)
+        files = [f for _, _, f in os.walk(where)][0]
+        out = self._get_files_of_dir(files, device)
+        return out
+    
 
-    def _get_backup_list_ftp(self, segment, device=None, second=False):
+    def _get_backup_list_ftp(self, segment, device= None, second = False):
+        '''The function returns a list of backup files in the segment folder
+        
+        Args:
+            segment (str): segment (folder) under ftp_root  (ftp_root/segment/)
+            device (str, optional): name of device
+            second (bool, optional): flag defined using main (default) backup server
+                                    or second (second = True) backup server
+        
+        Returns:
+            out (list): list of all backup files in the segment folder if device= None
+                        or list of  backup files only for this device
+        '''
         from ftplib import FTP
         ftp_root, ftp_params = self._set_ftp_var(second)
-
+        
         with FTP(**ftp_params) as con:
             con.cwd(ftp_root + segment)
             files = con.nlst()
-        return self._get_files_of_dir(files, device)
-
-    def _get_files_of_dir(self, files, device=None):
-        file_list, date_list = [], []
-        for filename in files:
-            if not device:
+        out = self._get_files_of_dir(files, device)
+        return out
+    
+    def _get_files_of_dir(self, *args):
+        '''the function searches the list of files from a certain catalogue 
+            for files related to a certain device
+            All files name have format f'{device}-YYYYMMDD' 
+            where YYYYMMDD - date of creating backup
+        
+        Args:
+            args[0] = files (list): list off files in certain catalogue
+            args[1] = device (str): name of device to search them backups in args[0]
+        Returns:
+            out (list): = [file_list, date_list] where - 
+                        file_list - list of backup files for certain device
+                        date_list - list of all "date part" of file's names
+                        = ['STOP LOSHADKA', 19000101] if the device has never been backed up
+            out (list) = file_list if args[1] = None
+        '''
+        file_list = []
+        date_list = []
+        for filename in args[0]:
+            if not args[1]:
                 file_list.append(filename)
             else:
-                if f'{device.lower()}-' in filename.lower():
+                if f'{args[1].lower()}-' in filename.lower():
                     file_list.append(filename)
                     date_list.append(int(filename[-8:]))
-        if device:
+        if args[1]:
             if not file_list:
-                file_list = ["STOP LOSHADKA"]
+                file_list = ['STOP LOSHADKA']
                 date_list = [19000101]
-            return [file_list, date_list]
+            out = [file_list, date_list]
+            return out
         else:
             return file_list
-
-    def _set_ftp_var(self, second):
-        if second:
-            ftp_params = {
-                "host": self.second_backup_server["name"],
-                "user": self.second_backup_server["ftp_user"],
-                "passwd": self.second_backup_server["ftp_password"],
-                "acct": self.second_backup_server["ftp_user"],
-            }
-            ftp_root = self.second_backup_server["ftp_root"]
-        else:
-            ftp_params = {
-                "host": self.main_backup_server["name"],
-                "user": self.main_backup_server["ftp_user"],
-                "passwd": self.main_backup_server["ftp_password"],
-                "acct": self.main_backup_server["ftp_user"],
-            }
-            ftp_root = self.main_backup_server["ftp_root"]
-        return ftp_root, ftp_params
-
-    def _get_backup_config_local(self, segment, device, list_=True, date_=-1):
+    
+    
+    def _get_backup_config_local(self, *args, list_ = True, date_ = -1):
+        '''Function get last config backup from last (by date) file for defined device
+            when script is running on main backup server
+        
+        Args:
+            args[0] = segment (str): segment (folder) under ftp_root or local_root  (./segment/)
+            args[1] = device (str, optional): name of device
+            list_ (bool, optional): flag defined type of output - 
+                                    list of list (config lines)- if True (default)
+                                    string - if False
+            date_ (int, optional): default -1 to get last (by date) file or next-to-last or next-next-ro-last
+                                    but I haven't figured out what it would be for.
+        
+        Returns:
+            out (list): list of lines of config file if list_ = True
+            out (str): config files as string if list_ = False
+        '''
         from os import path
-        f = self._get_backup_list_local(segment, device)
+        f = self._get_backup_list_local(args[0], args[1])
         if not f:
             return False
-        filename = path.join(self.main_backup_server["local_root"], segment, f[0][date_])
+        filename = path.join(self.main_backup_server['local_root'], args[0], f[0][date_])
+        out = []
         with open(filename) as fr:
-            out = [line.rstrip('\n') for line in fr]
-        return out if list_ else '\n'.join(out)
+            for line in fr:
+                line = line.rstrip('\n')
+                out.append(line)
+        if list_:
+            return out
+        else:
+            return '\n'.join(out)
+    
 
-    def _get_backup_config_ftp(self, segment, device, list_=True, date_=-1, second=False):
+    def _get_backup_config_ftp(self, segment, device= False, list_ = True, date_ = -1, second = False):
+        '''Function get last config backup from last (by date) file for defined device
+            when script is not running on main backup server
+            and get files from server over ftp
+        
+        Args:
+            args[0] = segment (str): segment (folder) under ftp_root or local_root  (./segment/)
+            args[1] = device (str, optional): name of device
+            list_ (bool, optional): flag defined type of output - 
+                                    list of list (config lines)- if True (default)
+                                    string - if False
+            date_ (int, optional): default -1 to get last (by date) file or next-to-last or next-next-ro-last
+                                    but I haven't figured out what it would be for.
+        
+        Returns:
+            out (list): list of lines of config file if list_ = True
+            out (str): config files as string if list_ = False
+        '''
         from ftplib import FTP
+
         f = self._get_backup_list_ftp(segment, device)
-        if f[0][date_] == "STOP LOSHADKA":
+    
+        if f[0][date_] == 'STOP LOSHADKA':
             return False
         cmd = 'RETR ' + f[0][date_]
+        if cmd == 'RETR STOP LOSHADKA':
+            return False
         data = []
         ftp_root, ftp_params = self._set_ftp_var(second)
-
+        
         def handleDownload(more_data):
             data.append(more_data)
         with FTP(**ftp_params) as con:
             con.cwd(ftp_root + segment)
-            con.retrbinary(cmd, callback=handleDownload)
-        out = b''.join(data).decode(encoding='utf-8').split('\n')
-        out = [line.replace('\x03', '^C').rstrip('\r') for line in out]
-        return out if list_ else '\n'.join(out)
+            con.retrbinary(cmd, callback = handleDownload)
+        out = b''.join(data)
+        out = out.decode(encoding = 'utf-8').split('\n')
+        for i, line in enumerate(out):
+            if '\x03' in line:
+                out[i] = line.replace('\x03', '^C')
+        out = [line.rsplit('\r')[0] for line in out] 
+        if list_:
+            return out
+        else:
+            content = str()
+            for line in out:
+                content += '\n'.join(line)
+            return content
 
-    def _write_backup_local(self, segment, filename, curr_config):
-        from os import path
-        where = path.join(self.main_backup_server["local_root"], segment, filename)
+
+    def save_config_backup(self, *args, rewrite = False):
+        '''Function save current device configuration to backup file
+            if it differs from the last saved configuration
+        
+        Args:
+            args[0] = segment (str): segment (folder) under ftp_root or local_root  (./segment/)
+            args[1] = device (str): name of device
+            rewrite (bool): flag to rewrite (if True) or not (if False - default) 
+                            backup file if it is exists
+        Returns:
+            exit_code (int): 0 - configuration is the same as last backup, no write
+                             1 - confifurattions are different, write backup
+                             2 - confifurattions are different and flag rewrite was set, rewrite backup
+                             10 - new device, it was first backup. Writed 
+        '''
+        import datetime
+        td = datetime.date.today()
+        today = f'{td.year}' + f'{td.month:02d}' + f'{td.day:02d}'
+        curr_config = self.get_curr_config(args[1])
+        last_backup = self.get_backup_config(*args)
+        filename = args[1] + '-' + today
+        exit_code = int()
+        if not last_backup:
+            self.write_backup(args[0], filename, curr_config)
+            exit_code = 10
+            sys.exit(exit_code)
+        if check_identity(curr_config, last_backup):
+            exit_code = 0
+            sys.exit(exit_code)
+        filename_last = self.get_backup_list(*args)[0][-1]
+        if filename == filename_last:
+            if rewrite:
+                self.write_backup(args[0], filename, curr_config)
+                exit_code = 2
+        else:
+            self.write_backup(args[0], filename, curr_config)
+            exit_code = 1
+        return exit_code 
+    
+    
+
+    def _write_backup_local(self, *args):
+        '''Function create backup file on disk when running on main backup server
+        
+        Args:
+            args[0] = segment (str): segment (folder) under ftp_root or local_root  (./segment/)
+            args[1] = filename (str): name of file
+            args[2] = curr_config (list): current configuration in type of list
+        
+        Returns:
+            none
+        '''
+        from os import  path
+        segment = args[0]
+        filename = args[1]
+        curr_config = args[2]
         content = '\n'.join(curr_config)
+        where = path.abspath(path.join(self.main_backup_server['local_root'], segment, filename))
         with open(where, 'w') as fw:
             fw.write(content)
-        self._write_backup_ftp(segment, filename, curr_config, second=True)
+        self._write_backup_ftp(*args, second = True)
+    
 
-    def _write_backup_ftp(self, segment, filename, curr_config, second=False):
+    def _write_backup_ftp(self, segment, filename, curr_config, second = False  ):
+        '''Function create backup file on disk when not running on main backup server
+        
+        Args:
+            args[0] = segment (str): segment (folder) under ftp_root or local_root  (./segment/)
+            args[1] = filename (str): name of file
+            args[2] = curr_config (list): current configuration in type of list
+        
+        Returns:
+            none
+        '''
         from ftplib import FTP
         from tempfile import gettempdir
         from os import path
-
+        
         curr_config = '\n'.join(curr_config)
-        tmpfile = path.join(gettempdir(), filename)
+        cmd = f"STOR {filename}"
+        tmpfile = path.abspath(path.join(gettempdir(), filename))
         ftp_root, ftp_params = self._set_ftp_var(second)
-
         with open(tmpfile, 'w') as fw:
             fw.write(curr_config)
         with FTP(**ftp_params) as con:
             con.cwd(ftp_root + segment)
-            con.storlines(f"STOR {filename}", open(tmpfile, 'rb'))
+            con.storlines(cmd, open(tmpfile, 'rb'))
         os.remove(tmpfile)
 
