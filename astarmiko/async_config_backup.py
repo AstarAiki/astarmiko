@@ -4,7 +4,6 @@ from concurrent.futures import ThreadPoolExecutor
 
 from astarmiko.base import (
     ActivkaBackup,
-    TimeMeasure,
     setup_config,
 )
 
@@ -24,7 +23,7 @@ async def config_save_async(mb, what, executor):
 
 
 async def main():
-    mb = ActivkaBackup("activka_byname.yaml", "activka_byip.yaml")
+    mb = ActivkaBackup("activka_byname.yaml")
     todo = load_tasks()
     executor = ThreadPoolExecutor(max_workers=20)
 
@@ -33,5 +32,4 @@ async def main():
 
 
 if __name__ == "__main__":
-    with TimeMeasure():
-        asyncio.run(main())
+    asyncio.run(main())

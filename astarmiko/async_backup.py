@@ -8,8 +8,8 @@ import os
 import re
 
 class ActivkaBackupAsync(Activka):
-    def __init__(self, byname, byip=None):
-        super().__init__(byname, *(byip,) if byip else tuple())
+    def __init__(self, byname):
+        super().__init__(byname)
         self._setup_backup_servers()
 
     def _setup_backup_servers(self):
@@ -61,6 +61,5 @@ if __name__ == '__main__':
 
         await asyncio.gather(*(mb.save_config_backup(*what) for what in tasks))
 
-    with TimeMeasure():
-        asyncio.run(main())
+    asyncio.run(main())
 
