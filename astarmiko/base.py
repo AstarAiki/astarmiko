@@ -1102,7 +1102,7 @@ class ActivkaBackup(Activka):
         self.get_backup_list = self._get_backup_list_local
         self.get_backup_config = self._get_backup_config_local
         self.write_backup = self._write_backup_local
-        self.ignore_lines = ac.get('ignore_lines',[])
+        self.ignore_lines = ac._data.get('ignore_lines',[])
         
         if not socket.gethostname() == self.main_backup_server['name']:
             self.main_backup_server['protocol'] = 'ftp'
