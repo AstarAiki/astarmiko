@@ -403,11 +403,11 @@ def findhost(argv=None):
     file_name = os.path.splitext(os.path.basename(file_path))[0]
     base_dir = os.path.dirname(file_path)
     path_to_cfg = os.path.abspath(os.path.join(base_dir, f"{file_name}.yaml"))
-    if os.path.exist(path_to_cfg):
+    if os.path.exists(path_to_cfg):
         setup_config(path_to_cfg)
     else:
         config_path = os.path.expanduser("~/astarmiko/fh.yaml")
-        if os.path.exist(config_path):
+        if os.path.exists(config_path):
             setup_config(config_path)
         else:
             print("The fh (findhost)requires a configuration file fh.yaml either in the same folder as fh.py or in ~/astarmiko/YAML/")

@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import yaml
+import os
+import sys
 from concurrent.futures import ThreadPoolExecutor
 from concurrent.futures import wait
 
@@ -10,6 +12,14 @@ from astarmiko.base import (
     TimeMeasure,
     setup_config,
 )
+
+config_path = os.path.expanduser("~/astarmiko/YAML/confbackup.yaml")
+if os.path.exists(config_path):
+    setup_config(config_path)
+else:
+    print("The config_backup requires a configuration file confbackup.yaml in ~/astarmiko/YAML/")
+    sys.exit()
+
 
 setup_config("confbackup.yaml")
 from astarmiko.base import ac
