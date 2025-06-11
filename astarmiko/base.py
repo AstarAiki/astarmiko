@@ -109,7 +109,8 @@ def setup_config(path_to_conf):
     ac._data = {k: os.path.expanduser(v.replace("~", ac.localpath)) if isinstance(v, str) and v.startswith("~/") else v for k, v in ac._data.items()}
     try:
         dict_of_cmd = getattr(ac, 'dict_of_cmd', None)
-        if dict_of_cmd:
+        if isinstance(dict_of_cmd, str)  and dict_of_cmd.startswith("~/"):
+            dict_of_cmd = os.path.expanduser(dict_of_cmd)
             with open(dict_of_cmd) as f:
                 commands = yaml.safe_load(f)
             ac.commands = commands['commands']
