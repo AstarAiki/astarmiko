@@ -106,7 +106,7 @@ def setup_config(path_to_conf):
     global ac
     ac = Astarconf(path_to_conf)
     ac.localpath = os.path.expanduser(ac.localpath) if ac.localpath.startswith("~") else ac.localpath
-    ac = {k: os.path.expanduser(v.replace("~", ac.localpath)) if isinstance(v, str) and v.startswith("~/") else v for k, v in ac.__dict__.items()}    
+    ac = {k: os.path.expanduser(v.replace("~", ac.localpath)) if isinstance(v, str) and v.startswith("~/") else v for k, v in ac.items()}    
     try:
         dict_of_cmd = getattr(ac, 'dict_of_cmd', None)
         if dict_of_cmd:

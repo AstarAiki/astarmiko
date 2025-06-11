@@ -21,7 +21,6 @@ else:
     sys.exit()
 
 
-setup_config("confbackup.yaml")
 from astarmiko.base import ac
 
 with TimeMeasure() as tm:
