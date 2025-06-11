@@ -600,6 +600,10 @@ class Activka:
             self.routerbyip = allip
         dev_type = {}
         by_ip = {}
+        realdevices = list(wholedict.keys())
+        realdevices.remove("LEVEL")
+        realdevices.remove("SEGMENT")
+        self.realdevices = realdevices
         # Приводим все ключи wholedict к нижнему регистру 
         wholedict = {k.lower(): v for k, v in wholedict.items()}
         devices = list(wholedict.keys())
@@ -1399,7 +1403,7 @@ class ActivkaBackup(Activka):
             self.write_backup(args[0], filename, curr_config)
             exit_code = 10
             sys.exit(exit_code)
-        if not compare_configs(curr_config, last_backup)['changed']:
+        if not self.compare_configs(curr_config, last_backup)['changed']:
             exit_code = 0
             sys.exit(exit_code)
         filename_last = self.get_backup_list(*args)[0][-1]

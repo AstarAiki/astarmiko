@@ -27,7 +27,7 @@ with TimeMeasure() as tm:
     max_workers = 20
     mb = ActivkaBackup("activka_byname.yaml")
 
-    with open(ac.localpath + "config_backup.yaml") as fyaml:
+    with open(os.path.expanduser(ac.localpath) + "YAML/" + "config_backup.yaml") as fyaml:
         wholedict = yaml.safe_load(fyaml)
 
     todo = [(key, item) for key in wholedict.keys() for item in wholedict[key]]
