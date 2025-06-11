@@ -9,6 +9,7 @@ import sys
 def get_log_config(path=None):
     try:
         if isinstance(path, str):
+            path =  os.path.expanduser(path) if path.starstwith("~") else path
             ac = Astarconf(path)
         else:
             sys.exit("You must specify configuration file" )
