@@ -592,7 +592,7 @@ class Activka:
         """
         username = ac.user
         password = ac.password
-        with open(ac.localpath + byname) as fyaml:
+        with open(ac.localpath + 'YAML/' +  byname) as fyaml:
             wholedict = yaml.safe_load(fyaml)
         if args:
             with open(ac.localpath + args[0]) as fyaml:
