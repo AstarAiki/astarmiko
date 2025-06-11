@@ -20,7 +20,7 @@ async def async_main():
     parser.add_argument("--elastic", action="store_true")
 
     args = parser.parse_args()
-    args.conf = os.path.expanduser(arcs.conf) if args.conf.startswith("~") else args.conf
+    args.conf = os.path.expanduser(args.conf) if args.conf.startswith("~") else args.conf
     setup_config(args.conf)
     
     from astarmiko.base import ac
