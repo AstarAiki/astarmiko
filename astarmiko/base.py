@@ -105,6 +105,8 @@ def setup_config(path_to_conf):
     from astarconf import Astarconf
     global ac
     ac = Astarconf(path_to_conf)
+    ac["localpath"] = os.path.expanduser(ac["localpath"]) if ac["localpath"].startswith("~") else ac["localpath"]
+    ac = {k: os.path.expanduser(v.replace("~", ac["localpath"])) if isinstance(v, str) and v.startswith("~/") else v for k, v in ac.items()}    
     try:
         dict_of_cmd = getattr(ac, 'dict_of_cmd', None)
         if dict_of_cmd:
@@ -555,19 +557,12 @@ def del_exeption(config):
         config (list): list of config lines from device without exeption lines
 
     """
-    to_lookup = ["ntp clock-period"]
+    ignore_list = ac.get('ignore_list',[])
     for i, line in enumerate(config):
-        for tl in to_lookup:
+        for tl in ignore_list:
             if tl in line:
                 config.pop(i)
     return config
-
-
-def check_identity(curr_config, last_backup):
-    if curr_config == last_backup:
-        return True
-    else:
-        return False
 
 
 class TimeMeasure:
@@ -1102,7 +1097,7 @@ class ActivkaBackup(Activka):
         self.get_backup_list = self._get_backup_list_local
         self.get_backup_config = self._get_backup_config_local
         self.write_backup = self._write_backup_local
-        
+        self.ignore_lines = ac.get('ignore_lines',[])
         
         if not socket.gethostname() == self.main_backup_server['name']:
             self.main_backup_server['protocol'] = 'ftp'
@@ -1300,6 +1295,83 @@ class ActivkaBackup(Activka):
             return content
 
 
+    def compare_configs(self, current: str, backup: str) -> Dict[str, Any]:
+        """
+        Compare current configuration with last backup
+
+        Args:
+            device: Device name to compare configs for
+            ignore_lines: List of regex patterns to ignore in comparison
+
+        Returns:
+            Dictionary with comparison results:
+            {
+                'changed': bool,
+                'added': list,
+                'removed': list,
+                'changed_lines': list
+            }
+        """
+
+        if not backup:
+            return {'changed': True, 'added': current, 'removed': [], 'changed_lines': []}
+
+        return self._config_diff(current, backup)
+
+    def _config_diff(self, config1: List[str], config2: List[str]) -> Dict[str, Any]:
+        """
+        Compare two configurations and return differences
+
+        Args:
+            config1: First configuration (lines)
+            config2: Second configuration (lines)
+            ignore_lines: List of regex patterns to ignore
+
+        Returns:
+            Dictionary with diff results
+        """
+
+        def should_ignore(line):
+            for pattern in self.ignore_lines:
+                if re.search(pattern, line):
+                    return True
+            return False
+
+        clean1 = [line.strip() for line in config1 if line.strip() and not should_ignore(line)]
+        clean2 = [line.strip() for line in config2 if line.strip() and not should_ignore(line)]
+
+        set1 = set(clean1)
+        set2 = set(clean2)
+
+        added = list(set1 - set2)
+        removed = list(set2 - set1)
+
+        # Find changed lines (same context but different content)
+        changed_lines = []
+        context = 3
+        for i in range(len(clean1)):
+            if i < len(clean2) and clean1[i] != clean2[i]:
+                start = max(0, i - context)
+                end = min(len(clean1), i + context + 1)
+                changed_lines.append({
+                    'line_num': i,
+                    'current': clean1[i],
+                    'backup': clean2[i],
+                    'context': {
+                        'before': clean1[start:i],
+                        'after': clean1[i+1:end]
+                    }
+                })
+
+        return {
+            'changed': bool(added or removed or changed_lines),
+            'added': added,
+            'removed': removed,
+            'changed_lines': changed_lines
+        }
+
+
+
     def save_config_backup(self, *args, rewrite = False):
         '''Function save current device configuration to backup file
             if it differs from the last saved configuration
@@ -1318,15 +1390,15 @@ class ActivkaBackup(Activka):
         import datetime
         td = datetime.date.today()
         today = f'{td.year}' + f'{td.month:02d}' + f'{td.day:02d}'
-        curr_config = self.get_curr_config(args[1])
-        last_backup = self.get_backup_config(*args)
+        curr_config = self.get_curr_config(args[1], list_=False)
+        last_backup = self.get_backup_config(*args, list_=False)
         filename = args[1] + '-' + today
         exit_code = int()
         if not last_backup:
             self.write_backup(args[0], filename, curr_config)
             exit_code = 10
             sys.exit(exit_code)
-        if check_identity(curr_config, last_backup):
+        if not compare_configs(curr_config, last_backup)['changed']:
             exit_code = 0
             sys.exit(exit_code)
         filename_last = self.get_backup_list(*args)[0][-1]

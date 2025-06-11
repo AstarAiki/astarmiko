@@ -1,11 +1,11 @@
-localpath: /etc/astarmiko/
+localpath: ~/astarmiko/
 user: 
 password: 
 phone_mac:
 - 805e
 - 001a
-templpath: /etc/astarmiko/TEMPLATES/
-dict_of_cmd: /etc/astarmiko/YAML/commands.yaml
+templpath: ~/astarmiko/TEMPLATES/
+dict_of_cmd: ~/astarmiko/YAML/commands.yaml
 logging: False
 logfile: /var/log/astarmiko.log
 loglevel: INFO

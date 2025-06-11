@@ -395,15 +395,24 @@ def mac_routine(myactivka, ip):
 
 def findhost(argv=None):
     """
-    If file with this python script named fh.py it look up fh.yml
-    configuration file in same directory
+    If file with this python script named fh.py it look up fh.yaml
+    configuration file in same directory or in ~/astarmiko/YAML/fh.yaml
     """
     global message
     file_path = os.path.abspath(sys.argv[0])
     file_name = os.path.splitext(os.path.basename(file_path))[0]
     base_dir = os.path.dirname(file_path)
-    path_to_cfg = os.path.abspath(os.path.join(base_dir, f"{file_name}.yml"))
-    setup_config(path_to_cfg)
+    path_to_cfg = os.path.abspath(os.path.join(base_dir, f"{file_name}.yaml"))
+    if os.path.exist(path_to_cfg):
+        setup_config(path_to_cfg)
+    else:
+        config_path = os.path.expanduser("~/astarmiko/fh.yaml")
+        if os.path.exist(config_path):
+            setup_config(config_path)
+        else:
+            print("The fh (findhost)requires a configuration file fh.yaml either in the same folder as fh.py or in ~/astarmiko/YAML/")
+            sys.exit()
+    
     from astarmiko.base import ac
 
     file = ac.localpath + "messages_" + ac.language + ".yaml"

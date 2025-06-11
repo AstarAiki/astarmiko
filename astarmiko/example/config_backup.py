@@ -11,12 +11,12 @@ from astarmiko.base import (
     setup_config,
 )
 
-setup_config("confbackup.yml")
+setup_config("confbackup.yaml")
 from astarmiko.base import ac
 
 with TimeMeasure() as tm:
     max_workers = 20
-    mb = ActivkaBackup("activka_byname.yaml", "activka_byip.yaml")
+    mb = ActivkaBackup("activka_byname.yaml")
 
     with open(ac.localpath + "config_backup.yaml") as fyaml:
         wholedict = yaml.safe_load(fyaml)

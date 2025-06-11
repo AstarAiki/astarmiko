@@ -36,6 +36,28 @@ Requires Python 3.8+
 
 ---
 
+## 🚀 Recommended location for configuration files
+
+All configuration files (YAML, TEMPLATES, example) are recommended to be stored in the user's home directory:
+
+- **Linux/macOS:** `~/astarmiko/`
+- **Windows:** `C:\\Users\\username\\astarmiko\\`
+
+This will allow you to:
+✅ Easily edit configuration files  
+✅ Avoid permission issues  
+✅ Use them on different operating systems without changes
+
+Example:
+
+```bash
+mkdir -p ~/astarmiko
+cp -r ./astarmiko/YAML ~/astarmiko/
+cp -r ./astarmiko/TEMPLATES ~/astarmiko/
+cp -r ./astarmiko/example ~/astarmiko/
+
+---
+
 ## 🧑‍💻 Usage Examples
 
 ### Run show and config commands in parallel:
