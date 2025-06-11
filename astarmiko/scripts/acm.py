@@ -14,7 +14,7 @@ async def async_main():
     parser.add_argument("--device", nargs="+", required=True, help="Device name(s)")
     parser.add_argument("--cmd", help="Command as string or JSON")
     parser.add_argument("--cmd-file", help="Path to file with commands in JSON format")
-    parser.add_argument("--conf", default="~/astarmiko/astarmiko.yaml", help="Config file path")
+    parser.add_argument("--conf", default="~/astarmiko/YAML/astarmiko.yaml", help="Config file path")
     parser.add_argument("--rsyslog", action="store_true")
     parser.add_argument("--loki", action="store_true")
     parser.add_argument("--elastic", action="store_true")
