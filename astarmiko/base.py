@@ -315,7 +315,7 @@ def send_commands(device, commands, mode='exec', validate_each=False):
         if validate_each:
             good, failed = {}, {}
             for cmd in commands:
-                result = ssh.send_config_set(cmd)
+                result = ssh.send_config_set(cmd) 
                 if not errors_str.search(result):
                     good[cmd] = result
                 else:

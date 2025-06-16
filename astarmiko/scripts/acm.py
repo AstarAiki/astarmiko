@@ -34,18 +34,18 @@ async def async_main():
     commands = None
     use_template = False
     if args.cmd_file:
-    try:
-        with open(args.cmd_file, "r", encoding="utf-8") as f:
-            raw = f.read().strip()
-            try:
-                # сначала пробуем как JSON
-                commands = json.loads(raw)
-            except json.JSONDecodeError:
-                # если не JSON — интерпретируем как простой список строк
-                commands = raw.splitlines()
-    except Exception as e:
-        print(f"Failed to load --cmd-file: {e}")
-        return
+        try:
+            with open(args.cmd_file, "r", encoding="utf-8") as f:
+                raw = f.read().strip()
+                try:
+                    # сначала пробуем как JSON
+                    commands = json.loads(raw)
+                except json.JSONDecodeError:
+                    # если не JSON — интерпретируем как простой список строк
+                    commands = raw.splitlines()
+        except Exception as e:
+            print(f"Failed to load --cmd-file: {e}")
+            return
     elif args.cmd:
         # Если команда есть в справочнике ac.commands - используем шаблон
         if args.cmd in ac.commands:
