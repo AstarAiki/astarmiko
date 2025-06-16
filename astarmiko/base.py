@@ -592,6 +592,7 @@ class Activka:
         """
         username = ac.user
         password = ac.password
+        ac.localpath = os.path.expanduser(ac.localpath) if ac.localpath.startswith("~") else ac.localpath
         with open(ac.localpath + 'YAML/' +  byname) as fyaml:
             wholedict = yaml.safe_load(fyaml)
         if args:
