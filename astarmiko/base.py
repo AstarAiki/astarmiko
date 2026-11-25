@@ -5,6 +5,8 @@ import logging
 import re
 import time
 import sys
+from pathlib import Path
+from pprint import pprint
 from typing import Optional, Any, List, Dict, Union
 from pysnmp.hlapi.v3arch.asyncio import (
         CommunityData,
@@ -24,7 +26,8 @@ from netmiko import (
 )
 
 ac = ""  # Global object represent configuration attributes
-
+command_mode = "" # Global object represent behavior of send command
+paging_prompt = ""
 
 def debug_logger(func):
     """
@@ -233,11 +236,15 @@ def is_device_available(ip):
         logger.warning(f"Ping check failed for {ip}: {str(e)}")
         return False
 
-
 def _try_connect(device, func, *args, **kwargs):
     """Internal function to handle connection attempts with availability check
     """
+    global command_mode
+    global paging_prompt
 
+    use_enable = device.pop('use_enable', True)
+    command_mode = device.pop("command_mode", "default")
+    paging_prompt = device.pop("paging_prompt", "--More--")
 
     def connect_with_credentials(device_params):
         if not is_device_available(device_params["ip"]):
@@ -251,7 +258,16 @@ def _try_connect(device, func, *args, **kwargs):
             logger.info(start_msg.format(device_params["ip"]))
 
             with ConnectHandler(**device_params) as ssh:
-                ssh.enable()
+                if use_enable:
+                    try:
+                        ssh.enable()
+                    except Exception as e:
+                        #Do not break whole connection if enable fails
+                        logger.warning(
+                            f"Enable failed on {device_params['ip']} "
+                            f"(device_type={device_params.get('device_type')}): {e}"
+                        )
+
                 return func(ssh, *args, **kwargs)
 
         except NetmikoTimeoutException as error:
@@ -268,7 +284,11 @@ def _try_connect(device, func, *args, **kwargs):
             raise  # Re-raise to handle in outer function
 
     # First try with original credentials
-    result = connect_with_credentials(device)
+    try:
+        result = connect_with_credentials(device)
+    except NetmikoAuthenticationException:
+        result = False
+
     if result is not False:
         return result  # УСПЕШНО – выходим!
 
@@ -288,41 +308,168 @@ def _try_connect(device, func, *args, **kwargs):
     logger.error(f"All authentication attempts failed for {device['ip']}")
     return False
 
+'''
+def send_command_with_paging(
+    ssh,
+    command,
+    more_patterns=("--More--",),
+    more_key=" ",
+    max_pages=500
+):
+    """
+    Send command and handle paging manually by pressing keys.
+
+    ssh: Netmiko connection
+    command: command to execute
+    more_patterns: tuple of strings indicating paging prompt
+    more_key: key to send to continue output
+    max_pages: safety limit to avoid infinite loops
+    """
+
+    output = ssh.send_command_timing(
+        command,
+        strip_prompt=False,
+        strip_command=False
+    )
+
+    full_output = output
+    pages = 0
+
+    while any(p in output for p in more_patterns):
+        pages += 1
+        if pages > max_pages:
+            raise RuntimeError(
+                f"Paging loop exceeded {max_pages} iterations"
+            )
+
+        output = ssh.send_command_timing(
+            more_key,
+            strip_prompt=False,
+            strip_command=False
+        )
+        full_output += output
+
+    return full_output
+'''
 
 def send_commands(device, commands, mode='exec', validate_each=False):
     '''
     Main function to send command to device
 
     Args:
-        device (str): name of device from activka_byname.yaml
+        device (dict): dictionary for connection for netmiko
         commands (list or str): one command or list of ones
                     if string - convert to list
         mode (str): 'exec' by default, for other use 'config'
                 if the value is different it is interpreted as config mode
     '''
+
+    global command_mode
+    global paging_prompt
+
     if isinstance(commands, str):
         commands = commands.strip().split('\n')
-
     errors_str = re.compile(r'Invalid input|'
                             r'Incomplete|'
                             r'Ambiguous|'
                             r'Unrecognized')
 
+    def cleanup_paging_artifacts(text):
+        """
+        Remove paging markers and ANSI escape sequences from CLI output.
+        """
+
+        # Remove common paging markers like --More--
+        text = re.sub(r"^[a-zA-Z_\-0-9]*#.+$", "", text)
+        text = re.sub(r"--\s*More\s*--", "", text)
+
+        # Remove ANSI escape sequences (ESC[...m, ESC, etc.)
+        text = re.sub(r"\x1b\[[0-9;]*[A-Za-z]", "", text)
+        text = re.sub(r"\x1b", "", text)
+
+        # Remove excessive empty lines caused by paging
+        text = re.sub(r"\n\s*\n\s*\n+", "\n\n", text)
+        return text.strip()
+
+
+    def send_command_with_paging(
+        ssh,
+        command,
+        more_patterns=("--More--",),
+        more_key=" ",
+        max_pages=500
+    ):
+        """
+        Send command and handle paging manually by pressing keys.
+
+        ssh: Netmiko connection
+        command: command to execute
+        more_patterns: tuple of strings indicating paging prompt
+        more_key: key to send to continue output
+        max_pages: safety limit to avoid infinite loops
+        """
+
+        output = ssh.send_command_timing(
+    	command,
+	strip_prompt=False,
+	strip_command=False
+        )
+
+        full_output = output
+        pages = 0
+
+        while any(p in output for p in more_patterns):
+            pages += 1
+            if pages > max_pages:
+                raise RuntimeError(
+                    f"Paging loop exceeded {max_pages} iterations"
+                )
+            output = ssh.send_command_timing(
+                more_key,
+                strip_prompt=False,
+                strip_command=False
+                )
+            full_output += output
+
+        return cleanup_paging_artifacts(full_output)
+
+
+
+
+
     def exec_mode(ssh):
-        return ssh.send_command(commands[0])
+        global command_mode
+        global paging_prompt
+
+        if command_mode == "paging":
+            return send_command_with_paging(
+                ssh,
+                commands[0],
+                more_patterns=(paging_prompt,)
+            )
+        if command_mode == "timing":
+             return ssh.send_command_timing(
+                 commands[0],
+                 strip_prompt=False,
+                 strip_command=False
+             )
+        return ssh.send_command(
+             commands[0],
+             read_timeout=device.get("read_timeout_override", 30)
+         )
 
     def config_mode(ssh):
         if validate_each:
             good, failed = {}, {}
             for cmd in commands:
-                result = ssh.send_config_set(cmd) 
+                result = ssh.send_config_set(cmd)
                 if not errors_str.search(result):
                     good[cmd] = result
                 else:
                     failed[cmd] = result
             return good, failed
         else:
-            result = ssh.send_config_set(commands, delay_factor=20, cmd_verify=False)
+            result = ssh.send_config_set(commands, read_timeout=60, cmd_verify=False)
             result += ssh.send_command_timing('write')
             return result
 
@@ -592,11 +739,14 @@ class Activka:
         """
         username = ac.user
         password = ac.password
-        ac.localpath = os.path.expanduser(ac.localpath) if ac.localpath.startswith("~") else ac.localpath
-        with open(ac.localpath + 'YAML/' +  byname) as fyaml:
+        inventory_file = Path(ac.localpath) / "YAML" / byname
+        #ac.localpath = os.path.expanduser(ac.localpath) if ac.localpath.startswith("~") else ac.localpath
+        with inventory_file.open("r", encoding="utf-8") as fyaml:
             wholedict = yaml.safe_load(fyaml)
         if args:
-            with open(ac.localpath + args[0]) as fyaml:
+            byip_file = Path(ac.localpath) / args[0]
+            with byip_file.open("r", encoding="utf-8") as fyaml:
+            #with open(ac.localpath + args[0]) as fyaml:
                 allip = yaml.safe_load(fyaml)
             self.routerbyip = allip
         dev_type = {}
@@ -605,7 +755,7 @@ class Activka:
         realdevices.remove("LEVEL")
         realdevices.remove("SEGMENT")
         self.realdevices = realdevices
-        # Приводим все ключи wholedict к нижнему регистру 
+        # Приводим все ключи wholedict к нижнему регистру
         wholedict = {k.lower(): v for k, v in wholedict.items()}
         devices = list(wholedict.keys())
         devices.remove("level")
@@ -625,9 +775,14 @@ class Activka:
         for d in devices:
             wholedict[d]["username"] = username
             wholedict[d]["password"] = password
-            dev_type[d] = wholedict[d]["device_type"]
+            if "device_type" in wholedict[d]:
+                dev_type[d] = wholedict[d]["device_type"]
+            else:
+                print(f"Предупреждение: у устройства {d} отсутствует тип!")
+
+            #dev_type[d] = wholedict[d]["device_type"]
             by_ip[wholedict[d]["ip"]] = d
-        
+
         self.wholedict = wholedict
         self.dev_type = dev_type
         self.by_ip = by_ip
@@ -775,7 +930,7 @@ class Activka:
 
         Args:
             dev (dict): dictionary in netmiko format for ConnectHandler(**dev)
-            outlist (list): otput of self.getinfo(device, 'mac_addr_tbl_by'
+            outlist (list): output of self.getinfo(device, 'mac_addr_tbl_by'
             isEdgedPort (bool): status of this port is edge port (True) or
                                 there is other switch behind tis port
         Returns:
@@ -906,10 +1061,7 @@ class Activka:
         if list_:
             return config
         else:
-            content = str()
-            for line in config:
-                content += "\n".join(line)
-            return content
+            return "\n".join(config)
 
     def list_of_all_ip_intf(self, device):
         """Function get all ip interface on device
@@ -1082,7 +1234,7 @@ class ActivkaBackup(Activka):
     '''
     Class is child of class Activka, used for config backup
     '''
-    
+
     data = []
     def __init__(self, byname):
         super().__init__(byname)
@@ -1104,52 +1256,52 @@ class ActivkaBackup(Activka):
         self.get_backup_config = self._get_backup_config_local
         self.write_backup = self._write_backup_local
         self.ignore_lines = ac._data.get('ignore_lines',[])
-        
+
         if not socket.gethostname() == self.main_backup_server['name']:
             self.main_backup_server['protocol'] = 'ftp'
             self.get_backup_list = self._get_backup_list_ftp
             self.get_backup_config = self._get_backup_config_ftp
             self.write_backup = self._write_backup_ftp
-    
+
     def _set_ftp_var(self, second):
         '''Function set parameters for ftp connection
-        
+
         Args:
             second (bool): flag to define main backup server (second is False)
                             or second backup server (second is True)
-        
+
         Returns:
             ftp_root (str): path to ftp root
             ftp_params (dict): dictionary for ftp connection
         '''
         if second:
             ftp_params = {
-                'host': self.second_backup_server['name'],           
-                'user': self.second_backup_server['ftp_user'],       
+                'host': self.second_backup_server['name'],
+                'user': self.second_backup_server['ftp_user'],
                 'passwd': self.second_backup_server['ftp_password'],
                 'acct' : self.second_backup_server['ftp_user'],
-                } 
+                }
             ftp_root  = self.second_backup_server['ftp_root']
         else:
             ftp_params = {
-                'host': self.main_backup_server['name'],           
-                'user': self.main_backup_server['ftp_user'],       
+                'host': self.main_backup_server['name'],
+                'user': self.main_backup_server['ftp_user'],
                 'passwd': self.main_backup_server['ftp_password'],
                 'acct' : self.main_backup_server['ftp_user'],
-                } 
+                }
             ftp_root  = self.main_backup_server['ftp_root']
         return (ftp_root, ftp_params)
-    
 
-        
-    
+
+
+
     def _get_backup_list_local(self, segment, device= None):
         '''The function returns a list of backup files in the segment folder
-        
+
         Args:
             segment (str): segment (folder) under ftp_root  (ftp_root/segment/)
             device (str, optional): name of device
-        
+
         Returns:
             out (list): list of all backup files in the segment folder if device= None
                         or list of  backup files only for this device
@@ -1159,41 +1311,41 @@ class ActivkaBackup(Activka):
         files = [f for _, _, f in os.walk(where)][0]
         out = self._get_files_of_dir(files, device)
         return out
-    
+
 
     def _get_backup_list_ftp(self, segment, device= None, second = False):
         '''The function returns a list of backup files in the segment folder
-        
+
         Args:
             segment (str): segment (folder) under ftp_root  (ftp_root/segment/)
             device (str, optional): name of device
             second (bool, optional): flag defined using main (default) backup server
                                     or second (second = True) backup server
-        
+
         Returns:
             out (list): list of all backup files in the segment folder if device= None
                         or list of  backup files only for this device
         '''
         from ftplib import FTP
         ftp_root, ftp_params = self._set_ftp_var(second)
-        
+
         with FTP(**ftp_params) as con:
             con.cwd(ftp_root + segment)
             files = con.nlst()
         out = self._get_files_of_dir(files, device)
         return out
-    
+
     def _get_files_of_dir(self, *args):
-        '''the function searches the list of files from a certain catalogue 
+        '''the function searches the list of files from a certain catalogue
             for files related to a certain device
-            All files name have format f'{device}-YYYYMMDD' 
+            All files name have format f'{device}-YYYYMMDD'
             where YYYYMMDD - date of creating backup
-        
+
         Args:
             args[0] = files (list): list off files in certain catalogue
             args[1] = device (str): name of device to search them backups in args[0]
         Returns:
-            out (list): = [file_list, date_list] where - 
+            out (list): = [file_list, date_list] where -
                         file_list - list of backup files for certain device
                         date_list - list of all "date part" of file's names
                         = ['STOP LOSHADKA', 19000101] if the device has never been backed up
@@ -1216,21 +1368,21 @@ class ActivkaBackup(Activka):
             return out
         else:
             return file_list
-    
-    
+
+
     def _get_backup_config_local(self, *args, list_ = True, date_ = -1):
         '''Function get last config backup from last (by date) file for defined device
             when script is running on main backup server
-        
+
         Args:
             args[0] = segment (str): segment (folder) under ftp_root or local_root  (./segment/)
             args[1] = device (str, optional): name of device
-            list_ (bool, optional): flag defined type of output - 
+            list_ (bool, optional): flag defined type of output -
                                     list of list (config lines)- if True (default)
                                     string - if False
             date_ (int, optional): default -1 to get last (by date) file or next-to-last or next-next-ro-last
                                     but I haven't figured out what it would be for.
-        
+
         Returns:
             out (list): list of lines of config file if list_ = True
             out (str): config files as string if list_ = False
@@ -1238,6 +1390,8 @@ class ActivkaBackup(Activka):
         from os import path
         f = self._get_backup_list_local(args[0], args[1])
         if not f:
+            return False
+        if f[0][date_] == 'STOP LOSHADKA':
             return False
         filename = path.join(self.main_backup_server['local_root'], args[0], f[0][date_])
         out = []
@@ -1249,22 +1403,22 @@ class ActivkaBackup(Activka):
             return out
         else:
             return '\n'.join(out)
-    
+
 
     def _get_backup_config_ftp(self, segment, device= False, list_ = True, date_ = -1, second = False):
         '''Function get last config backup from last (by date) file for defined device
             when script is not running on main backup server
             and get files from server over ftp
-        
+
         Args:
             args[0] = segment (str): segment (folder) under ftp_root or local_root  (./segment/)
             args[1] = device (str, optional): name of device
-            list_ (bool, optional): flag defined type of output - 
+            list_ (bool, optional): flag defined type of output -
                                     list of list (config lines)- if True (default)
                                     string - if False
             date_ (int, optional): default -1 to get last (by date) file or next-to-last or next-next-ro-last
                                     but I haven't figured out what it would be for.
-        
+
         Returns:
             out (list): list of lines of config file if list_ = True
             out (str): config files as string if list_ = False
@@ -1272,7 +1426,7 @@ class ActivkaBackup(Activka):
         from ftplib import FTP
 
         f = self._get_backup_list_ftp(segment, device)
-    
+
         if f[0][date_] == 'STOP LOSHADKA':
             return False
         cmd = 'RETR ' + f[0][date_]
@@ -1280,7 +1434,7 @@ class ActivkaBackup(Activka):
             return False
         data = []
         ftp_root, ftp_params = self._set_ftp_var(second)
-        
+
         def handleDownload(more_data):
             data.append(more_data)
         with FTP(**ftp_params) as con:
@@ -1291,15 +1445,11 @@ class ActivkaBackup(Activka):
         for i, line in enumerate(out):
             if '\x03' in line:
                 out[i] = line.replace('\x03', '^C')
-        out = [line.rsplit('\r')[0] for line in out] 
+        out = [line.rsplit('\r')[0] for line in out]
         if list_:
             return out
         else:
-            content = str()
-            for line in out:
-                content += '\n'.join(line)
-            return content
-
+            return "\n".join(out)
 
     def compare_configs(self, current: str, backup: str) -> Dict[str, Any]:
         """
@@ -1381,23 +1531,23 @@ class ActivkaBackup(Activka):
     def save_config_backup(self, *args, rewrite = False):
         '''Function save current device configuration to backup file
             if it differs from the last saved configuration
-        
+
         Args:
             args[0] = segment (str): segment (folder) under ftp_root or local_root  (./segment/)
             args[1] = device (str): name of device
-            rewrite (bool): flag to rewrite (if True) or not (if False - default) 
+            rewrite (bool): flag to rewrite (if True) or not (if False - default)
                             backup file if it is exists
         Returns:
             exit_code (int): 0 - configuration is the same as last backup, no write
                              1 - confifurattions are different, write backup
                              2 - confifurattions are different and flag rewrite was set, rewrite backup
-                             10 - new device, it was first backup. Writed 
+                             10 - new device, it was first backup. Writed
         '''
         import datetime
         td = datetime.date.today()
         today = f'{td.year}' + f'{td.month:02d}' + f'{td.day:02d}'
-        curr_config = self.get_curr_config(args[1], list_=False)
-        last_backup = self.get_backup_config(*args, list_=False)
+        curr_config = self.get_curr_config(args[1], list_=True)
+        last_backup = self.get_backup_config(*args, list_=True)
         filename = args[1] + '-' + today
         exit_code = int()
         if not last_backup:
@@ -1415,18 +1565,18 @@ class ActivkaBackup(Activka):
         else:
             self.write_backup(args[0], filename, curr_config)
             exit_code = 1
-        return exit_code 
-    
-    
+        return exit_code
+
+
 
     def _write_backup_local(self, *args):
         '''Function create backup file on disk when running on main backup server
-        
+
         Args:
             args[0] = segment (str): segment (folder) under ftp_root or local_root  (./segment/)
             args[1] = filename (str): name of file
             args[2] = curr_config (list): current configuration in type of list
-        
+
         Returns:
             none
         '''
@@ -1439,23 +1589,23 @@ class ActivkaBackup(Activka):
         with open(where, 'w') as fw:
             fw.write(content)
         self._write_backup_ftp(*args, second = True)
-    
+
 
     def _write_backup_ftp(self, segment, filename, curr_config, second = False  ):
         '''Function create backup file on disk when not running on main backup server
-        
+
         Args:
             args[0] = segment (str): segment (folder) under ftp_root or local_root  (./segment/)
             args[1] = filename (str): name of file
             args[2] = curr_config (list): current configuration in type of list
-        
+
         Returns:
             none
         '''
         from ftplib import FTP
         from tempfile import gettempdir
         from os import path
-        
+
         curr_config = '\n'.join(curr_config)
         cmd = f"STOR {filename}"
         tmpfile = path.abspath(path.join(gettempdir(), filename))
